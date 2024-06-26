@@ -1,6 +1,6 @@
 return {
-    {
-        "MunifTanjim/nui.nvim",
-        opts = {},
-    },
+  {
+    "MunifTanjim/nui.nvim",
+    opts = {},
+  },
 }

@@ -1,7 +1,7 @@
 return {
-    {
-        "tadmccorkle/markdown.nvim",
-        ft = "markdown",
-        opts = {},
-    },
+  {
+    "tadmccorkle/markdown.nvim",
+    ft = "markdown",
+    opts = {},
+  },
 }
