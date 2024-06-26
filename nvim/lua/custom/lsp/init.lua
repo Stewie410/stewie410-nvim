@@ -6,114 +6,14 @@ require("lazydev").setup({
   },
 })
 
-local capabilities = require("custom.lsp.capabilities")
-local lspconfig = require("lspconfig")
-
-local servers = {
-  -- LSP
-  ansiblels = true,
-  awk_ls = true,
-  bashls = true,
-  clangd = true,
-  cssls = true,
-  diagnosticls = true,
-  docker_compose_language_service = true,
-  dockerls = true,
-  emmet_language_server = true,
-  gopls = true,
-  groovyls = {
-    cmd = {
-      "java",
-      "-jar",
-      vim.fn.expand(
-        "~/git/groovy-language-server/build/libs/groovy-language-server-all.jar"
-      ),
-    },
-  },
-  html = true,
-  jdtls = true,
-  jqls = true,
-  jsonls = {
-    settings = {
-      json = {
-        schemas = require("schemastore").json.schemas(),
-        validate = { enable = true },
-      },
-    },
-  },
-  lemminx = true,
-  lua_ls = true,
-  ltex = true,
-  markdown_oxide = true,
-  powershell_es = {
-    bundle_path = vim.fn.stdpath("data")
-      .. "/mason/packages/powershell-editor-services",
-    filetypes = {
-      "ps1",
-      "psm1",
-      "psd1",
-      "PowerShell",
-    },
-    settings = {
-      powershell = {
-        codeFormatting = {
-          Preset = "OTBS",
-        },
-      },
-    },
-  },
-  puppet = true,
-  pyright = true,
-  taplo = true,
-  tsserver = true,
-  vimls = true,
-  yamlls = {
-    settings = {
-      yaml = {
-        schemaStore = {
-          enable = false,
-          url = "",
-        },
-        schemas = require("schemastore").yaml.schemas(),
-      },
-    },
-  },
-}
-
-local servers_to_install = vim.tbl_filter(function(key)
-  local t = servers[key]
-  if type(t) == "table" then
-    return not t.manual_install
-  else
-    return t
-  end
-end, vim.tbl_keys(servers))
-
-require("mason").setup()
-local ensure_installed = {
-  "stylua",
-  "lua_ls",
-}
-
-vim.list_extend(ensure_installed, servers_to_install)
-require("mason-tool-installer").setup({
-  ensure_installed = ensure_installed,
-})
-
-for name, config in pairs(servers) do
-  if config == true then
-    config = {}
-  end
-  config = vim.tbl_deep_extend("force", {}, {
-    capabilities = capabilities,
-  }, config)
-
-  lspconfig[name].setup(config)
-end
-
+-- mason/lspconfig package def
+require("custom.lsp.servers").setup()
 require("custom.lsp.ahk2").setup()
 
-local disable_semantic_tokens = { lua = true }
+-- on_attach
+local disable_semantic_tokens = {
+  lua = true,
+}
 
 vim.api.nvim_create_autocmd({ "LspAttach" }, {
   callback = function(args)
@@ -158,6 +58,7 @@ require("conform").setup({
   },
 })
 
+-- conform
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   callback = function(args)
     require("conform").format({
