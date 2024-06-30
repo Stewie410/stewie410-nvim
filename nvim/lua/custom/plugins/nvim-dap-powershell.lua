@@ -2,7 +2,7 @@ return {
   {
     "Willem-J-an/nvim-dap-powershell",
     event = "LspAttach",
-    ft = "PowerShell",
+    ft = "ps1",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "mfussenegger/nvim-dap",

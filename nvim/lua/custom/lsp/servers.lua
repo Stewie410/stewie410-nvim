@@ -91,7 +91,6 @@ function M.setup()
       "ps1",
       "psm1",
       "psd1",
-      "PowerShell",
     },
     settings = {
       powershell = {
