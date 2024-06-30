@@ -1,54 +1,32 @@
 ---@diagnostic disable: undefined-global
-return {
-  s(
-    {
-      trig = "bh",
-      name = "bash header",
-      dscr = "bash header",
-    },
-    fmt(
-      [[
-        #!/usr/bin/env bash
-        #
-        # {desc}
-      ]],
-      {
-        desc = i(1, "Description"),
-      }
-    )
-  ),
-  s(
-    {
-      trig = "sh",
-      name = "sh header",
-      dscr = "sh header",
-    },
-    fmt(
-      [[
-        #!/usr/bin/sh
-        #
-        # {desc}
-      ]],
-      {
-        desc = i(1, "Description"),
-      }
-    )
-  ),
-  s(
-    {
-      trig = "ph",
-      name = "posix header",
-      dscr = "posix header",
-    },
-    fmt(
-      [[
-        #!/bin/sh
-        #
-        # {desc}
-      ]],
-      {
-        desc = i(1, "Description"),
-      }
-    )
-  ),
+
+local M = {
+  s("hb", {
+    t({
+      "#!/usr/bin/env bash",
+      "#",
+      "# ",
+    }),
+    i(1, "description"),
+  }),
+
+  s("hs", {
+    t({
+      "#!/usr/bin/env sh",
+      "#",
+      "# ",
+    }),
+    i(1, "description"),
+  }),
+
+  s("hp", {
+    t({
+      "#!/bin/sh",
+      "#",
+      "# ",
+    }),
+    i(1, "description"),
+  }),
 }
+
+return M

@@ -16,13 +16,24 @@ ls.config.set_config({
   -- store_selection_keys = "<Tab>",
 })
 
--- load snippet files
+-- DEBUG
+ls.log.set_loglevel("info")
+
+-- load luasnip snippet files
 require("luasnip.loaders.from_lua").load({
   paths = {
-    vim.fn.stdpath("config") .. "/lua/custom/snippets/",
+    vim.fn.stdpath("config") .. "/lua/custom/snippets",
   },
   fs_event_provders = {
     { libuv = true },
+  },
+})
+
+-- load vscode snippet files
+require("luasnip.loaders.from_vscode").lazy_load()
+require("luasnip.loaders.from_vscode").lazy_load({
+  paths = {
+    vim.fn.stdpath("config") .. "/lua/custom/vsc_snippets",
   },
 })
 

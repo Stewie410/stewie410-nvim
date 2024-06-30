@@ -1,47 +1,35 @@
 ---@diagnostic disable: undefined-global
-return {
-  -- snippet definition
+
+local M = {
   s(
-    {
-      trig = "s()",
-      name = "snippet",
-      dscr = "snippet definition",
-    },
+    "snipf",
     fmt(
       [[
-        -- {comment}
-        s(
-            {{
-                trig = "{trig}",
-                name = "{name}",
-                dscr = "{dscr}",
-            }},
-            {{
-                {nodes}
-            }}
-        ),
+        ---@diagnostic disable: undefined-global
+
+        local M = {
+          <>
+        }
+
+        return M
       ]],
-      {
-        trig = i(1, "trigger"),
-        name = i(2, "name"),
-        dscr = i(3, "description"),
-        comment = rep(2),
-        nodes = i(0),
-      }
+      { i(1, "snippets...") },
+      { delimiters = "<>" }
     )
   ),
-  -- snippet file
-  s({
-    trig = "snipfile",
-    name = "snippet file",
-    dscr = "snippet file",
-  }, {
-    t({
-      "---@diagnostic disable: undefined-global",
-      "return {",
-      "\t",
-    }),
-    i(0),
-    t({ "", "}" }),
-  }),
+
+  s(
+    "snip",
+    fmt(
+      [[
+        s("<>", {
+          <>
+        }),
+      ]],
+      { i(1, "trigger"), i(2, "-- nodes...") },
+      { delimiters = "<>" }
+    )
+  ),
 }
+
+return M

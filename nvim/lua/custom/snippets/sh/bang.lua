@@ -1,18 +1,24 @@
 ---@diagnostic disable: undefined-global
-return {
-  s({
-    trig = "!b",
-    name = "env bash",
-    dscr = "#!/usr/bin/env bash",
-  }, t("#!/usr/bin/env bash")),
-  s({
-    trig = "!s",
-    name = "env sh",
-    dscr = "#!/usr/bin/env sh",
-  }, t("#!/usr/bin/env sh")),
-  s({
-    trig = "!p",
-    name = "portable shebang",
-    dscr = "#!/bin/sh",
-  }, t("#!/bin/sh")),
+
+local env = "#!/usr/bin/env"
+
+local M = {
+  s("#!", {
+    t(env .. " "),
+    i(1, "bash"),
+  }),
+
+  s("#b", {
+    t(env .. " bash"),
+  }),
+
+  s("#s", {
+    t(env .. " sh"),
+  }),
+
+  s("#p", {
+    t("#!/bin/sh"),
+  }),
 }
+
+return M
