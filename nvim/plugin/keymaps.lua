@@ -39,17 +39,25 @@ end, { expr = true, desc = "Toggle hlsearch if set, else <CR>" })
 
 -- templates (legacy)
 map("n", "<leader>lt", function()
-  local root = vim.fn.stdpath .. "/../templates"
-  local t = vim.fn.expand(root .. "/" .. vim.bo.filetype)
-
-  if vim.uv.fs_stat(t) then
-    vim.cmd("0r " .. t)
-  else
-    vim.notify(
-      "No template available for filetype: " .. vim.bo.filetype,
-      vim.log.levels.WARN
-    )
+  local warn = function(name)
+    vim.notify("No template available for " .. name, vim.log.levels.WARN)
   end
+
+  local root = vim.fn.expand("$XDG_CONFIG_HOME/templates/")
+  local ft = vim.bo.filetype
+  local ext = vim.fn.expand("%"):match(".+%.(.+)")
+
+  local t = vim.uv.fs_stat(root .. ext) and ext
+    or vim.uv.fs_stat(root .. ft) and ft
+    or nil
+
+  if t == nil then
+    warn("extension: " .. ext)
+    warn("filetype: " .. ft)
+    return
+  end
+
+  vim.cmd("0r " .. root .. t)
 end, { desc = "[L]oad [T]emplate" })
 
 -- spellcheck
