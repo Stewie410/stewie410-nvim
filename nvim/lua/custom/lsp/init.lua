@@ -8,7 +8,10 @@ require("lazydev").setup({
 
 -- mason/lspconfig package def
 require("custom.lsp.servers").setup()
-require("custom.lsp.ahk2").setup()
+
+if vim.uv.os_uname().sysname == "Windows_NT" then
+  require("custom.lsp.ahk2").setup()
+end
 
 -- on_attach
 local disable_semantic_tokens = {

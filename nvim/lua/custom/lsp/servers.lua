@@ -7,7 +7,6 @@ local linux_only = {
   awk_ls = {},
   bashls = {},
   clangd = {},
-  gopls = {},
   jqls = {},
 }
 
@@ -18,6 +17,7 @@ local servers = {
   docker_compose_language_service = {},
   dockerls = {},
   emmet_language_server = {},
+  gopls = {},
   html = {},
   jsonls = {
     settings = {

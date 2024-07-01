@@ -41,8 +41,11 @@ end, { expr = true, desc = "Toggle hlsearch if set, else <CR>" })
 map("n", "<leader>lt", function()
   local root = "$XDG_CONFIG_HOME"
   if vim.fn.expand(root) == root then
-    root = vim.uv.os_uname().sysname == "Windows_NT" and "$LOCALAPPDATA"
-      or "~/.config"
+    if vim.uv.os_uname().sysname == "Windows_NT" then
+      root = "$LOCALAPPDATA"
+    else
+      root = "~/.config"
+    end
   end
   root = vim.fn.expand(root .. "/templates/")
 

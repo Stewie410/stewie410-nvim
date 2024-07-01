@@ -1,41 +1,42 @@
 local M = {}
 
+-- determine server.js location
+local server_js = "D:\\dev\\git"
+if not vim.uv.fs_stat(server_js) then
+  server_js = "~/git"
+end
+server_js = vim.fn.expand(
+  server_js .. "/vscode-autohotkey2-lsp/tools/server/dist/server.js"
+)
+
+local function get_server_js()
+  local root = "D:/dev/git"
+  if not vim.uv.fs_stat(root) then
+    root = vim.fn.expand("~/git")
+  end
+
+  local child = "/vscode-authotkey2-lsp/tools/server/dist/server.js"
+  if not vim.uv.fs_stat(root .. child) then
+    local msg = "Cannot locate AHK2 LSP Server: " .. root .. child
+    vim.notify(msg, vim.log.levels.ERROR)
+    error(msg, 2)
+    -- return nil
+  end
+
+  return root .. child
+end
+
 local capabilities = require("custom.lsp.capabilities")
-local ahk2_exe = "/mnt/c/Program Files/AutoHotkey/v2/AutoHotkey.exe"
+local exe = vim.fn.expand("$PROGRAMFILES/AutoHotKey/v2/AutoHotkey.exe")
+local js = get_server_js()
 
-function M.on_attach(client, bufnr)
-  require("lsp_signature").on_attach({
-    bind = true,
-    use_lspsaga = false,
-    floating_window = true,
-    fix_pix = true,
-    hint_enable = true,
-    hi_parameter = "Search",
-    handler_opts = { "double" },
-  })
-end
-
-function M.setup()
-  local cfg = require("lspconfig.configs")
-  cfg["ahk2"] = { default_config = M.config }
-  require("lspconfig").ahk2.setup({})
-end
-
-M.config = {
+local options = {
   autostart = true,
-  cmd = {
-    "node",
-    vim.fn.expand("~/git/vscode-autohotkey2-lsp/tools/server/dist/server.js"),
-    "--stdio",
-  },
-  filetypes = {
-    "ahk",
-    "autohotkey",
-    "ah2",
-  },
+  cmd = { "node", js, "--stdio" },
+  filetypes = { "ahk", "autohotkey", "ah2" },
   init_options = {
     locale = "en-us",
-    InterpreterPath = ahk2_exe,
+    InterpreterPath = exe,
     AutoLibInclude = "User and Standard",
     CommentTags = "^;;\\s*(?<tag>.+)",
     CompleteFunctionParens = false,
@@ -68,5 +69,25 @@ M.config = {
   capabilities = capabilities,
   on_attach = M.custom_attach,
 }
+
+---@diagnostic disable-next-line: unused-local
+function M.on_attach(client, bufnr)
+  require("lsp_signature").on_attach({
+    bind = true,
+    use_lspsaga = false,
+    floating_window = true,
+    fix_pix = true,
+    hint_enable = true,
+    hi_parameter = "Search",
+    handler_opts = { "double" },
+  })
+end
+
+function M.setup(opts)
+  local config = vim.tbl_extend("keep", opts, options)
+  local cfg = require("lspconfig.configs")
+  cfg["ahk2"] = { default_config = config }
+  require("lspconfig").ahk2.setup({})
+end
 
 return M
