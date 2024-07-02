@@ -84,10 +84,12 @@ function M.on_attach(client, bufnr)
 end
 
 function M.setup(opts)
-  local config = vim.tbl_extend("keep", opts, options)
-  local cfg = require("lspconfig.configs")
-  cfg["ahk2"] = { default_config = config }
-  require("lspconfig").ahk2.setup({})
+  if vim.uv.fs_stat(server_js) then
+    local config = vim.tbl_extend("keep", opts, options)
+    local cfg = require("lspconfig.configs")
+    cfg["ahk2"] = { default_config = config }
+    require("lspconfig").ahk2.setup({})
+  end
 end
 
 return M
