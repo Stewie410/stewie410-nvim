@@ -6,18 +6,18 @@ local lspconfig = require("lspconfig")
 local linux_only = {
   awk_ls = {},
   bashls = {},
-  clangd = {},
-  gopls = {},
+  -- clangd = {},
+  -- gopls = {},
   jqls = {},
 }
 
 local servers = {
-  ansiblels = {},
+  -- ansiblels = {},
   cssls = {},
   diagnosticls = {},
   docker_compose_language_service = {},
   dockerls = {},
-  emmet_language_server = {},
+  -- emmet_language_server = {},
   html = {},
   jsonls = {
     settings = {
@@ -29,12 +29,12 @@ local servers = {
   },
   lemminx = {},
   lua_ls = {},
-  ltex = {},
+  -- ltex = {},
   markdown_oxide = {},
-  puppet = {},
+  -- puppet = {},
   pyright = {},
   taplo = {},
-  tsserver = {},
+  -- tsserver = {},
   vimls = {},
   yamlls = {
     settings = {
@@ -50,8 +50,19 @@ local servers = {
 }
 
 function M.setup()
-  if vim.uv.os_uname().sysname == "Linux" then
+  local sysname = vim.uv.os_uname().sysname
+
+  -- Skip LSPs I'm unlikely to need outside of Linux
+  if sysname == "Linux" then
     servers = vim.tbl_extend("force", servers, linux_only)
+  end
+
+  -- Include AHKv2 LSP on Windows machines, if available
+  if sysname == "Windows_NT" then
+    local ahk = require("custom.lsp.ahk2")
+    if ahk.server_installed() then
+      ahk.setup()
+    end
   end
 
   local ensure_installed = {

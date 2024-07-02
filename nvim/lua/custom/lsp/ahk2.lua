@@ -1,34 +1,25 @@
 local M = {}
 
--- determine server.js location
-local server_js = "D:\\dev\\git"
-if not vim.uv.fs_stat(server_js) then
-  server_js = "~/git"
-end
-server_js = vim.fn.expand(
-  server_js .. "/vscode-autohotkey2-lsp/tools/server/dist/server.js"
-)
+local function get_server()
+  local child = "/vscode-autohotkey2-lsp/tools/server/dist/server.js"
+  local possible = {
+    vim.fn.expand("~/git"),
+    "D:/dev/git",
+  }
 
-local function get_server_js()
-  local root = "D:/dev/git"
-  if not vim.uv.fs_stat(root) then
-    root = vim.fn.expand("~/git")
+  for _, root in ipairs(possible) do
+    if vim.uv.fs_stat(root .. child) then
+      return root .. child
+    end
   end
 
-  local child = "/vscode-authotkey2-lsp/tools/server/dist/server.js"
-  if not vim.uv.fs_stat(root .. child) then
-    local msg = "Cannot locate AHK2 LSP Server: " .. root .. child
-    vim.notify(msg, vim.log.levels.ERROR)
-    error(msg, 2)
-    -- return nil
-  end
-
-  return root .. child
+  vim.notify("Cannot locate AHKv2 LSP", vim.log.levels.WARN)
+  return nil
 end
 
 local capabilities = require("custom.lsp.capabilities")
 local exe = vim.fn.expand("$PROGRAMFILES/AutoHotKey/v2/AutoHotkey.exe")
-local js = get_server_js()
+local js = get_server()
 
 local options = {
   autostart = true,
@@ -70,6 +61,10 @@ local options = {
   on_attach = M.custom_attach,
 }
 
+function M.server_installed()
+  return js ~= nil
+end
+
 ---@diagnostic disable-next-line: unused-local
 function M.on_attach(client, bufnr)
   require("lsp_signature").on_attach({
@@ -83,13 +78,13 @@ function M.on_attach(client, bufnr)
   })
 end
 
+---setup AHKv2
+---@param opts? table
 function M.setup(opts)
-  if vim.uv.fs_stat(server_js) then
-    local config = vim.tbl_extend("keep", opts, options)
-    local cfg = require("lspconfig.configs")
-    cfg["ahk2"] = { default_config = config }
-    require("lspconfig").ahk2.setup({})
-  end
+  local config = vim.tbl_extend("keep", opts, options)
+  local cfg = require("lspconfig.configs")
+  cfg["ahk2"] = { default_config = config }
+  require("lspconfig").ahk2.setup({})
 end
 
 return M

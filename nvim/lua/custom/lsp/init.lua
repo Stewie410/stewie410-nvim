@@ -6,14 +6,9 @@ require("lazydev").setup({
   },
 })
 
--- mason/lspconfig package def
+-- install/setup servers
 require("custom.lsp.servers").setup()
 
-if vim.uv.os_uname().sysname == "Windows_NT" then
-  require("custom.lsp.ahk2").setup()
-end
-
--- on_attach
 local disable_semantic_tokens = {
   lua = true,
 }
@@ -55,19 +50,4 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
 })
 
 -- Autoformat setup
-require("conform").setup({
-  formatters_by_ft = {
-    lua = { "stylua" },
-  },
-})
-
--- conform
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  callback = function(args)
-    require("conform").format({
-      bufnr = args.buf,
-      lsp_fallback = true,
-      quiet = true,
-    })
-  end,
-})
+require("custom.lsp.conform").setup()
