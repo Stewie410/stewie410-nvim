@@ -16,7 +16,7 @@ return {
       "hrsh7th/cmp-omni",
       {
         "L3MON4D3/LuaSnip",
-        build = "make install_jsregexp",
+        -- build = "make install_jsregexp",
         lazy = false,
       },
       "saadparwaiz1/cmp_luasnip",
