@@ -57,14 +57,6 @@ function M.setup()
     servers = vim.tbl_extend("force", servers, linux_only)
   end
 
-  -- Include AHKv2 LSP on Windows machines, if available
-  if sysname == "Windows_NT" then
-    local ahk = require("custom.lsp.ahk2")
-    if ahk.server_installed() then
-      ahk.setup()
-    end
-  end
-
   local ensure_installed = {
     "stylua",
     "lua_ls",
