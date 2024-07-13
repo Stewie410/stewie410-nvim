@@ -1,7 +1,7 @@
-local sf = require("util.spellfile")
+local sf = require("util.spell")
 sf.setup()
 
-local ud = require("util.undodir")
+local ud = require("util.undo")
 ud.setup()
 
 local tabstop = 4
@@ -36,8 +36,6 @@ local options = {
     pumheight = 10,
     termguicolors = true,
     timeoutlen = 300,
-    undofile = true,
-    undolevels = 1000,
     -- backup = false,
     cursorline = true,
     hidden = true,
@@ -61,6 +59,7 @@ local options = {
   },
 }
 
+-- TODO: vim.tbl_deep_extend() ?
 for type, list in pairs(options) do
   for option, value in pairs(list) do
     (vim[type])[option] = value
