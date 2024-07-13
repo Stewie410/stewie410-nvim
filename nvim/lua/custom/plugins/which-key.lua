@@ -2,20 +2,29 @@ return {
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
-    config = function()
-      local wk = require("which-key")
-      local ig = "which_key_ignore"
-
-      wk.setup()
-      wk.register({
-        ["<leader>c"] = { name = "[C]ode", _ = ig },
-        ["<leader>d"] = { name = "[D]ocument", _ = ig },
-        ["<leader>f"] = { name = "[F]ind", _ = ig },
-        ["<leader>r"] = { name = "[R]ename", _ = ig },
-        ["<leader>s"] = { name = "[S]urround", _ = ig },
-        ["<leader>w"] = { name = "[W]orkspace", _ = ig },
-        ["<leader>t"] = { name = "[T]oggle", _ = ig },
-      })
-    end,
+    dependencies = {
+      "echasnovski/mini.icons",
+      "nvim-tree/nvim-web-devicons",
+    },
+    keys = {
+      {
+        "<leader>?",
+        function()
+          require("which-key").show({ global = false })
+        end,
+        desc = "Buffer local keymaps",
+      },
+    },
+    opts = {
+      spec = {
+        { "<leader>c", group = "[C]ode" },
+        { "<leader>d", group = "[D]ocument" },
+        { "<leader>f", group = "[F]ind" },
+        { "<leader>r", group = "[R]ename" },
+        { "<leader>s", group = "[S]urround" },
+        { "<leader>w", group = "[W]orkspace" },
+        { "<leader>t", group = "[T]oggle" },
+      },
+    },
   },
 }
