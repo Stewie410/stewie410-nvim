@@ -16,6 +16,7 @@ return {
       },
     },
     opts = {
+      preset = "helix",
       spec = {
         { "<leader>c", group = "[C]ode" },
         { "<leader>d", group = "[D]ocument" },
