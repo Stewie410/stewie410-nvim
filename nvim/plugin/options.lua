@@ -1,26 +1,8 @@
-local function spell_file()
-  local path = vim.fn.expand(vim.fn.stdpath("config") .. "/spell/en.utf-8.add")
+local sf = require("util.spellfile")
+sf.setup()
 
-  if not vim.uv.fs_stat(path) then
-    vim.fn.mkdir(vim.fs.dirname(path), "p")
-    local status_ok, f = pcall(assert, io.open(path, "w"))
-
-    if not status_ok then
-      vim.notify("Failed to create spellfile: " .. path, vim.log.levels.WARN)
-      return ""
-    end
-
-    f:close()
-  end
-
-  return path
-end
-
-local function undo_dir()
-  local path = vim.fn.expand(vim.fn.stdpath("cache") .. "/undo")
-  vim.fn.mkdir(path, "p")
-  return path
-end
+local ud = require("util.undodir")
+ud.setup()
 
 local tabstop = 4
 local scroll_off = 10
@@ -54,7 +36,6 @@ local options = {
     pumheight = 10,
     termguicolors = true,
     timeoutlen = 300,
-    undodir = undo_dir(),
     undofile = true,
     undolevels = 1000,
     -- backup = false,
@@ -62,15 +43,13 @@ local options = {
     hidden = true,
     -- swapfile = false,
     colorcolumn = "80",
-    clipboard = "unnamedplus",
+    -- clipboard = "unnamedplus",
     inccommand = "split",
     shada = { "'10", "<0", "s10", "h" },
     smartcase = true,
     ignorecase = true,
     list = true,
     background = "dark",
-    spelllang = { "en_us" },
-    spellfile = spell_file(),
   },
   g = {
     gitblame_enabled = 0,
