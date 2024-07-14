@@ -43,5 +43,5 @@ luac.out
 lazy-lock.json
 
 # private content
-lua/private
-lua/custom/cmp/mapping
+nvim/lua/private
+nvim/lua/custom/cmp/mapping
