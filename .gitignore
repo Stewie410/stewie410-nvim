@@ -44,3 +44,4 @@ lazy-lock.json
 
 # private content
 lua/private
+lua/custom/cmp/mapping
