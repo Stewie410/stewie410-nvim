@@ -1,6 +1,3 @@
-local spell = require("util.spell")
-local undo = require("util.undo")
-
 local tabstop = 4
 local scroll_off = 10
 
@@ -71,9 +68,3 @@ end, vim.tbl_keys(options.opt))
 vim.tbl_map(function(k)
   vim.g[k] = options.g[k]
 end, vim.tbl_keys(options.g))
-
--- spellfile(s)
-spell.setup()
-
--- undodir
-undo.setup()
