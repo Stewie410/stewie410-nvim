@@ -37,7 +37,7 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
     map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
     map("<leader>D", tsb.lsp_type_definitions, "Goto Type [D]finitions")
     map("<leader>ds", tsb.lsp_document_symbols, "Goto [D]ocument [S]ymbols")
-    map("<leader><ws", tsb.lsp_workspace_symbols, "Goto [W]orkspace [S]ymbols")
+    map("<leader>ws", tsb.lsp_workspace_symbols, "Goto [W]orkspace [S]ymbols")
     map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
     map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
     map("K", vim.lsp.buf.hover, "Hover Documentation")
