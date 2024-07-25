@@ -39,7 +39,10 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
     map("<leader>ds", tsb.lsp_document_symbols, "Goto [D]ocument [S]ymbols")
     map("<leader>ws", tsb.lsp_workspace_symbols, "Goto [W]orkspace [S]ymbols")
     map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-    map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+    -- map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+    map("<leader>ca", function()
+      require("tiny-code-action").code_action()
+    end, "[C]ode [A]ction")
     map("K", vim.lsp.buf.hover, "Hover Documentation")
 
     local filetype = vim.bo[bufnr].filetype

@@ -12,6 +12,14 @@ return {
       "stevearc/conform.nvim",
       "b0o/SchemaStore.nvim",
       "ray-x/lsp_signature.nvim",
+      {
+        "rachartier/tiny-code-action.nvim",
+        dependencies = {
+          "nvim-lua/plenary.nvim",
+          "nvim-telescope/telescope.nvim",
+        },
+        opts = {},
+      },
     },
     config = function()
       require("custom.lsp")
