@@ -1,6 +1,6 @@
 return {
   {
-    "MunifTanjim/nui.nvim",
+    "nvim-neotest/neotest",
     opts = {},
   },
 }

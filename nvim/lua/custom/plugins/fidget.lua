@@ -9,7 +9,7 @@ return {
         },
       },
       notification = {
-        override_vim_notify = true,
+        override_vim_notify = false,
       },
       integration = {
         ["nvim-tree"] = { enable = true },
