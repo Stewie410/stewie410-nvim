@@ -1,11 +1,3 @@
--- require("neodev").setup()
-require("lazydev").setup({
-  library = {
-    "lazy.nvim",
-    { path = "luvit-meta/library", words = { "vim%.uv" } },
-  },
-})
-
 -- install/setup servers
 require("custom.lsp.servers").setup()
 
