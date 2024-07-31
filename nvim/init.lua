@@ -18,14 +18,35 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({ import = "custom/plugins" }, {
+  dev = {
+    path = "~/git/plugins",
+    patterns = { "stewie410" },
+    fallback = jit.os:find("Windows"),
+  },
   defaults = {
     lazy = true,
     version = false,
   },
-  change_detection = {
-    notify = false,
-  },
   install = {
-    colorscheme = { "ayu" },
+    missing = true,
+    colorscheme = {
+      "ayu",
+      "tokyonight-night",
+      "habamax",
+    },
+  },
+  rocks = { hererocks = true },
+  performance = {
+    cache = { enabled = true },
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "rplugin",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
   },
 })

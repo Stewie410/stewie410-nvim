@@ -1,5 +1,6 @@
 return {
   "Stewie410/lipsum-nvim",
+  dev = true,
   cmd = {
     "LipsumWord",
     "LipsumLine",
