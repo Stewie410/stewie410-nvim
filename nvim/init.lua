@@ -20,15 +20,13 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({ import = "custom/plugins" }, {
   dev = {
     path = "~/git/plugins",
-    patterns = { "stewie410" },
-    fallback = jit.os:find("Windows"),
+    fallback = true,
   },
   defaults = {
     lazy = true,
     version = false,
   },
   install = {
-    missing = true,
     colorscheme = {
       "ayu",
       "tokyonight-night",
