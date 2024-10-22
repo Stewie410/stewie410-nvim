@@ -3,6 +3,7 @@ return {
     "nvim-java/nvim-java",
     ft = {
       "java",
+      "groovy",
     },
     dependencies = {
       "nvim-java/lua-async-await",
