@@ -18,6 +18,7 @@ return {
         },
         opts = {},
       },
+      "TheLeoP/powershell.nvim",
     },
     config = function()
       require("custom.lsp")

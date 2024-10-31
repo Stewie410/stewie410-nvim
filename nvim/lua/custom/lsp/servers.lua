@@ -88,21 +88,25 @@ function M.setup()
     },
   }))
 
-  lspconfig.powershell_es.setup(vim.tbl_deep_extend("force", basic_config, {
+  -- lspconfig.powershell_es.setup(vim.tbl_deep_extend("force", basic_config, {
+  --   bundle_path = mason_path .. "/powershell-editor-services",
+  --   filetypes = {
+  --     "ps1",
+  --     "psm1",
+  --     "psd1",
+  --   },
+  --   settings = {
+  --     powershell = {
+  --       codeFormatting = {
+  --         Preset = "OTBS",
+  --       },
+  --     },
+  --   },
+  -- }))
+  require("powershell").setup({
+    capabilities = capabilities,
     bundle_path = mason_path .. "/powershell-editor-services",
-    filetypes = {
-      "ps1",
-      "psm1",
-      "psd1",
-    },
-    settings = {
-      powershell = {
-        codeFormatting = {
-          Preset = "OTBS",
-        },
-      },
-    },
-  }))
+  })
 end
 
 return M
