@@ -71,3 +71,34 @@ end, { desc = "[L]oad [T]emplate" })
 map("n", "<leader>sc", function()
   vim.opt.spell = not vim.o.spell
 end, { desc = "Toggle [S]pell [C]heck" })
+
+-- Use 'q' to close special buffer types
+vim.api.nvim_create_autocmd({ "FileType", "BufEnter" }, {
+  pattern = {
+    "help",
+    "startuptime",
+    "qf",
+    "lspinfo",
+    "man",
+    "chechhealth",
+    "neotest-output-panel",
+    "neotest-summary",
+    "lazy",
+  },
+  callback = function()
+    map(
+      "n",
+      "q",
+      ":close<CR>",
+      { silent = true, buffer = true, desc = "Close window" }
+    )
+    map(
+      "n",
+      "<ESC>",
+      ":close<CR>",
+      { silent = true, buffer = true, desc = "Close window" }
+    )
+    vim.opt.buflisted = false
+  end,
+  desc = "Use 'q' to close special buffer types",
+})

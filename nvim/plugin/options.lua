@@ -61,10 +61,10 @@ local options = {
   },
 }
 
-vim.tbl_map(function(k)
-  vim.opt[k] = options.opt[k]
-end, vim.tbl_keys(options.opt))
+for k, v in pairs(options.opt) do
+  vim.opt[k] = v
+end
 
-vim.tbl_map(function(k)
-  vim.g[k] = options.g[k]
-end, vim.tbl_keys(options.g))
+for k, v in pairs(options.g) do
+  vim.g[k] = v
+end

@@ -2,13 +2,23 @@ local map = vim.keymap.set
 
 -- sane defaults for terminal buffers
 vim.api.nvim_create_autocmd({ "TermOpen" }, {
+  pattern = { "term://" },
   group = vim.api.nvim_create_augroup("term-open", {}),
   callback = function()
-    vim.opt_local.number = false
-    vim.opt_local.relativenumber = false
-    vim.opt_local.scrolloff = 0
-    vim.opt_local.sidescrolloff = 0
-    vim.opt_local.spell = false
+    local opt = {
+      number = false,
+      relativenumber = false,
+      scrolloff = 0,
+      sidescrolloff = 0,
+      spell = false,
+      signcolumn = "no",
+      filetype = "terminal",
+      cursorline = false,
+    }
+
+    for k, v in pairs(opt) do
+      vim.opt_local[k] = v
+    end
   end,
   desc = "Sane defaults for terminal buffers",
 })
