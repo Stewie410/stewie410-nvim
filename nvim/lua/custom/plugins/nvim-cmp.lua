@@ -16,8 +16,9 @@ return {
       "hrsh7th/cmp-omni",
       {
         "L3MON4D3/LuaSnip",
-        -- build = "make install_jsregexp",
+        tag = "v2.*",
         lazy = false,
+        dependencies = { "rafamadriz/friendly-snippets" },
       },
       "saadparwaiz1/cmp_luasnip",
       "kdheepak/cmp-latex-symbols",
