@@ -15,6 +15,7 @@ local options = {
     tabstop = tabstop,
     softtabstop = tabstop,
     shiftwidth = tabstop,
+    shiftround = true,
     expandtab = true,
     emoji = true,
     -- wildmode = 'longest,list,full',
@@ -22,7 +23,11 @@ local options = {
     splitbelow = true,
     splitkeep = "screen",
     signcolumn = "yes",
+    foldenable = true,
     foldcolumn = "1",
+    foldlevel = 99,
+    foldmethod = "expr",
+    foldexpr = "v:lua.vim.treesitter.foldexpr()",
     -- updatetime = 0,
     scrolloff = scroll_off,
     sidescrolloff = scroll_off,
@@ -58,6 +63,7 @@ local options = {
     loaded_netrwPlugin = 1,
     showbreak = "↪",
     showmatch = true,
+    netrw_banner = 0,
   },
 }
 
