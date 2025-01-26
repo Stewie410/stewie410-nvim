@@ -1,0 +1,6 @@
+vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "[Esc]ape Terminal" })
+vim.keymap.set("n", "<leader>ot", function()
+  vim.cmd.new()
+  vim.cmd.term()
+  vim.cmd.startinsert()
+end, { desc = "[O]pen [T]erminal" })
