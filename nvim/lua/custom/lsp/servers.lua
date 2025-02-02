@@ -34,6 +34,7 @@ local servers = {
   -- puppet = {},
   pyright = {},
   taplo = {},
+  texlab = {},
   -- tsserver = {},
   vimls = {},
   yamlls = {
