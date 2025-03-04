@@ -7,16 +7,14 @@ return {
       require("mini.bracketed").setup()
       require("mini.comment").setup()
       require("mini.cursorword").setup()
+      require("mini.hipatterns").setup({
+        highlighters = {
+          hex_color = require("mini.hipatterns").gen_highlighter.hex_color(),
+        },
+      })
       require("mini.surround").setup()
       require("mini.pairs").setup()
       require("mini.operators").setup()
-
-      local hipatterns = require("mini.hipatterns")
-      hipatterns.setup({
-        highlighters = {
-          hex_color = hipatterns.gen_highlighter.hex_color(),
-        },
-      })
     end,
   },
 }
