@@ -1,20 +1,80 @@
 return {
+  -- text editing
   {
-    "echasnovski/mini.nvim",
+    "echasnovski/mini.ai",
+    version = "*",
+    lazy = false,
+    opts = {
+      n_lines = 500,
+    },
+  },
+  {
+    "echasnovski/mini.comment",
+    version = "*",
+    event = "VeryLazy",
+    opts = {},
+  },
+  {
+    "echasnovski/mini.operators",
+    version = "*",
+    event = "VeryLazy",
+    opts = {},
+  },
+  {
+    "echasnovski/mini.pairs",
+    version = "*",
+    lazy = false,
+    opts = {},
+  },
+  {
+    "echasnovski/mini.splitjoin",
+    version = "*",
+    event = "VeryLazy",
+    opts = {},
+  },
+  {
+    "echasnovski/mini.surround",
+    version = "*",
+    lazy = false,
+    opts = {},
+  },
+
+  -- general workflow
+  {
+    "echasnovski/mini.bracketed",
+    version = "*",
+    lazy = false,
+    opts = {},
+  },
+  {
+    "echasnovski/mini.jump",
+    version = "*",
+    lazy = false,
+    opts = {},
+  },
+
+  -- appearance
+  {
+    "echasnovski/mini.cursorword",
+    version = "*",
+    event = "VeryLazy",
+    opts = {},
+  },
+  {
+    "echasnovski/mini.hipatterns",
+    version = "*",
     event = "VeryLazy",
     config = function()
-      require("mini.ai").setup({ n_lines = 500 })
-      require("mini.bracketed").setup()
-      require("mini.comment").setup()
-      require("mini.cursorword").setup()
-      require("mini.hipatterns").setup({
+      local hipatterns = require("mini.hipatterns")
+      hipatterns.setup({
         highlighters = {
-          hex_color = require("mini.hipatterns").gen_highlighter.hex_color(),
+          fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
+          hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
+          todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
+          note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
+          hex_color = hipatterns.gen_highlighter.hex_color(),
         },
       })
-      require("mini.surround").setup()
-      require("mini.pairs").setup()
-      require("mini.operators").setup()
     end,
   },
 }
