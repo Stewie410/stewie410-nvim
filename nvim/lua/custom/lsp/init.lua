@@ -10,10 +10,7 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
     local tsb = require("telescope.builtin")
     local bufnr = args.buf
 
-    local client = assert(
-      vim.lsp.get_client_by_id(args.data.client_id),
-      "must have valid client"
-    )
+    local client = assert(vim.lsp.get_client_by_id(args.data.client_id), "must have valid client")
 
     local map = function(keys, func, desc)
       vim.keymap.set("n", keys, func, {
@@ -33,7 +30,7 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
     map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
     -- map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
     map("<leader>ca", function()
-      require("tiny-code-action").code_action()
+      require("tiny-code-action").code_action({})
     end, "[C]ode [A]ction")
     map("K", vim.lsp.buf.hover, "Hover Documentation")
 
