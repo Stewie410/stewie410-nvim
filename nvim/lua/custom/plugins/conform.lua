@@ -1,7 +1,6 @@
 return {
   {
     "stevearc/conform.nvim",
-    enabled = false,
     opts = {
       formatters_by_ft = {
         lua = { "stylua" },
@@ -23,7 +22,7 @@ return {
       notify_no_formatters = true,
     },
     init = function()
-      vim.o.formatexpr = require("conform").formatexpr()
+      vim.o.formatexpr = "v:lua.require('conform').formatexpr()"
 
       vim.api.nvim_create_user_command("FormatDisable", function(args)
         if args.bang then
