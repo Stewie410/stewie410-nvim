@@ -130,6 +130,9 @@ return {
             score_offset = 20,
             opts = { insert = true },
           },
+          buffer = {
+            score_offset = 0,
+          },
         },
       },
       -- TODO:return to 'prefer_rust' at some point
