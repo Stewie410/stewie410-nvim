@@ -15,7 +15,7 @@ function M.make_cmd(bundle)
     "-LogLevel Normal",
   }
   local command = table.concat(args, " "):format(bundle, bundle, cache, cache)
-  return { "pwsh", "-NoLogo", "-NoProfile", "-Command" }
+  return { "pwsh", "-NoLogo", "-NoProfile", "-Command", command }
 end
 
 return M
