@@ -1,6 +1,19 @@
 return {
   {
     "stevearc/conform.nvim",
+    keys = {
+      {
+        "<leader>fm",
+        function()
+          require("conform").format({
+            async = true,
+            lsp_format = "fallback",
+            timeout_ms = 2000,
+          })
+        end,
+        desc = "[F]or[m]at",
+      },
+    },
     opts = {
       formatters_by_ft = {
         lua = { "stylua" },
@@ -38,18 +51,5 @@ return {
         vim.b.disable_autoformat = false
       end, { desc = "Enable Autoformat-On-Save", bang = true })
     end,
-    keys = {
-      {
-        "<leader>fm",
-        function()
-          require("conform").format({
-            async = true,
-            lsp_format = "fallback",
-            timeout_ms = 2000,
-          })
-        end,
-        desc = "[F]or[m]at",
-      },
-    },
   },
 }
