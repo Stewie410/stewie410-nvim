@@ -27,7 +27,8 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
   group = ag,
   callback = function(args)
     local bufnr = args.buf
-    local client = assert(vim.lsp.get_client_by_id(args.data.client_id), "Cannot determine LSP Client in buf[" .. bufnr .. "]")
+    local client = assert(vim.lsp.get_client_by_id(args.data.client_id),
+      "Cannot determine LSP Client in buf[" .. bufnr .. "]")
 
     -- TODO: move to Snacks.picker
     local pick = require("telescope.builtin")
@@ -53,10 +54,6 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
       wait = client:supports_method("textDocument/willSaveWaitUntil"),
       fmt = client:supports_method("textDocument/formatting"),
     }
-
-    if supports.cmp then
-      vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
-    end
 
     if not supports.wait and supports.fmt then
       vim.api.nvim_create_autocmd({ "BufWritePre" }, {

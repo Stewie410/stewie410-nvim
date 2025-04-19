@@ -47,6 +47,7 @@ local options = {
     ignorecase = true,
     list = true,
     background = "dark",
+    completeopt = { "menu", "menuone", "noselect" },
     shortmess = (vim.opt.shortmess):append({ c = true }),
     formatoptions = (vim.opt.formatoptions):remove("o"),
     listchars = (vim.opt.listchars):append({
@@ -55,8 +56,6 @@ local options = {
       precedes = "«",
       nbsp = "░",
     }),
-    completeopt = { "menu", "menuone", "noselect" },
-    shortmess = (vim.opt.shortmess):append("c"),
   },
   g = {
     gitblame_enabled = 0,

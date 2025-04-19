@@ -61,6 +61,9 @@ return {
         menu = {
           border = "single",
         },
+        trigger = {
+          show_on_trigger_character = true,
+        },
       },
       keymap = {
         preset = "default",
@@ -84,6 +87,7 @@ return {
           "lsp",
           "path",
           "snippets",
+          "omni",
           "buffer",
           "ripgrep",
           "emoji",
@@ -92,11 +96,13 @@ return {
         },
         providers = {
           snippets = {
+            score_offset = 50,
             opts = {
               search_paths = {
+                os.getenv("XDG_CONFIG_HOME") .. "/snippets",
+                vim.fn.stdpath("data") .. "/lazy/friendly-snippets",
                 vim.fn.stdpath("config") .. "/snippets",
-                os.getenv("HOME") .. "/snippets",
-              }
+              },
             },
           },
           lazydev = {
@@ -117,21 +123,31 @@ return {
             module = "blink-emoji",
             score_offset = 15,
             opts = { insert = true },
-            -- show_show_items = function()
-            --   return vim.tbl_contains({ "gitcommit", "markdown" }, vim.o.filetype)
-            -- end,
           },
           nerdfont = {
             name = "Nerd Fonts",
             module = "blink-nerdfont",
-            score_offset = 15,
+            score_offset = 20,
             opts = { insert = true },
           },
         },
       },
+      -- TODO:return to 'prefer_rust' at some point
       fuzzy = { implementation = "lua" },
+      cmdline = {
+        keymap = {
+          preset = "cmdline",
+          ["<Tab>"] = { "show", "accept" },
+        },
+        completion = {
+          menu = {
+            auto_show = function(ctx)
+              return vim.fn.getcmdtype() == ":"
+            end,
+          },
+        },
+      },
     },
-    -- TODO:return to 'prefer_rust' at some point
     opts_extend = { "sources.default" },
   },
 }

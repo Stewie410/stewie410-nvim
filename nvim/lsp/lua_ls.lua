@@ -17,4 +17,12 @@ return {
     ".git",
     ".svn",
   },
+  settings = {
+    Lua = {
+      completion = {
+        callSnippet = "Disable",
+        keywordSnippet = "Disable",
+      },
+    },
+  },
 }
