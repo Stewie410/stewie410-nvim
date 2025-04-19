@@ -55,6 +55,8 @@ local options = {
       precedes = "«",
       nbsp = "░",
     }),
+    completeopt = { "menu", "menuone", "noselect" },
+    shortmess = (vim.opt.shortmess):append("c"),
   },
   g = {
     gitblame_enabled = 0,
