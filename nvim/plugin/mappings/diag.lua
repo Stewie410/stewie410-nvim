@@ -1,24 +1,6 @@
-vim.keymap.set(
-  "n",
-  "[d",
-  vim.diagnostic.goto_prev,
-  { desc = "Previous [D]iagnostic" }
-)
-vim.keymap.set(
-  "n",
-  "]d",
-  vim.diagnostic.goto_next,
-  { desc = "Next [D]iagnostic" }
-)
-vim.keymap.set(
-  "n",
-  "<leader>e",
-  vim.diagnostic.open_float,
-  { desc = "Open [E]rror List" }
-)
-vim.keymap.set(
-  "n",
-  "<leader>q",
-  vim.diagnostic.setloclist,
-  { desc = "Show [Q]uickfix List" }
-)
+local map = vim.keymap.set
+
+map("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "Diagnostic: Previous" })
+map("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Diagnostic: Next" })
+map("n", "<leader>df", vim.diagnostic.open_float, { desc = "Diagnostic: Open List" })
+map("n", "<leader>qf", vim.diagnostic.setloclist, { desc = "Diagnostic: Quick Fix List" })
