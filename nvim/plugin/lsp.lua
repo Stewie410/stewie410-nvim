@@ -30,20 +30,17 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
     local client = assert(vim.lsp.get_client_by_id(args.data.client_id),
       "Cannot determine LSP Client in buf[" .. bufnr .. "]")
 
-    -- TODO: move to Snacks.picker
-    local pick = require("telescope.builtin")
-    local tiny = require("tiny-code-action")
     local map = vim.keymap.set
 
     -- TODO: Rethink my mappings...
-    map("n", "grd", pick.lsp_definitions, { buffer = bufnr, desc = "LSP: Definition" })
-    map("n", "grr", pick.lsp_references, { buffer = bufnr, desc = "LSP: References" })
-    map("n", "gri", pick.lsp_implementations, { buffer = bufnr, desc = "LSP: Implementation" })
+    map("n", "grd", vim.lsp.buf.definition, { buffer = bufnr, desc = "LSP: Definition" })
+    map("n", "grr", vim.lsp.buf.references, { buffer = bufnr, desc = "LSP: References" })
+    map("n", "gri", vim.lsp.buf.implementation, { buffer = bufnr, desc = "LSP: Implementation" })
     map("n", "grD", vim.lsp.buf.declaration, { buffer = bufnr, desc = "LSP: Declaration" })
-    map("n", "<leader>td", pick.lsp_type_definitions, { buffer = bufnr, desc = "LSP: Type Definitions" })
-    map("n", "<leader>ds", pick.lsp_document_symbols, { buffer = bufnr, desc = "LSP: Document Symbols" })
-    map("n", "<leader>ws", pick.lsp_workspace_symbols, { buffer = bufnr, desc = "LSP: Workspace Symbols" })
-    map("n", "<leader>ca", tiny.code_action, { buffer = bufnr, desc = "LSP: Code Action" })
+    map("n", "<leader>td", vim.lsp.buf.type_definition, { buffer = bufnr, desc = "LSP: Type Definitions" })
+    map("n", "<leader>ds", vim.lsp.buf.document_symbol, { buffer = bufnr, desc = "LSP: Document Symbols" })
+    map("n", "<leader>ws", vim.lsp.buf.workspace_symbol, { buffer = bufnr, desc = "LSP: Workspace Symbols" })
+    map("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr, desc = "LSP: Code Action" })
     map("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr, desc = "LSP: Rename" })
     map("n", "K", vim.lsp.buf.hover, { buffer = bufnr, desc = "LSP: Hover Documentation" })
 
