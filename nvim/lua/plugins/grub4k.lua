@@ -1,5 +1,5 @@
 return {
   {
-    "Grub4K/glob.nvim",
+    "Grub4K/glib.nvim",
   },
 }
