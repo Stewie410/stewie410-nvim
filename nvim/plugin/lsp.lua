@@ -30,19 +30,31 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
     local client = assert(vim.lsp.get_client_by_id(args.data.client_id),
       "Cannot determine LSP Client in buf[" .. bufnr .. "]")
 
-    local map = vim.keymap.set
+    local map = function(mode, lhs, rhs, desc)
+      vim.keymap.set(mode, lhs, rhs, {
+        buffer = bufnr,
+        silent = true,
+        noremap = true,
+        desc = "LSP: " .. desc,
+      })
+    end
+
+    local code_action = vim.lsp.buf
+    if pcall(require, "tiny-code-action") then
+      code_action = require("tiny-code-action")
+    end
 
     -- TODO: Rethink my mappings...
-    map("n", "grd", vim.lsp.buf.definition, { buffer = bufnr, desc = "LSP: Definition" })
-    map("n", "grr", vim.lsp.buf.references, { buffer = bufnr, desc = "LSP: References" })
-    map("n", "gri", vim.lsp.buf.implementation, { buffer = bufnr, desc = "LSP: Implementation" })
-    map("n", "grD", vim.lsp.buf.declaration, { buffer = bufnr, desc = "LSP: Declaration" })
-    map("n", "<leader>td", vim.lsp.buf.type_definition, { buffer = bufnr, desc = "LSP: Type Definitions" })
-    map("n", "<leader>ds", vim.lsp.buf.document_symbol, { buffer = bufnr, desc = "LSP: Document Symbols" })
-    map("n", "<leader>ws", vim.lsp.buf.workspace_symbol, { buffer = bufnr, desc = "LSP: Workspace Symbols" })
-    map("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr, desc = "LSP: Code Action" })
-    map("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr, desc = "LSP: Rename" })
-    map("n", "K", vim.lsp.buf.hover, { buffer = bufnr, desc = "LSP: Hover Documentation" })
+    map("n", "grd", vim.lsp.buf.definition, "Definition")
+    map("n", "grr", vim.lsp.buf.references, "References")
+    map("n", "gri", vim.lsp.buf.implementation, "Implementation")
+    map("n", "grD", vim.lsp.buf.declaration, "Declaration")
+    map("n", "<leader>td", vim.lsp.buf.type_definition, "Type Definition")
+    map("n", "<leader>ds", vim.lsp.buf.document_symbol, "Document Symbol")
+    map("n", "<leader>ws", vim.lsp.buf.workspace_symbol, "Workspace Symbol")
+    map("n", "<leader>ca", code_action.code_action, "Code Action")
+    map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
+    map("n", "K", vim.lsp.buf.hover, "Hover Documentation")
 
     vim.opt.omnifunc = "v:lua.vim.lsp.omnifunc"
 
