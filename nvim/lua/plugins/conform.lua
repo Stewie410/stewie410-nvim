@@ -1,9 +1,12 @@
 return {
   {
     "stevearc/conform.nvim",
+    ft = {
+      "lua",
+    },
     keys = {
       {
-        "<leader>fm",
+        "<leader>bf",
         function()
           require("conform").format({
             async = true,
@@ -11,7 +14,7 @@ return {
             timeout_ms = 2000,
           })
         end,
-        desc = "[F]or[m]at",
+        desc = "[B]uffer [F]ormat",
       },
     },
     opts = {

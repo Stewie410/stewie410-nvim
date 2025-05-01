@@ -1,13 +1,9 @@
 return {
-  -- {
-  --   "saghen/blink.compat",
-  --   version = "*",
-  --   opts = {},
-  -- },
   {
     "saghen/blink.cmp",
     lazy = false,
     dependencies = {
+      { "saghen/blink.compat", version = "*" },
       "rafamadriz/friendly-snippets",
       "mikavilpas/blink-ripgrep.nvim",
       "folke/snacks.nvim",
@@ -150,6 +146,8 @@ return {
           },
         },
       },
+      -- NOTE handled by noice.nvim, apparently
+      -- signature = { enabled = true },
     },
     opts_extend = { "sources.default" },
   },
