@@ -1,16 +1,5 @@
 return {
   {
-    "Stewie410/lipsum-nvim",
-    dev = true,
-    lazy = false,
-    cmd = {
-      "LipsumWord",
-      "LipsumLine",
-      "LipsumParagraph",
-    },
-    opts = {},
-  },
-  {
     "Stewie410/boiler.nvim",
     dev = true,
     dependencies = {
