@@ -1,4 +1,36 @@
-local util = require("util.lsp.pyright")
+---Get active pyright Clients
+---@return vim.lsp.Client[]
+local function pyright_clients()
+  return vim.lsp.get_clients({
+    bufnr = vim.api.nvim_get_current_buf(),
+    name = "pyright",
+  })
+end
+
+---Organize imports for all active pyright Client(s)
+local function organize_imports()
+  local params = {
+    command = "pyright.organizeImpoprts",
+    arguments = { vim.uri_from_bufnr(0) },
+  }
+
+  vim.iter(pyright_clients()):each(function(client)
+    client:request("workspace/executeCommand", params, nil, 0)
+  end)
+end
+
+local function set_python_path(path)
+  local settings = { python = { pythonPath = path } }
+
+  vim.iter(pyright_clients()):each(function(client)
+    if client.settings then
+      client.settings = vim.tbl_deep_extend("force", client.settings, settings)
+    else
+      client.config.settings = vim.tbl_deep_extend("force", client.config.settings, settings)
+    end
+    client:notify("workspace/didChanceConfiguration", { settings = nil })
+  end)
+end
 
 return {
   cmd = { "pyright-langserver", "--stdio" },
@@ -25,8 +57,8 @@ return {
   on_attach = function()
     local buf_cmd = vim.api.nvim_buf_create_user_command
 
-    buf_cmd(0, "PyrightOrganizeImports", util.organize_imports, { desc = "Organize Imports" })
-    buf_cmd(0, "PyrightSetPythonPath", util.set_python_path, {
+    buf_cmd(0, "PyrightOrganizeImports", organize_imports, { desc = "Organize Imports" })
+    buf_cmd(0, "PyrightSetPythonPath", set_python_path, {
       desc = "Reconfigure pyright with the provided python path",
       nargs = 1,
       complete = "file",
