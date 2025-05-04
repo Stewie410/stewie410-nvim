@@ -1,15 +1,3 @@
-local function get_servers(path)
-  local map = {}
-
-  for name, type in vim.fs.dir(path) do
-    if type == "file" and vim.endswith(name, ".lua") then
-      table.insert(map, name:match("^(.+)%.lua$"))
-    end
-  end
-
-  return map
-end
-
 vim.lsp.config("*", {
   capabilities = require("util.lsp.capabilities").with_blink(),
   root_markers = {
@@ -18,21 +6,50 @@ vim.lsp.config("*", {
   },
 })
 
--- TODO: validate servers installed
-local servers = get_servers(vim.fn.stdpath("config") .. "/lsp")
-vim.lsp.enable(servers)
+local servers = {
+  Windows_NT = {
+    "powershell_es",
+  },
+  Linux = {
+    "awk_ls",
+    "bashls",
+    "jqls",
+  },
+  any = {
+    "texlab",
+    "lemminx",
+    "pyright",
+    "html",
+    "diagnosticls",
+    "jsonls",
+    "yamlls",
+    "taplo",
+    "vimls",
+    "lua_ls",
+    "markdown_oxide",
+    "docker_compose_language_server",
+    "groovyls",
+    "dockerls",
+  },
+}
+
+vim.lsp.enable(servers.any)
+
+local os = vim.uv.os_uname().sysname
+if vim.tbl_contains(vim.tbl_keys(servers), os) then
+  vim.lsp.enable(servers[os])
+end
 
 local ag = vim.api.nvim_create_augroup("my.lsp", {})
 vim.api.nvim_create_autocmd({ "LspAttach" }, {
   group = ag,
   callback = function(args)
-    local bufnr = args.buf
-    local client = assert(vim.lsp.get_client_by_id(args.data.client_id),
-      "Cannot determine LSP Client in buf[" .. bufnr .. "]")
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    assert(client, ("Cannot determine LSP Client in buf[%d]"):format(args.buf))
 
     local map = function(mode, lhs, rhs, desc)
       vim.keymap.set(mode, lhs, rhs, {
-        buffer = bufnr,
+        buffer = args.buf,
         silent = true,
         noremap = true,
         desc = "LSP: " .. desc,
@@ -67,7 +84,7 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
     if not supports.wait and supports.fmt then
       vim.api.nvim_create_autocmd({ "BufWritePre" }, {
         group = ag,
-        buffer = bufnr,
+        buffer = args.buf,
         callback = function()
           vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 1000 })
         end,
