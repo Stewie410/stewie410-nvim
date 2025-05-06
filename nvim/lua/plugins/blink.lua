@@ -96,6 +96,7 @@ return {
             opts = {
               search_paths = {
                 os.getenv("XDG_CONFIG_HOME") .. "/snippets",
+                os.getenv("XDG_CONFIG_HOME") .. "/private/snippets",
                 vim.fn.stdpath("data") .. "/lazy/friendly-snippets",
                 vim.fn.stdpath("config") .. "/snippets",
               },
