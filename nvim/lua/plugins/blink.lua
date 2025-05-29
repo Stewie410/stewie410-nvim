@@ -8,8 +8,7 @@ return {
       "mikavilpas/blink-ripgrep.nvim",
       "folke/snacks.nvim",
       "moyiz/blink-emoji.nvim",
-      "MahanRahmati/blink-nerdfont.nvim",
-      -- TODO: find/write a blink-native alternative
+      -- "MahanRahmati/blink-nerdfont.nvim",
       -- "hrsh7th/cmp-cmdline",
       -- "hrsh7th/cmp-calc",
       -- "kdheepak/cmp-latex-symbols",
@@ -17,7 +16,6 @@ return {
     version = "1.*",
     opts = {
       appearance = {
-        -- NOTE: will be removed in a future release?
         use_nvim_cmp_as_default = true,
         nerd_font_variant = "mono",
         kind_icons = {
@@ -64,7 +62,6 @@ return {
       keymap = {
         preset = "default",
         ["<C-y>"] = {},
-        -- https://cmp.saghen.dev/configuration/keymap.html#super-tab
         ["<Tab>"] = {
           function(cmp)
             if cmp.snippet_active() then
@@ -87,7 +84,7 @@ return {
           "buffer",
           "ripgrep",
           "emoji",
-          "nerdfont",
+          -- "nerdfont",
           "cmdline",
         },
         providers = {
@@ -121,12 +118,12 @@ return {
             score_offset = 15,
             opts = { insert = true },
           },
-          nerdfont = {
-            name = "Nerd Fonts",
-            module = "blink-nerdfont",
-            score_offset = 20,
-            opts = { insert = true },
-          },
+          -- nerdfont = {
+          --   name = "Nerd Fonts",
+          --   module = "blink-nerdfont",
+          --   score_offset = 20,
+          --   opts = { insert = true },
+          -- },
           buffer = {
             score_offset = 0,
           },
@@ -141,14 +138,13 @@ return {
         },
         completion = {
           menu = {
+            ---@diagnostic disable-next-line: unused-local
             auto_show = function(ctx)
               return vim.fn.getcmdtype() == ":"
             end,
           },
         },
       },
-      -- NOTE handled by noice.nvim, apparently
-      -- signature = { enabled = true },
     },
     opts_extend = { "sources.default" },
   },
