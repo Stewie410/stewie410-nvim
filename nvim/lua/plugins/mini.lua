@@ -77,4 +77,10 @@ return {
       })
     end,
   },
+  {
+    "echasnovski/mini.statusline",
+    version = "*",
+    lazy = false,
+    opts = {},
+  },
 }
