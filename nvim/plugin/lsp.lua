@@ -61,14 +61,13 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
       code_action = require("tiny-code-action")
     end
 
-    -- TODO: Rethink my mappings...
-    map("n", "grd", vim.lsp.buf.definition, "Definition")
-    map("n", "grr", vim.lsp.buf.references, "References")
-    map("n", "gri", vim.lsp.buf.implementation, "Implementation")
-    map("n", "grD", vim.lsp.buf.declaration, "Declaration")
-    map("n", "<leader>td", vim.lsp.buf.type_definition, "Type Definition")
-    map("n", "<leader>ds", vim.lsp.buf.document_symbol, "Document Symbol")
-    map("n", "<leader>ws", vim.lsp.buf.workspace_symbol, "Workspace Symbol")
+    map("n", "<leader>gd", vim.lsp.buf.definition, "Definition")
+    map("n", "<leader>gr", vim.lsp.buf.references, "References")
+    map("n", "<leader>gi", vim.lsp.buf.implementation, "Implementation")
+    map("n", "<leader>gD", vim.lsp.buf.declaration, "Declaration")
+    map("n", "<leader>gt", vim.lsp.buf.type_definition, "Type Definition")
+    map("n", "<leader>gs", vim.lsp.buf.document_symbol, "Document Symbol")
+    map("n", "<leader>gw", vim.lsp.buf.workspace_symbol, "Workspace Symbol")
     map("n", "<leader>ca", code_action.code_action, "Code Action")
     map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
     map("n", "K", vim.lsp.buf.hover, "Hover Documentation")
