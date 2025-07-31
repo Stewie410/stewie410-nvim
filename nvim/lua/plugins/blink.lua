@@ -7,11 +7,6 @@ return {
       "rafamadriz/friendly-snippets",
       "mikavilpas/blink-ripgrep.nvim",
       "folke/snacks.nvim",
-      "moyiz/blink-emoji.nvim",
-      -- "MahanRahmati/blink-nerdfont.nvim",
-      -- "hrsh7th/cmp-cmdline",
-      -- "hrsh7th/cmp-calc",
-      -- "kdheepak/cmp-latex-symbols",
     },
     version = "1.*",
     opts = {
@@ -83,8 +78,6 @@ return {
           "omni",
           "buffer",
           "ripgrep",
-          "emoji",
-          -- "nerdfont",
           "cmdline",
         },
         providers = {
@@ -112,25 +105,13 @@ return {
               search_casing = "--smart-case",
             },
           },
-          emoji = {
-            name = "Emoji",
-            module = "blink-emoji",
-            score_offset = 15,
-            opts = { insert = true },
-          },
-          -- nerdfont = {
-          --   name = "Nerd Fonts",
-          --   module = "blink-nerdfont",
-          --   score_offset = 20,
-          --   opts = { insert = true },
-          -- },
           buffer = {
             score_offset = 0,
           },
         },
       },
       -- TODO:return to 'prefer_rust' at some point
-      fuzzy = { implementation = "lua" },
+      fuzzy = { implementation = "prefer_rust" },
       cmdline = {
         keymap = {
           preset = "cmdline",
