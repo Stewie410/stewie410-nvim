@@ -102,7 +102,11 @@ return {
             module = "blink-ripgrep",
             opts = {
               project_root_marker = { ".git", ".svn" },
-              search_casing = "--smart-case",
+              backend = {
+                ripgrep = {
+                  search_casing = "--smart-case",
+                },
+              },
             },
           },
           buffer = {
