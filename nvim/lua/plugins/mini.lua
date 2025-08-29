@@ -1,7 +1,7 @@
 return {
   -- text editing
   {
-    "echasnovski/mini.ai",
+    "nvim-mini/mini.ai",
     version = "*",
     lazy = false,
     opts = {
@@ -9,31 +9,31 @@ return {
     },
   },
   {
-    "echasnovski/mini.comment",
+    "nvim-mini/mini.comment",
     version = "*",
     event = "VeryLazy",
     opts = {},
   },
   {
-    "echasnovski/mini.operators",
+    "nvim-mini/mini.operators",
     version = "*",
     event = "VeryLazy",
     opts = {},
   },
   {
-    "echasnovski/mini.pairs",
+    "nvim-mini/mini.pairs",
     version = "*",
     lazy = false,
     opts = {},
   },
   {
-    "echasnovski/mini.splitjoin",
+    "nvim-mini/mini.splitjoin",
     version = "*",
     event = "VeryLazy",
     opts = {},
   },
   {
-    "echasnovski/mini.surround",
+    "nvim-mini/mini.surround",
     version = "*",
     lazy = false,
     opts = {},
@@ -41,13 +41,13 @@ return {
 
   -- general workflow
   {
-    "echasnovski/mini.bracketed",
+    "nvim-mini/mini.bracketed",
     version = "*",
     lazy = false,
     opts = {},
   },
   {
-    "echasnovski/mini.jump",
+    "nvim-mini/mini.jump",
     version = "*",
     lazy = false,
     opts = {},
@@ -55,13 +55,13 @@ return {
 
   -- appearance
   {
-    "echasnovski/mini.cursorword",
+    "nvim-mini/mini.cursorword",
     version = "*",
     event = "VeryLazy",
     opts = {},
   },
   {
-    "echasnovski/mini.hipatterns",
+    "nvim-mini/mini.hipatterns",
     version = "*",
     event = "VeryLazy",
     config = function()
@@ -78,7 +78,7 @@ return {
     end,
   },
   {
-    "echasnovski/mini.statusline",
+    "nvim-mini/mini.statusline",
     version = "*",
     lazy = false,
     opts = {},
