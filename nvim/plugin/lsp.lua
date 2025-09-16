@@ -26,6 +26,7 @@ local servers = {
     "taplo",
     "vimls",
     "lua_ls",
+    -- "emmylua_ls",
     "markdown_oxide",
     "docker_compose_language_server",
     "groovyls",
