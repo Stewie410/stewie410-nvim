@@ -5,8 +5,10 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
   group = group,
   callback = function()
     local tab = vim.api.nvim_get_current_tabpage()
+    local ch = vim.o.cmdheight
     vim.cmd("tabdo wincmd -")
     vim.api.nvim_set_current_tabpage(tab)
+    vim.o.cmdheight = ch
   end,
   desc = "Auto-resize splits when terminal window size changes",
 })
