@@ -4,14 +4,24 @@ return {
     "nvim-mini/mini.ai",
     version = "*",
     lazy = false,
-    opts = {
-      n_lines = 500,
-    },
+    opts = {},
+  },
+  {
+    "nvim-mini/mini.align",
+    version = "*",
+    lazy = false,
+    opts = {},
   },
   {
     "nvim-mini/mini.comment",
     version = "*",
-    event = "VeryLazy",
+    lazy = false,
+    opts = {},
+  },
+  {
+    "nvim-mini/mini.move",
+    version = "*",
+    lazy = false,
     opts = {},
   },
   {
