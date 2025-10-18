@@ -15,6 +15,7 @@ return {
       },
       indent = { enable = true },
       ensure_installed = "all",
+      ignore_install = { "ipkg" }, -- broken or uneeded
       auto_install = true,
     },
     config = function(_, opts)
