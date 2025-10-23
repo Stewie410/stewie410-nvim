@@ -1,5 +1,7 @@
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  pattern = { "*.cron" },
+  pattern = {
+    "*.cron",
+  },
   callback = function()
     vim.opt_local.filetype = "crontab"
     vim.opt_local.syntax = "crontab"
