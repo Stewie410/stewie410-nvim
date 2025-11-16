@@ -9,5 +9,5 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     vim.opt_local.filetype = "dosini"
     vim.opt_local.syntax = "dosini"
   end,
-  description = "dosini-like syntax"
+  desc = "dosini-like syntax"
 })
