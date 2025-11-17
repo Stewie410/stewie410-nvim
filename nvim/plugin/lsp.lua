@@ -90,5 +90,10 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
         end,
       })
     end
+
+    -- TODO:  find a more sane way of doing this
+    vim.api.nvim_buf_create_user_command(args.buf, "LspLog", function()
+      vim.cmd.split(vim.lsp.log.get_filename())
+    end, { desc = "Open lsp.log in a :split" })
   end,
 })
