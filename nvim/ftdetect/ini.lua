@@ -4,6 +4,8 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     "*stunnel.conf",
     "*my.cnf",
     ".dbpwd",
+    "*/fail2ban/*.conf",
+    "*/fail2ban/*.local",
   },
   callback = function()
     vim.opt_local.filetype = "dosini"
