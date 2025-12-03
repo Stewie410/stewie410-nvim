@@ -13,12 +13,6 @@ return {
     opts = {},
   },
   {
-    "nvim-mini/mini.comment",
-    version = "*",
-    lazy = false,
-    opts = {},
-  },
-  {
     "nvim-mini/mini.move",
     version = "*",
     lazy = false,
