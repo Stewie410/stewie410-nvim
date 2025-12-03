@@ -1,8 +1,14 @@
+-- WARN: Will lag *hard* for ~/*.sh
 return {
   cmd = { "bash-language-server", "start" },
   settings = {
     bashIde = {
-      globPattern = vim.env.GLOB_PATTERN or "*@(.sh|.inc|.bash|.command)",
+      globPattern = "*@(.sh|.inc|.bash|.command)",
+      shfmt = {
+        binaryNextLine = true,
+        caseIndent = true,
+        funcNextLine = false,
+      },
     },
   },
   filetypes = { "bash", "sh" },
