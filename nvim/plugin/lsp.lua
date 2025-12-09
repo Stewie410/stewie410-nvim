@@ -8,7 +8,6 @@ vim.lsp.config("*", {
 })
 
 vim.lsp.enable({
-  -- "powershell_es",
   "awk_ls",
   "bashls",
   "jqls",
