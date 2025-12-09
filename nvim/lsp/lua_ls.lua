@@ -1,5 +1,11 @@
+local cmd = "lua-language-server"
+if not vim.fn.executable(cmd) then
+  return {}
+end
+
+---@type vim.lsp.Config
 return {
-  cmd = { "lua-language-server" },
+  cmd = { cmd },
   capabilities = require("util.lsp.capabilities").with_blink({
     textDocument = {
       semanticTokensProvider = nil,

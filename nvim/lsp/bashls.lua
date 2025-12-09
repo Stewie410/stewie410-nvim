@@ -1,6 +1,11 @@
--- WARN: Will lag *hard* for ~/*.sh
+local cmd = "bash-language-server"
+if not vim.fn.executable(cmd) then
+  return {}
+end
+
+---@type vim.lsp.Config
 return {
-  cmd = { "bash-language-server", "start" },
+  cmd = { cmd, "start" },
   settings = {
     bashIde = {
       globPattern = "*@(.sh|.inc|.bash|.command)",
@@ -11,6 +16,12 @@ return {
       },
     },
   },
-  filetypes = { "bash", "sh" },
-  root_markers = { ".git", ".svn" },
+  filetypes = {
+    "bash",
+    "sh",
+  },
+  root_markers = {
+    ".git",
+    ".svn",
+  },
 }

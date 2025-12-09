@@ -1,5 +1,11 @@
+local cmd = "vscode-json-language-server"
+if not vim.fn.executable(cmd) then
+  return {}
+end
+
+---@type vim.lsp.Config
 return {
-  cmd = { "vscode-json-language-server", "--stdio" },
+  cmd = { cmd, "--stdio" },
   filetypes = { "json", "jsonc" },
   init_options = { provideFormatter = true },
   root_markers = { ".git", ".svn" },

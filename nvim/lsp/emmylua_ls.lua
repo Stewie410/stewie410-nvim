@@ -1,7 +1,13 @@
 ---@module "util.lsp.capabilities"
 
+local cmd = "emmylua_ls"
+if not vim.fn.executable(cmd) then
+  return {}
+end
+
+---@type vim.lsp.Config
 return {
-  cmd = { "emmylua_ls" },
+  cmd = { cmd },
   capabilities = require("util.lsp.capabilities").with_blink({
     textDocument = {
       semanticTokensProvider = nil,

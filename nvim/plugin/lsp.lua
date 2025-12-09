@@ -7,42 +7,29 @@ vim.lsp.config("*", {
   },
 })
 
-local servers = {
-  Windows_NT = {
-    "powershell_es",
-  },
-  Linux = {
-    "awk_ls",
-    "bashls",
-    "jqls",
-  },
-  any = {
-    "texlab",
-    "lemminx",
-    "pyright",
-    "html",
-    "diagnosticls",
-    "jsonls",
-    "yamlls",
-    "taplo",
-    "vimls",
-    "lua_ls",
-    -- "emmylua_ls",
-    "markdown_oxide",
-    "docker_compose_language_server",
-    "groovyls",
-    "dockerls",
-    "gopls",
-    "golangci_lint_ls",
-  },
-}
-
-vim.lsp.enable(servers.any)
-
-local os = vim.uv.os_uname().sysname
-if vim.tbl_contains(vim.tbl_keys(servers), os) then
-  vim.lsp.enable(servers[os])
-end
+vim.lsp.enable({
+  -- "powershell_es",
+  "awk_ls",
+  "bashls",
+  "jqls",
+  "texlab",
+  "lemminx",
+  "pyright",
+  "html",
+  "diagnosticls",
+  "jsonls",
+  "yamlls",
+  "taplo",
+  "vimls",
+  "lua_ls",
+  -- "emmylua_ls",
+  "markdown_oxide",
+  "docker_compose_language_server",
+  "groovyls",
+  "dockerls",
+  "gopls",
+  "golangci_lint_ls",
+})
 
 local ag = vim.api.nvim_create_augroup("my.lsp", {})
 vim.api.nvim_create_autocmd({ "LspAttach" }, {

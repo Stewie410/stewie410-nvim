@@ -1,3 +1,8 @@
+local cmd = "pyright-langserver"
+if not vim.fn.executable(cmd) then
+  return {}
+end
+
 ---Get active pyright Clients
 ---@return vim.lsp.Client[]
 local function pyright_clients()
@@ -32,8 +37,9 @@ local function set_python_path(path)
   end)
 end
 
+---@type vim.lsp.Config
 return {
-  cmd = { "pyright-langserver", "--stdio" },
+  cmd = { cmd, "--stdio" },
   filetypes = { "python" },
   root_markers = {
     "pyproject.toml",

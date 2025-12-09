@@ -1,5 +1,14 @@
+local cmd = "diagnostic-languageserver"
+if not vim.fn.executable(cmd) then
+  return {}
+end
+
+---@type vim.lsp.Config
 return {
-  cmd = { "diagnostic-languageserver", "--stdio" },
-  root_markers = { ".git", ".svn" },
+  cmd = { cmd, "--stdio" },
   filetypes = {},
+  root_markers = {
+    ".git",
+    ".svn",
+  },
 }

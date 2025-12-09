@@ -1,5 +1,11 @@
+local cmd = "docker-langserver"
+if not vim.fn.executable(cmd) then
+  return {}
+end
+
+---@type vim.lsp.Config
 return {
-  cmd = { "docker-langserver", "--stdio" },
+  cmd = { cmd, "--stdio" },
   filetypes = { "dockerfile" },
   root_markers = { "Dockerfile" },
 }

@@ -1,5 +1,11 @@
+local cmd = "golangci-ling-langserver"
+if not vim.fn.executable(cmd) then
+  return {}
+end
+
+---@type vim.lsp.Config
 return {
-  cmd = { "golangci-ling-langserver" },
+  cmd = { cmd },
   filetypes = {
     "go",
     "gomod",

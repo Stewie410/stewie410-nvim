@@ -1,7 +1,12 @@
 local jar = vim.fn.expand("~/.local/share/lsp/groovy-ls/groovy-language-server-all.jar")
+local cmd = "java"
+if not vim.fn.executable(cmd) or not vim.uv.fs_stat(jar) then
+  return {}
+end
 
+---@type vim.lsp.Config
 return {
-  cmd = { "java", "-jar", jar },
+  cmd = { cmd, "-jar", jar },
   filetypes = { "groovy" },
   root_markers = {
     ".jenkinsfile",

@@ -1,3 +1,8 @@
+local cmd = "gopls"
+if not vim.fn.executable("go") or not vim.fn.executable(cmd) then
+  return {}
+end
+
 local M = {
   path = {
     stdlib = nil,
@@ -13,8 +18,8 @@ local M = {
 ---Locate go directory by go environment variable
 ---@param opts godir_custom_args
 function M.find_godir(opts)
-  local cmd = { "go", "env", opts.env }
-  vim.system(cmd, { text = true }, function(out)
+  local command = { "go", "env", opts.env }
+  vim.system(command, { text = true }, function(out)
     local res = vim.trim(out.stdout or "")
     if out.code == 0 and res ~= "" then
       if opts.subdir and opts.subdir ~= "" then
@@ -24,7 +29,7 @@ function M.find_godir(opts)
     else
       local msg = "[gopls] identify %s dir cmd failed with code %d: %s\n%s"
       vim.schedule(function()
-        vim.notify(msg:format(opts.env, out.code, vim.inspect(cmd), out.stderr))
+        vim.notify(msg:format(opts.env, out.code, vim.inspect(command), out.stderr))
       end)
       opts.callback(nil)
     end
@@ -90,7 +95,7 @@ function M.find_root(bufnr, markers)
 end
 
 return {
-  cmd = { "gopls" },
+  cmd = { cmd },
   filetypes = {
     "go",
     "gomod",

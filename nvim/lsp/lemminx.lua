@@ -1,5 +1,11 @@
+local cmd = "lemminx"
+if not vim.fn.executable(cmd) then
+  return {}
+end
+
+---@type vim.lsp.Config
 return {
-  cmd = { "lemminx" },
+  cmd = { cmd },
   filetypes = {
     "xml",
     "xsd",
@@ -7,5 +13,8 @@ return {
     "xslt",
     "svg",
   },
-  root_markers = { ".git", ".svn" },
+  root_markers = {
+    ".git",
+    ".svn",
+  },
 }

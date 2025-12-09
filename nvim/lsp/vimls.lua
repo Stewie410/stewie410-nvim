@@ -1,5 +1,11 @@
+local cmd = "vim-language-server"
+if not vim.fn.executable(cmd) then
+  return {}
+end
+
+---@type vim.lsp.Config
 return {
-  cmd = { "vim-language-server", "--stdio" },
+  cmd = { cmd, "--stdio" },
   filetypes = { "vim" },
   root_markers = {
     ".vimrc",

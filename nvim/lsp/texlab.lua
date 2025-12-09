@@ -1,3 +1,8 @@
+local cmd = "texlab"
+if not vim.fn.executable(cmd) then
+  return {}
+end
+
 ---Get client positional params
 ---@param client vim.lsp.Client
 ---@return lsp.TextDocumentPositionParams
@@ -147,8 +152,9 @@ local function buf_change_env(client, bufnr)
   }, { bufnr = bufnr })
 end
 
+---@type vim.lsp.Config
 return {
-  cmd = { "texlab" },
+  cmd = { cmd },
   filetypes = {
     "tex",
     "plaintex",
