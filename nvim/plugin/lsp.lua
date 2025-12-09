@@ -32,6 +32,8 @@ local servers = {
     "docker_compose_language_server",
     "groovyls",
     "dockerls",
+    "gopls",
+    "golangci_lint_ls",
   },
 }
 
