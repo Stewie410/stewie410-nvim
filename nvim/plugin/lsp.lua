@@ -28,6 +28,7 @@ vim.lsp.enable({
   "dockerls",
   "gopls",
   "golangci_lint_ls",
+  "systemd_lsp",
 })
 
 local ag = vim.api.nvim_create_augroup("my.lsp", {})
