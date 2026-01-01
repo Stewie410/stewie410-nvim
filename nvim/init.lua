@@ -19,7 +19,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({ import = "plugins" }, {
   dev = {
-    path = "~/git/Stewie410/nvim/plugins",
+    path = "~/git/dev/plugins/nvim",
     fallback = true,
   },
   defaults = {
