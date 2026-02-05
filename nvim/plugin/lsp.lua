@@ -29,6 +29,7 @@ vim.lsp.enable({
   "gopls",
   "golangci_lint_ls",
   "systemd_lsp",
+  "ls_lsp",
 })
 
 local ag = vim.api.nvim_create_augroup("my.lsp", {})
