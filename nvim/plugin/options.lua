@@ -61,6 +61,7 @@ o.listchars = o.listchars:append({
   precedes = "«",
   nbsp = "░",
 })
+o.modeline = true
 
 g.gitblame_enabled = 0
 g.have_nerd_font = true
