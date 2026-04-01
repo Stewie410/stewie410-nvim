@@ -1,18 +1,5 @@
 vim.pack.add({
-  "https://github.com/nvim-mini/mini.ai",
-  "https://github.com/nvim-mini/mini.align",
-  "https://github.com/nvim-mini/mini.move",
-  "https://github.com/nvim-mini/mini.operators",
-  "https://github.com/nvim-mini/mini.pairs",
-  "https://github.com/nvim-mini/mini.splitjoin",
-  "https://github.com/nvim-mini/mini.surround",
-
-  "https://github.com/nvim-mini/mini.bracketed",
-  "https://github.com/nvim-mini/mini.jump",
-
-  "https://github.com/nvim-mini/mini.cursorword",
-  "https://github.com/nvim-mini/mini.hipatterns",
-  "https://github.com/nvim-mini/mini.statusline",
+  "https://github.com/nvim-mini/mini.nvim",
 })
 
 -- text editing
