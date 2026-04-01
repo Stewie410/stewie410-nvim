@@ -5,6 +5,8 @@ local tabstop = 4
 local scroll_off = 10
 local cmd_height = 1
 
+local leader = " "
+
 o.encoding = "UTF-8"
 o.number = true
 -- o.ruler = true
@@ -63,6 +65,8 @@ o.listchars = o.listchars:append({
 })
 o.modeline = true
 
+g.mapleader = leader
+g.maplocalleader = leader
 g.gitblame_enabled = 0
 g.have_nerd_font = true
 g.loaded_netrw = 1
