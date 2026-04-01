@@ -1,14 +1,6 @@
-return {
-  {
-    "tpope/vim-fugitive",
-    cmd = {
-      "Git",
-      "G",
-    },
-  },
-  {
-    "lewis6991/gitsigns.nvim",
-    event = "VeryLazy",
-    opts = {},
-  },
-}
+vim.pack.add({
+  "https://github.com/tpope/vim-fugitive",
+  "https://github.com/lewis6991/gitsigns.nvim",
+})
+
+require("gitsigns").setup({})
