@@ -12,14 +12,6 @@ require("boiler").setup({
   },
 })
 
-if not vim.g.vim_pack_init.boiler == 1 then
-  vim.keymap.set("n", "<leader>bb", function()
-    require("boiler").pick(vim.bo.filetype)
-  end, { desc = "Boiler: Select by Filetype" })
-
-  vim.keymap.set("n", "<leader>ba", function()
-    require("boiler").pick()
-  end, { desc = "Boiler: Select from Any" })
-
-  vim.g.vim_pack_init.boiler = 1
-end
+vim.keymap.set("n", "<leader>bb", function() require("boiler").pick(vim.bo.filetype) end,
+  { desc = "Boiler: Select by FT" })
+vim.keymap.set("n", "<leader>ba", function() require("boiler").pick() end, { desc = "Boiler: Select from Any" })

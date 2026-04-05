@@ -1,3 +1,7 @@
+vim.pack.add({
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter", branch = "master" },
+})
+
 vim.api.nvim_create_autocmd({ "PackChanged" }, {
   group = vim.api.nvim_create_augroup("VimPackTSChanged", { clear = true }),
   callback = function(ev)
@@ -9,10 +13,6 @@ vim.api.nvim_create_autocmd({ "PackChanged" }, {
     end
   end,
   desc = "Update TS Parsers"
-})
-
-vim.pack.add({
-  { src = "https://github.com/nvim-treesitter/nvim-treesitter", branch = "master" },
 })
 
 if not vim.g.vim_pack_init.nvim_treesitter == 1 then
