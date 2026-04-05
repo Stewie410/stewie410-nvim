@@ -1,27 +1,32 @@
-return {
-  {
-    "nvim-treesitter/nvim-treesitter",
-    lazy = false,
-    build = ":TSUpdate",
-    branch = "master",
-    init = function(plugin)
-      -- https://github.com/LazyVim/LazyVim/blob/12818a6cb499456f4903c5d8e68af43753ebc869/lua/lazyvim/plugins/treesitter.lua#L22
-      require("lazy.core.loader").add_to_rtp(plugin)
-      require("nvim-treesitter.query_predicates")
-    end,
-    opts = {
-      highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-      },
-      indent = { enable = true },
-      ensure_installed = "all",
-      ignore_install = { "ipkg" }, -- broken or uneeded
-      auto_install = true,
-    },
-    config = function(_, opts)
-      local configs = require("nvim-treesitter.configs")
-      configs.setup(opts)
-    end,
+vim.api.nvim_create_autocmd({ "PackChanged" }, {
+  group = vim.api.nvim_create_augroup("VimPackTSChanged", { clear = true }),
+  callback = function(ev)
+    if ev.data.spec.name == "nvim-treesitter" and ev.data.kind == "update" then
+      if not ev.data.active then
+        vim.cmd.packadd("nvim-treesitter")
+      end
+      vim.cmd("TSUpdate")
+    end
+  end,
+  desc = "Update TS Parsers"
+})
+
+vim.pack.add({
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter", branch = "master" },
+})
+
+require("nvim-treesitter.query_predicates")
+
+---@diagnostic disable-next-line: missing-fields
+require("nvim-treesitter.configs").setup({
+  ensure_installed = "all",
+  auto_install = true,
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false,
   },
-}
+  indent = {
+    enable = true,
+  },
+  ignore_install = { "ipkg" },
+})
