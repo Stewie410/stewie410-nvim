@@ -15,7 +15,10 @@ vim.pack.add({
   { src = "https://github.com/nvim-treesitter/nvim-treesitter", branch = "master" },
 })
 
-require("nvim-treesitter.query_predicates")
+if not vim.g.vim_pack_init.nvim_treesitter == 1 then
+  require("nvim-treesitter.query_predicates")
+  vim.g.pack_init.nvim_treesitter = 1
+end
 
 ---@diagnostic disable-next-line: missing-fields
 require("nvim-treesitter.configs").setup({
