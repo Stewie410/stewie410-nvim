@@ -48,11 +48,6 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
       })
     end
 
-    local code_action = vim.lsp.buf
-    if pcall(require, "tiny-code-action") then
-      code_action = require("tiny-code-action")
-    end
-
     map("n", "<leader>gd", vim.lsp.buf.definition, "Definition")
     map("n", "<leader>gr", vim.lsp.buf.references, "References")
     map("n", "<leader>gi", vim.lsp.buf.implementation, "Implementation")
@@ -60,7 +55,7 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
     map("n", "<leader>gt", vim.lsp.buf.type_definition, "Type Definition")
     map("n", "<leader>gs", vim.lsp.buf.document_symbol, "Document Symbol")
     map("n", "<leader>gw", vim.lsp.buf.workspace_symbol, "Workspace Symbol")
-    map("n", "<leader>ca", code_action.code_action, "Code Action")
+    map("n", "<leader>ca", vim.lsp.buf.code_action, "Code Action")
     map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
     map("n", "K", vim.lsp.buf.hover, "Hover Documentation")
 
