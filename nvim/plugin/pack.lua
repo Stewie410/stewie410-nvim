@@ -1,9 +1,4 @@
 ---@diagnostic disable: missing-fields
-local ag = {
-  lazy = vim.api.nvim_create_augroup("VimPackLazy", { clear = true }),
-  build = vim.api.nvim_create_augroup("VimPackBuild", { clear = true }),
-  init = vim.api.nvim_create_augroup("VimPackInit", { clear = true }),
-}
 
 -- plugins {{{
 vim.pack.add({
@@ -221,7 +216,6 @@ require("lazydev").setup({
 
 -- nvim-treesitter {{{
 vim.api.nvim_create_autocmd({ "PackChanged" }, {
-  group = ag.build,
   callback = function(ev)
     local name, kind = ev.data.name, ev.data.kind
     if name == "nvim-treesitter" and kind == "update" then
@@ -296,7 +290,6 @@ require("snacks").setup({
 })
 
 vim.api.nvim_create_autocmd({ "User" }, {
-  group = ag.init,
   callback = function()
     Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>uc")
     Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
@@ -369,7 +362,6 @@ vim.keymap.set("n", "<leader>dn", function() Snacks.notifier.hide() end, { desc 
 
 -- tiny-code-action.nvim {{{
 vim.api.nvim_create_autocmd({ "LspAttach" }, {
-  group = ag.lazy,
   callback = function()
     require("tiny-code-action").setup({
       picker = { "snacks" },
@@ -386,7 +378,6 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
 
 -- todo-comments {{{
 vim.api.nvim_create_autocmd({ "VimEnter" }, {
-  group = ag.lazy,
   callback = function()
     require("todo-comments").setup({ signs = false })
   end,
