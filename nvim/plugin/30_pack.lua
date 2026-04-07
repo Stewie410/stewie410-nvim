@@ -8,9 +8,9 @@ vim.pack.add({
   "https://github.com/nvim-mini/mini.icons",
   "https://github.com/nvim-tree/nvim-web-devicons",
 
-  { src = "https://github.com/saghen/blink.cmp",    version = "1.*" },
-  { src = "https://github.com/saghen/blink.compat", version = "2.*" },
-  "https://github.com/rafamdariz/friendly-snippets",
+  { src = "https://github.com/saghen/blink.cmp",    branch = "v1" },
+  { src = "https://github.com/saghen/blink.compat", branch = "v2" },
+  "https://github.com/rafamadriz/friendly-snippets",
   "https://github.com/mikavilpas/blink-ripgrep.nvim",
 
   "https://github.com/alker0/chezmoi.vim",
@@ -24,7 +24,7 @@ vim.pack.add({
   "https://github.com/nvim-neotest/neotest",
   "https://github.com/nvim-neotest/nvim-nio",
   -- "https://github.com/antoinemadec/FixCursorHold.nvim",
-  "https://github.com/nvim-treesitter/nvim-treesitter",
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter", branch = "main" },
   "https://github.com/Stewie410/boiler.nvim",
   "https://github.com/rachartier/tiny-code-action.nvim",
   "https://github.com/folke/todo-comments.nvim",
@@ -44,6 +44,16 @@ vim.cmd.colorscheme("ayu")
 -- }}}
 
 -- blink.cmp {{{
+vim.api.nvim_create_autocmd({ "PackChangedPre" }, {
+  callback = function(ev)
+    local name, kind = ev.data.name, ev.data.kind
+    if name == "blink.cmp" and (kind == "install" or kind == "update") then
+      vim.system({ "cargo", "build", "--release" }, { cwd = ev.data.path })
+    end
+  end,
+  desc = "Build blink.cmp",
+})
+
 require("blink.cmp").setup({
   appearance = {
     use_nvim_cmp_as_default = true,
@@ -149,7 +159,10 @@ require("blink.cmp").setup({
       },
     },
   },
-  fuzzy = { implementation = "prefer_rust" },
+  fuzzy = {
+    -- TODO: fix fuzzy_rust?
+    implementation = "lua",
+  },
   cmdline = {
     keymap = {
       preset = "cmdline",
@@ -226,20 +239,6 @@ vim.api.nvim_create_autocmd({ "PackChanged" }, {
     end
   end,
   desc = "Auto-Update TS Parsers",
-})
-
-require("nvim-treesitter.query_predicates")
-require("nvim-treesitter.configs").setup({
-  ensure_installed = "all",
-  auto_install = true,
-  highlight = {
-    enabled = true,
-    additional_vim_regex_highlighting = false,
-  },
-  indent = {
-    enabled = true,
-  },
-  ignore_install = { "ipkg" },
 })
 -- }}}
 
