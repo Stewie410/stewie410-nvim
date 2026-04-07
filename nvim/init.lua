@@ -137,3 +137,24 @@ vim.api.nvim_create_autocmd({ "BufReadPost" }, {
   desc = "Auto-jump back to last know cursor position",
 })
 -- }}}
+
+-- q always quits {{{
+vim.api.nvim_create_autocmd({ "FileType", "BufEnter" }, {
+  pattern = {
+    "help",
+    "startuptime",
+    "qf",
+    "lspinfo",
+    "man",
+    "checkhealth",
+    "neotest-output-panel",
+    "neotest-summary",
+    "lazy",
+    "mason",
+  },
+  callback = function()
+    vim.keymap.set("n", "q", ":close<CR>", { silent = true, buffer = true, desc = "Quit" })
+    vim.keymap.set("n", "<Esc>", ":close<CR>", { silent = true, buffer = true, desc = "Quit" })
+  end,
+})
+-- }}}
