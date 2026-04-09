@@ -240,7 +240,7 @@ vim.api.nvim_create_autocmd({ "PackChanged" }, {
   desc = "Auto-Update TS Parsers",
 })
 
-require("nvim-treesitter").install({
+local ts_langs = {
   "bash",
   "comment",
   "csv",
@@ -287,6 +287,25 @@ require("nvim-treesitter").install({
   "xml",
   "yaml",
   "zsh",
+}
+
+require("nvim-treesitter").install(ts_langs)
+
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = ts_langs,
+  callback = function()
+    -- highlight
+    vim.treesitter.start()
+
+    -- fold
+    vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+    vim.wo[0][0].foldmethod = "expr"
+
+    -- indent
+    -- WARN: experimental
+    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+  end,
+  desc = "nvim-treesitter",
 })
 -- }}}
 
