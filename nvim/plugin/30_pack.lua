@@ -1,5 +1,3 @@
----@diagnostic disable: missing-fields
-
 -- plugins {{{
 vim.pack.add({
   "https://github.com/nvim-lua/plenary.nvim",
@@ -23,7 +21,6 @@ vim.pack.add({
   "https://github.com/gonstoll/wezterm-types",
   "https://github.com/nvim-neotest/neotest",
   "https://github.com/nvim-neotest/nvim-nio",
-  -- "https://github.com/antoinemadec/FixCursorHold.nvim",
   { src = "https://github.com/nvim-treesitter/nvim-treesitter", branch = "main" },
   "https://github.com/Stewie410/boiler.nvim",
   "https://github.com/rachartier/tiny-code-action.nvim",
@@ -215,10 +212,12 @@ require("gitsigns").setup()
 -- }}}
 
 -- neotest {{{
+---@diagnostic disable-next-line: missing-fields
 require("neotest").setup({})
 -- }}}
 
 -- lazydev {{{
+---@diagnostic disable-next-line: missing-fields
 require("lazydev").setup({
   library = {
     { path = "${3rd}/luv/library", words = { "vim%.uv" } },
@@ -239,6 +238,55 @@ vim.api.nvim_create_autocmd({ "PackChanged" }, {
     end
   end,
   desc = "Auto-Update TS Parsers",
+})
+
+require("nvim-treesitter").install({
+  "bash",
+  "comment",
+  "csv",
+  "diff",
+  "dockerfile",
+  "editorconfig",
+  "git_config",
+  "git_rebase",
+  "gitattributes",
+  "gitcommit",
+  "gitignore",
+  "go",
+  "gomod",
+  "gosum",
+  "gotmpl",
+  "groovy",
+  "ini",
+  "java",
+  "javadoc",
+  "javascript",
+  "jq",
+  "jsdoc",
+  "json",
+  "lua",
+  "luadoc",
+  "luap",
+  "luau",
+  "make",
+  "markdown",
+  "markdown_inline",
+  "powershell",
+  "printf",
+  "promql",
+  "properties",
+  "python",
+  "regex",
+  "ssh_config",
+  "tmux",
+  "todotxt",
+  "toml",
+  "tsv",
+  "vim",
+  "vimdoc",
+  "xml",
+  "yaml",
+  "zsh",
 })
 -- }}}
 
@@ -390,6 +438,7 @@ require("ts-comments").setup()
 
 -- which-key.nvim {{{
 local which = require("which-key")
+---@diagnostic disable-next-line: missing-fields
 which.setup({
   preset = "helix",
   spec = {
