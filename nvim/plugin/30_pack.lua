@@ -24,7 +24,6 @@ vim.pack.add({
   { src = "https://github.com/nvim-treesitter/nvim-treesitter", branch = "main" },
   "https://github.com/Stewie410/boiler.nvim",
   "https://github.com/rachartier/tiny-code-action.nvim",
-  "https://github.com/folke/todo-comments.nvim",
   "https://github.com/folke/ts-comments.nvim",
 
   "https://github.com/tpope/vim-fugitive",
@@ -439,15 +438,6 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
 
     vim.keymap.set("n", "<leader>ca", tca.code_action, { desc = "LSP: Code Action", remap = true })
   end,
-})
--- }}}
-
--- todo-comments {{{
-vim.api.nvim_create_autocmd({ "VimEnter" }, {
-  callback = function()
-    require("todo-comments").setup({ signs = false })
-  end,
-  desc = "todo-comments.nvim: lazy load",
 })
 -- }}}
 
