@@ -214,7 +214,7 @@ require("gitsigns").setup()
 vim.api.nvim_create_autocmd({ "FileType" }, {
   pattern = { "lua" },
   callback = function()
-    ---@diagnostic disable-next-line: missing-parameter
+    ---@diagnostic disable-next-line: missing-parameter, missing-fields
     require("neotest").setup({})
   end,
 })
