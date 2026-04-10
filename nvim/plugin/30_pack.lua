@@ -211,17 +211,27 @@ require("gitsigns").setup()
 -- }}}
 
 -- neotest {{{
----@diagnostic disable-next-line: missing-fields
-require("neotest").setup({})
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "lua" },
+  callback = function()
+    ---@diagnostic disable-next-line: missing-parameter
+    require("neotest").setup({})
+  end,
+})
 -- }}}
 
 -- lazydev {{{
----@diagnostic disable-next-line: missing-fields
-require("lazydev").setup({
-  library = {
-    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-    { path = "wezter-types",       mods = { "wezterm" } },
-  },
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "lua" },
+  callback = function()
+    ---@diagnostic disable-next-line: missing-fields
+    require("lazydev").setup({
+      library = {
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+        { path = "wezter-types",       mods = { "wezterm" } },
+      },
+    })
+  end,
 })
 -- }}}
 
