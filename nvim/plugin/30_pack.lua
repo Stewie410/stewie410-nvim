@@ -239,7 +239,7 @@ vim.api.nvim_create_autocmd({ "PackChanged" }, {
   desc = "Auto-Update TS Parsers",
 })
 
-local ts_langs = {
+require("nvim-treesitter").install({
   "bash",
   "comment",
   "csv",
@@ -286,12 +286,57 @@ local ts_langs = {
   "xml",
   "yaml",
   "zsh",
-}
-
-require("nvim-treesitter").install(ts_langs)
+})
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = ts_langs,
+  pattern = {
+    "sh",
+    "comment",
+    "csv",
+    "diff",
+    "dockerfile",
+    "editorconfig",
+    "git_config",
+    "git_rebase",
+    "gitattributes",
+    "gitcommit",
+    "gitignore",
+    "go",
+    "gomod",
+    "gosum",
+    "gotmpl",
+    "groovy",
+    "ini",
+    "java",
+    "javadoc",
+    "javascript",
+    "jq",
+    "jsdoc",
+    "json",
+    "lua",
+    "luadoc",
+    "luap",
+    "luau",
+    "make",
+    "markdown",
+    "markdown_inline",
+    "powershell",
+    "printf",
+    "promql",
+    "properties",
+    "python",
+    "regex",
+    "ssh_config",
+    "tmux",
+    "todotxt",
+    "toml",
+    "tsv",
+    "vim",
+    "vimdoc",
+    "xml",
+    "yaml",
+    "zsh",
+  },
   callback = function()
     -- highlight
     vim.treesitter.start()
