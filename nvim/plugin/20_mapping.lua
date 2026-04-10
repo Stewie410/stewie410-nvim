@@ -46,3 +46,13 @@ vim.keymap.set("n", "<leader>ot", function()
   vim.cmd.startinsert()
 end, { desc = "Open Terminal" })
 -- }}}
+
+-- vim.pack {{{
+vim.keymap.set("n", "<leader>pu", function() vim.pack.update() end, { desc = "vim.pack.update()" })
+vim.keymap.set("n", "<leader>pr", function()
+  vim.pack.update(nil, { target = "lockfile", force = true })
+end, { desc = "vim.pack.update(): pinned to lockfile" })
+vim.keymap.set("n", "<leader>pi", function()
+  vim.pack.update(nil, { offline = true })
+end, { desc = "vim.pack: plugin info" })
+-- }}}
