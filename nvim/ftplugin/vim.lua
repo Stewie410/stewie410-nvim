@@ -1,1 +1,1 @@
-require("util.ts").setup({ "vim", "vimdoc" })
+require("util.ts").setup({ "comment", "regex", "vim", "vimdoc" })

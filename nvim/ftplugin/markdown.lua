@@ -1,1 +1,1 @@
-require("util.ts").setup({ "markdown", "markdown_inline" }, { fold = true, indent = true })
+require("util.ts").setup({ "comment", "markdown", "markdown_inline", "regex" }, { fold = true, indent = true })

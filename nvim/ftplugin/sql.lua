@@ -1,1 +1,1 @@
-require("util.ts").setup({ "sql" }, { fold = true, indent = true })
+require("util.ts").setup({ "comment", "sql", "regex" }, { fold = true, indent = true })

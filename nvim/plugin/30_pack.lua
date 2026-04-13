@@ -248,14 +248,6 @@ vim.api.nvim_create_autocmd({ "PackChanged" }, {
   end,
   desc = "Auto-Update TS Parsers",
 })
-
--- always run
-vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = { "*" },
-  callback = function()
-    require("util.ts").setup({ "comment" })
-  end,
-})
 -- }}}
 
 -- mini.nvim {{{

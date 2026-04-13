@@ -1,1 +1,1 @@
-require("util.ts").setup({ "cpp" }, { fold = true, indent = true })
+require("util.ts").setup({ "comment", "cpp", "printf", "regex" }, { fold = true, indent = true })

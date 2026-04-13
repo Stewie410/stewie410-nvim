@@ -1,1 +1,1 @@
-require("util.ts").setup({ "powershell" }, { fold = true, indent = true })
+require("util.ts").setup({ "comment", "powershell", "readline", "regex" }, { fold = true, indent = true })

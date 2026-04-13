@@ -1,4 +1,5 @@
 require("util.ts").setup({
+  "comment",
   "javascript",
   "jsdoc",
   "regex",

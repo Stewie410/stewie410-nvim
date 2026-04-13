@@ -1,4 +1,5 @@
 require("util.ts").setup({
+  "comment",
   "ecma",
   "html",
   "html_tags",

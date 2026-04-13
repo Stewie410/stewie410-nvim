@@ -1,1 +1,1 @@
-require("util.ts").setup({ "rust" }, { fold = true, indent = true })
+require("util.ts").setup({ "comment", "rust", "regex" }, { fold = true, indent = true })

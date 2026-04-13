@@ -1,6 +1,7 @@
 require("util.ts").setup({
   "bash",
+  "comment",
   "printf",
-  "regex",
   "readline",
+  "regex",
 }, { fold = true, indent = true })

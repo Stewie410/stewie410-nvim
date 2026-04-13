@@ -1,1 +1,1 @@
-require("util.ts").setup({ "toml" }, { fold = true, indent = true })
+require("util.ts").setup({ "comment", "toml", "regex" }, { fold = true, indent = true })

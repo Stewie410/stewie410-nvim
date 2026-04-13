@@ -1,1 +1,1 @@
-require("util.ts").setup({ "tmux" })
+require("util.ts").setup({ "comment", "tmux" })

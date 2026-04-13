@@ -1,1 +1,1 @@
-require("util.ts").setup({ "python" }, { fold = true, indent = true })
+require("util.ts").setup({ "comment", "python", "regex" }, { fold = true, indent = true })

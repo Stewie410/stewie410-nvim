@@ -1,1 +1,1 @@
-require("util.ts").setup({ "graphql" }, { fold = true, indent = true })
+require("util.ts").setup({ "comment", "graphql" }, { fold = true, indent = true })
