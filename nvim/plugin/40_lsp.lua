@@ -33,6 +33,7 @@ vim.lsp.enable({
 })
 
 local ag = vim.api.nvim_create_augroup("my.lsp", {})
+---@diagnostic disable-next-line: param-type-mismatch
 vim.api.nvim_create_autocmd({ "LspAttach" }, {
   group = ag,
   callback = function(args)
@@ -60,6 +61,7 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
     map("n", "K", vim.lsp.buf.hover, "Hover Documentation")
 
     vim.opt.omnifunc = "v:lua.vim.lsp.omnifunc"
+    vim.lsp.codelens.enable(true)
 
     local supports = {
       cmp = client:supports_method("textDocument/completion"),
@@ -68,6 +70,7 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
     }
 
     if not supports.wait and supports.fmt then
+      ---@diagnostic disable-next-line: param-type-mismatch
       vim.api.nvim_create_autocmd({ "BufWritePre" }, {
         group = ag,
         buffer = args.buf,
@@ -81,5 +84,9 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
     vim.api.nvim_buf_create_user_command(args.buf, "LspLog", function()
       vim.cmd.split(vim.lsp.log.get_filename())
     end, { desc = "Open lsp.log in a :split" })
+
+    vim.api.nvim_buf_create_user_command(args.buf, "LSPC", function()
+      print(vim.inspect(vim.lsp.get_clients()))
+    end, { desc = "View active LSP client(s)" })
   end,
 })
