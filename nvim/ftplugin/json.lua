@@ -1,1 +1,1 @@
-require("util.ts").setup({ "json" }, { fold = true, indent = true })
+require("util.ts").setup({ "json" }, { fold = true, indent = false })

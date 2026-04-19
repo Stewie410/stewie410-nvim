@@ -5,4 +5,4 @@ require("util.ts").setup({
   "json",
   "jsdoc",
   "regex",
-}, { fold = true, indent = true })
+}, { fold = true, indent = false })

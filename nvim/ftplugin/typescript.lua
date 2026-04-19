@@ -4,4 +4,4 @@ require("util.ts").setup({
   "jsdoc",
   "regex",
   "typescript",
-}, { fold = true, indent = true })
+}, { fold = true, indent = false })

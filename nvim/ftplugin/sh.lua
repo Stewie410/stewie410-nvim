@@ -4,4 +4,4 @@ require("util.ts").setup({
   "printf",
   "readline",
   "regex",
-}, { fold = true, indent = true })
+}, { fold = true, indent = false })

@@ -1,1 +1,1 @@
-require("util.ts").setup({ "git_config" }, { fold = true, indent = true })
+require("util.ts").setup({ "git_config" }, { fold = true, indent = false })

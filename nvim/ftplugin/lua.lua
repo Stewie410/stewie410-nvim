@@ -5,4 +5,4 @@ require("util.ts").setup({
   "luap",
   "luau",
   "regex",
-}, { fold = true, indent = true })
+}, { fold = true, indent = false })

@@ -1,1 +1,1 @@
-require("util.ts").setup({ "cmake" }, { fold = true, indent = true })
+require("util.ts").setup({ "cmake" }, { fold = true, indent = false })

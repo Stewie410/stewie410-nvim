@@ -1,1 +1,1 @@
-require("util.ts").setup({ "comment", "properties" }, { fold = true, indent = true })
+require("util.ts").setup({ "comment", "properties" }, { fold = true, indent = false })

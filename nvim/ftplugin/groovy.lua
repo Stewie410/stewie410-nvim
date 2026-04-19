@@ -1,1 +1,1 @@
-require("util.ts").setup({ "comment", "groovy", "regex" }, { fold = true, indent = true })
+require("util.ts").setup({ "comment", "groovy", "regex" }, { fold = true, indent = false })
