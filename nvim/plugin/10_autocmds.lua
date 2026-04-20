@@ -56,6 +56,27 @@ vim.api.nvim_create_autocmd({ "FileType", "BufEnter" }, {
   desc = "q/<Esc> always quits",
 })
 
+vim.api.nvim_create_autocmd({ "BufReadPost" }, {
+  callback = function()
+    local exclude = {
+      "gitcommit",
+    }
+
+    local buf = vim.api.nvim_get_current_buf()
+    if vim.tbl_contains(exclude, vim.bo[buf].filetype) then
+      return
+    end
+
+    local mark = vim.api.nvim_buf_get_mark(buf, '"')
+    local len = vim.api.nvim_buf_line_count(buf)
+    if mark[1] > 0 and mark[1] <= len then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+      vim.api.nvim_feedkeys('zvzz', 'n', true)
+    end
+  end,
+  desc = "Restore cusor position",
+})
+
 -- }}}
 -- Terminal {{{
 vim.api.nvim_create_autocmd({ "TermOpen" }, {
