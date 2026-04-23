@@ -126,8 +126,8 @@ require("blink.cmp").setup({
         score_offset = 50,
         opts = {
           search_paths = {
-            os.getenv("XDG_CONFIG_HOME") .. "/snippets",
-            os.getenv("XDG_CONFIG_HOME") .. "/private/snippets",
+            vim.fn.resolve(os.getenv('XDG_CONFIG_HOME') .. '/snippets'),
+            vim.fn.resolve(os.getenv('XDG_CONFIG_HOME') .. '/private/snippets'),
             vim.fn.stdpath("data") .. "/lazy/friendly-snippets",
             vim.fn.stdpath("config") .. "/snippets",
           },
@@ -185,8 +185,8 @@ local boiler = require("boiler")
 boiler.setup({
   picker = "snacks",
   paths = {
-    os.getenv("XDG_CONFIG_HOME") .. "/boilerplate",
-    os.getenv("XDG_CONFIG_HOME") .. "/private/boilerplate",
+    vim.fn.resolve(os.getenv('XDG_CONFIG_HOME') .. '/boilerplate'),
+    vim.fn.resolve(os.getenv('XDG_CONFIG_HOME') .. '/private/boilerplate'),
   },
 })
 

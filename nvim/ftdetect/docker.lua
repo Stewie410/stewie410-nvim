@@ -16,7 +16,8 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 -- ~/.docker/*.json configs
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   pattern = {
-    os.getenv('HOME') .. "/.docker/*.json",
+    vim.fn.resolve('~/.docker/*.json'),
+    vim.fn.resolve(os.getenv('XDG_CONFIG_HOME') .. '/docker/*.json'),
   },
   callback = function()
     local ts = 2
