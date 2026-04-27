@@ -6,8 +6,9 @@ vim.pack.add({
   "https://github.com/nvim-mini/mini.icons",
   "https://github.com/nvim-tree/nvim-web-devicons",
 
-  { src = "https://github.com/saghen/blink.cmp",    branch = "v1" },
-  { src = "https://github.com/saghen/blink.compat", branch = "v2" },
+  { src = "https://github.com/saghen/blink.cmp",    version = "v1" },
+  { src = "https://github.com/saghen/blink.compat", version = "v2" },
+  -- "https://github.com/saghen/blink.lib",
   "https://github.com/rafamadriz/friendly-snippets",
   "https://github.com/mikavilpas/blink-ripgrep.nvim",
 
@@ -21,7 +22,7 @@ vim.pack.add({
   "https://github.com/gonstoll/wezterm-types",
   "https://github.com/nvim-neotest/neotest",
   "https://github.com/nvim-neotest/nvim-nio",
-  { src = "https://github.com/nvim-treesitter/nvim-treesitter", branch = "main" },
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
   "https://github.com/Stewie410/boiler.nvim",
   "https://github.com/rachartier/tiny-code-action.nvim",
   "https://github.com/folke/ts-comments.nvim",
@@ -40,7 +41,7 @@ vim.cmd.colorscheme("ayu")
 -- }}}
 
 -- blink.cmp {{{
-vim.api.nvim_create_autocmd({ "PackChangedPre" }, {
+vim.api.nvim_create_autocmd({ "PackChanged" }, {
   callback = function(ev)
     local name, kind = ev.data.name, ev.data.kind
     if name == "blink.cmp" and (kind == "install" or kind == "update") then
