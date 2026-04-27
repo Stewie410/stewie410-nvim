@@ -118,3 +118,7 @@ vim.o.completeopt = "menu,menuone,noselect"
 vim.o.completetimeout = 100
 
 -- }}}
+-- Misc {{{
+-- dbext workaround
+vim.g.omni_sql_default_compl_type = 'syntax'
+-- }}}
