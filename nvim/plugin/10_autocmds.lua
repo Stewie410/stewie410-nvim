@@ -1,4 +1,3 @@
----@diagnostic disable: assign-type-mismatch, param-type-mismatch
 -- General {{{
 vim.api.nvim_create_autocmd({ "VimResized" }, {
   callback = function()
