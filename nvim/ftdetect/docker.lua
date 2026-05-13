@@ -1,3 +1,16 @@
+-- Dockerfile
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = {
+    "*-Dockerfile",
+    "Dockerfile-*",
+  },
+  callback = function()
+    vim.bo.filetype = "dockerfile"
+    -- vim.bo.syntax = "dockerfile"
+  end,
+  desc = "Detect badly-named Dockerfiles",
+})
+
 -- compose.yml
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   pattern = {
