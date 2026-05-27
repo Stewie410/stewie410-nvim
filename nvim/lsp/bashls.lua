@@ -1,4 +1,5 @@
-local cmd = "bash-language-server"
+-- https://github.com/k8s-1/bashls
+local cmd = "bashls"
 if not vim.fn.executable(cmd) then
   return {}
 end
@@ -8,7 +9,11 @@ return {
   cmd = { cmd, "start" },
   settings = {
     bashIde = {
-      globPattern = "*@(.sh|.inc|.bash|.command)",
+      shellcheckArguments = {
+        -- "--check-sourced",
+        -- "--color=never",
+        "--norc",
+      },
       shfmt = {
         binaryNextLine = true,
         caseIndent = true,
