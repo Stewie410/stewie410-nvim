@@ -18,6 +18,7 @@ return {
         binaryNextLine = true,
         caseIndent = true,
         funcNextLine = false,
+        spaceRedirects = true,
       },
     },
   },
