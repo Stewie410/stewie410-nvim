@@ -1,37 +1,37 @@
 -- plugins {{{
 vim.pack.add({
-  "https://github.com/nvim-lua/plenary.nvim",
-  "https://github.com/Grub4K/glib.nvim",
-  "https://github.com/b0o/SchemaStore.nvim",
-  "https://github.com/nvim-mini/mini.icons",
-  "https://github.com/nvim-tree/nvim-web-devicons",
+	"https://github.com/nvim-lua/plenary.nvim",
+	"https://github.com/Grub4K/glib.nvim",
+	"https://github.com/b0o/SchemaStore.nvim",
+	"https://github.com/nvim-mini/mini.icons",
+	"https://github.com/nvim-tree/nvim-web-devicons",
 
-  { src = "https://github.com/saghen/blink.cmp",    version = "v1" },
-  { src = "https://github.com/saghen/blink.compat", version = "v2" },
-  -- "https://github.com/saghen/blink.lib",
-  "https://github.com/rafamadriz/friendly-snippets",
-  "https://github.com/mikavilpas/blink-ripgrep.nvim",
+	{ src = "https://github.com/saghen/blink.cmp",    version = "v1" },
+	{ src = "https://github.com/saghen/blink.compat", version = "main" },
+	-- "https://github.com/saghen/blink.lib",
+	"https://github.com/rafamadriz/friendly-snippets",
+	"https://github.com/mikavilpas/blink-ripgrep.nvim",
 
-  "https://github.com/alker0/chezmoi.vim",
-  "https://github.com/Shatur/neovim-ayu",
-  "https://github.com/numToStr/Comment.nvim",
-  "https://github.com/j-hui/fidget.nvim",
-  "https://github.com/folke/which-key.nvim",
+	"https://github.com/alker0/chezmoi.vim",
+	"https://github.com/Shatur/neovim-ayu",
+	"https://github.com/numToStr/Comment.nvim",
+	"https://github.com/j-hui/fidget.nvim",
+	"https://github.com/folke/which-key.nvim",
 
-  "https://github.com/folke/lazydev.nvim",
-  "https://github.com/gonstoll/wezterm-types",
-  "https://github.com/nvim-neotest/neotest",
-  "https://github.com/nvim-neotest/nvim-nio",
-  { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
-  "https://github.com/Stewie410/boiler.nvim",
-  "https://github.com/rachartier/tiny-code-action.nvim",
-  "https://github.com/folke/ts-comments.nvim",
+	"https://github.com/folke/lazydev.nvim",
+	"https://github.com/gonstoll/wezterm-types",
+	"https://github.com/nvim-neotest/neotest",
+	"https://github.com/nvim-neotest/nvim-nio",
+	{ src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
+	"https://github.com/Stewie410/boiler.nvim",
+	"https://github.com/rachartier/tiny-code-action.nvim",
+	"https://github.com/folke/ts-comments.nvim",
 
-  "https://github.com/tpope/vim-fugitive",
-  "https://github.com/lewis6991/gitsigns.nvim",
+	"https://github.com/tpope/vim-fugitive",
+	"https://github.com/lewis6991/gitsigns.nvim",
 
-  "https://github.com/nvim-mini/mini.nvim",
-  "https://github.com/folke/snacks.nvim",
+	"https://github.com/nvim-mini/mini.nvim",
+	"https://github.com/folke/snacks.nvim",
 })
 -- }}}
 
@@ -42,138 +42,138 @@ vim.cmd.colorscheme("ayu")
 
 -- blink.cmp {{{
 vim.api.nvim_create_autocmd({ "PackChanged" }, {
-  callback = function(ev)
-    local name, kind = ev.data.name, ev.data.kind
-    if name == "blink.cmp" and (kind == "install" or kind == "update") then
-      vim.system({ "cargo", "build", "--release" }, { cwd = ev.data.path })
-    end
-  end,
-  desc = "Build blink.cmp",
+	callback = function(ev)
+		local name, kind = ev.data.name, ev.data.kind
+		if name == "blink.cmp" and (kind == "install" or kind == "update") then
+			vim.system({ "cargo", "build", "--release" }, { cwd = ev.data.path })
+		end
+	end,
+	desc = "Build blink.cmp",
 })
 
 require("blink.cmp").setup({
-  appearance = {
-    use_nvim_cmp_as_default = true,
-    nerd_font_variant = "mono",
-    kind_icons = {
-      Text = "",
-      Method = "󰆧",
-      Function = "󰊕",
-      Constructor = "",
+	appearance = {
+		use_nvim_cmp_as_default = true,
+		nerd_font_variant = "mono",
+		kind_icons = {
+			Text = "",
+			Method = "󰆧",
+			Function = "󰊕",
+			Constructor = "",
 
-      Field = "󰇽",
-      Variable = "󰂡",
-      Property = "󰜢",
+			Field = "󰇽",
+			Variable = "󰂡",
+			Property = "󰜢",
 
-      Class = "󰠱",
-      Interface = "",
-      Struct = "",
-      Module = "",
+			Class = "󰠱",
+			Interface = "",
+			Struct = "",
+			Module = "",
 
-      Unit = "",
-      Value = "󰎠",
-      Enum = "",
-      EnumMember = "",
+			Unit = "",
+			Value = "󰎠",
+			Enum = "",
+			EnumMember = "",
 
-      Keyword = "󰌋",
-      Constant = "󰏿",
+			Keyword = "󰌋",
+			Constant = "󰏿",
 
-      Snippet = "",
-      Color = "󰏘",
-      File = "󰈙",
-      Reference = "",
-      Folder = "󰉋",
-      Event = "",
-      Operator = "󰆕",
-      TypeParameter = "󰅲",
-    },
-  },
-  completion = {
-    menu = {
-      border = "single",
-    },
-    trigger = {
-      show_on_trigger_character = true,
-    },
-  },
-  keymap = {
-    preset = "default",
-    ["<C-y>"] = {},
-    ["<Tab>"] = {
-      function(cmp)
-        if cmp.snippet_active() then
-          return cmp.accept()
-        else
-          return cmp.select_and_accept()
-        end
-      end,
-      "snippet_forward",
-      "fallback",
-    },
-  },
-  sources = {
-    default = {
-      "lazydev",
-      "lsp",
-      "path",
-      "snippets",
-      "omni",
-      "buffer",
-      "ripgrep",
-      "cmdline",
-    },
-    providers = {
-      snippets = {
-        score_offset = 50,
-        opts = {
-          search_paths = {
-            vim.fn.resolve(os.getenv('XDG_CONFIG_HOME') .. '/snippets'),
-            vim.fn.resolve(os.getenv('XDG_CONFIG_HOME') .. '/private/snippets'),
-            vim.fn.stdpath("data") .. "/lazy/friendly-snippets",
-            vim.fn.stdpath("config") .. "/snippets",
-          },
-        },
-      },
-      lazydev = {
-        name = "LazyDev",
-        module = "lazydev.integrations.blink",
-        score_offset = 100,
-      },
-      ripgrep = {
-        name = "Ripgrep",
-        module = "blink-ripgrep",
-        opts = {
-          project_root_marker = { ".git", ".svn" },
-          backend = {
-            ripgrep = {
-              search_casing = "--smart-case",
-            },
-          },
-        },
-      },
-      buffer = {
-        score_offset = 0,
-      },
-    },
-  },
-  fuzzy = {
-    -- TODO: fix fuzzy_rust?
-    implementation = "lua",
-  },
-  cmdline = {
-    keymap = {
-      preset = "cmdline",
-      ["<Tab>"] = { "show", "accept" },
-    },
-    completion = {
-      menu = {
-        ---@diagnostic disable-next-line: unused-local
-        auto_show = function(ctx)
-          return vim.fn.getcmdtype() == ":"
-        end,
-      },
-    },
-  },
+			Snippet = "",
+			Color = "󰏘",
+			File = "󰈙",
+			Reference = "",
+			Folder = "󰉋",
+			Event = "",
+			Operator = "󰆕",
+			TypeParameter = "󰅲",
+		},
+	},
+	completion = {
+		menu = {
+			border = "single",
+		},
+		trigger = {
+			show_on_trigger_character = true,
+		},
+	},
+	keymap = {
+		preset = "default",
+		["<C-y>"] = {},
+		["<Tab>"] = {
+			function(cmp)
+				if cmp.snippet_active() then
+					return cmp.accept()
+				else
+					return cmp.select_and_accept()
+				end
+			end,
+			"snippet_forward",
+			"fallback",
+		},
+	},
+	sources = {
+		default = {
+			"lazydev",
+			"lsp",
+			"path",
+			"snippets",
+			"omni",
+			"buffer",
+			"ripgrep",
+			"cmdline",
+		},
+		providers = {
+			snippets = {
+				score_offset = 50,
+				opts = {
+					search_paths = {
+						vim.fn.resolve(os.getenv('XDG_CONFIG_HOME') .. '/snippets'),
+						vim.fn.resolve(os.getenv('XDG_CONFIG_HOME') .. '/private/snippets'),
+						vim.fn.stdpath("data") .. "/lazy/friendly-snippets",
+						vim.fn.stdpath("config") .. "/snippets",
+					},
+				},
+			},
+			lazydev = {
+				name = "LazyDev",
+				module = "lazydev.integrations.blink",
+				score_offset = 100,
+			},
+			ripgrep = {
+				name = "Ripgrep",
+				module = "blink-ripgrep",
+				opts = {
+					project_root_marker = { ".git", ".svn" },
+					backend = {
+						ripgrep = {
+							search_casing = "--smart-case",
+						},
+					},
+				},
+			},
+			buffer = {
+				score_offset = 0,
+			},
+		},
+	},
+	fuzzy = {
+		-- TODO: fix fuzzy_rust?
+		implementation = "lua",
+	},
+	cmdline = {
+		keymap = {
+			preset = "cmdline",
+			["<Tab>"] = { "show", "accept" },
+		},
+		completion = {
+			menu = {
+				---@diagnostic disable-next-line: unused-local
+				auto_show = function(ctx)
+					return vim.fn.getcmdtype() == ":"
+				end,
+			},
+		},
+	},
 })
 -- }}}
 
@@ -184,18 +184,18 @@ vim.g["chezmoi#use_tmp_buffer"] = true
 -- boiler.nvim {{{
 local boiler = require("boiler")
 boiler.setup({
-  picker = "snacks",
-  paths = {
-    vim.fn.resolve(os.getenv('XDG_CONFIG_HOME') .. '/boilerplate'),
-    vim.fn.resolve(os.getenv('XDG_CONFIG_HOME') .. '/private/boilerplate'),
-  },
+	picker = "snacks",
+	paths = {
+		vim.fn.resolve(os.getenv('XDG_CONFIG_HOME') .. '/boilerplate'),
+		vim.fn.resolve(os.getenv('XDG_CONFIG_HOME') .. '/private/boilerplate'),
+	},
 })
 
 vim.keymap.set("n", "<leader>bb", function() boiler.pick(vim.bo.filetype) end, {
-  desc = "Boiler: Select from FT",
+	desc = "Boiler: Select from FT",
 })
 vim.keymap.set("n", "<leader>ba", function() boiler.pick() end, {
-  desc = "Boiler: Select from Any",
+	desc = "Boiler: Select from Any",
 })
 -- }}}
 
@@ -213,47 +213,47 @@ require("gitsigns").setup()
 
 -- neotest {{{
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = { "lua" },
-  callback = function()
-    ---@diagnostic disable-next-line: missing-parameter, missing-fields
-    require("neotest").setup({})
-  end,
+	pattern = { "lua" },
+	callback = function()
+		---@diagnostic disable-next-line: missing-parameter, missing-fields
+		require("neotest").setup({})
+	end,
 })
 -- }}}
 
 -- lazydev {{{
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = { "lua" },
-  callback = function()
-    ---@diagnostic disable-next-line: missing-fields
-    require("lazydev").setup({
-      library = {
-        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-        { path = "wezter-types",       mods = { "wezterm" } },
-      },
-      enabled = function(_)
-        local buf = vim.api.nvim_get_current_buf()
-        local ws = require("lazydev").find_workspace(buf)
+	pattern = { "lua" },
+	callback = function()
+		---@diagnostic disable-next-line: missing-fields
+		require("lazydev").setup({
+			library = {
+				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+				{ path = "wezter-types",       mods = { "wezterm" } },
+			},
+			enabled = function(_)
+				local buf = vim.api.nvim_get_current_buf()
+				local ws = require("lazydev").find_workspace(buf)
 
-        return ((not ws == nil) or (vim.g.lazydev_enabled == nil)) and true or vim.g.lazydev_enabled
-      end,
-    })
-  end,
+				return ((not ws == nil) or (vim.g.lazydev_enabled == nil)) and true or vim.g.lazydev_enabled
+			end,
+		})
+	end,
 })
 -- }}}
 
 -- nvim-treesitter {{{
 vim.api.nvim_create_autocmd({ "PackChanged" }, {
-  callback = function(ev)
-    local name, kind = ev.data.name, ev.data.kind
-    if name == "nvim-treesitter" and kind == "update" then
-      if not ev.data.active then
-        vim.cmd.packadd("nvim-treesitter")
-      end
-      vim.cmd("TSUpdate")
-    end
-  end,
-  desc = "Auto-Update TS Parsers",
+	callback = function(ev)
+		local name, kind = ev.data.name, ev.data.kind
+		if name == "nvim-treesitter" and kind == "update" then
+			if not ev.data.active then
+				vim.cmd.packadd("nvim-treesitter")
+			end
+			vim.cmd("TSUpdate")
+		end
+	end,
+	desc = "Auto-Update TS Parsers",
 })
 -- }}}
 
@@ -272,58 +272,58 @@ require("mini.statusline").setup()
 
 local hipatterns = require("mini.hipatterns")
 hipatterns.setup({
-  hilighters = {
-    fixme = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
-    hack  = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
-    todo  = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
-    note  = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
-  },
-  hex_color = hipatterns.gen_highlighter.hex_color(),
+	hilighters = {
+		fixme = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
+		hack  = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
+		todo  = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
+		note  = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
+	},
+	hex_color = hipatterns.gen_highlighter.hex_color(),
 })
 -- }}}
 
 -- snacks.nvim {{{
 require("snacks").setup({
-  bigfile = { enabled = true },
-  explorer = { enabled = true },
-  git = { enabled = true },
-  indent = {
-    enabled = true,
-    animate = { enabled = false },
-    scope = { enabled = true },
-  },
-  input = { enabled = true },
-  notifier = {
-    enabled = true,
-    timeout = 3000,
-  },
-  picker = { enabled = true },
-  quickfile = { enabled = true },
-  scope = { enabled = true },
-  words = { enabled = true },
+	bigfile = { enabled = true },
+	explorer = { enabled = true },
+	git = { enabled = true },
+	indent = {
+		enabled = true,
+		animate = { enabled = false },
+		scope = { enabled = true },
+	},
+	input = { enabled = true },
+	notifier = {
+		enabled = true,
+		timeout = 3000,
+	},
+	picker = { enabled = true },
+	quickfile = { enabled = true },
+	scope = { enabled = true },
+	words = { enabled = true },
 })
 
 vim.api.nvim_create_autocmd({ "User" }, {
-  callback = function()
-    Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>uc")
-    Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
-    Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>uL")
-    Snacks.toggle.diagnostics():map("<leader>ud")
-    Snacks.toggle.line_number():map("<leader>ul")
-    Snacks.toggle.option(
-      "conceallevel",
-      { off = "light", on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 }
-    ):map("<leader>uC")
-    Snacks.toggle.treesitter():map("<leader>uT")
-    Snacks.toggle.option(
-      "background",
-      { off = "light", on = "dark", name = "Dark Background" }
-    ):map("<leader>ub")
-    Snacks.toggle.inlay_hints():map("<leader>uh")
-    Snacks.toggle.indent():map("<leader>ug")
-    Snacks.toggle.dim():map("<leader>uD")
-  end,
-  desc = "snacks.nvim init"
+	callback = function()
+		Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>uc")
+		Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
+		Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>uL")
+		Snacks.toggle.diagnostics():map("<leader>ud")
+		Snacks.toggle.line_number():map("<leader>ul")
+		Snacks.toggle.option(
+			"conceallevel",
+			{ off = "light", on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 }
+		):map("<leader>uC")
+		Snacks.toggle.treesitter():map("<leader>uT")
+		Snacks.toggle.option(
+			"background",
+			{ off = "light", on = "dark", name = "Dark Background" }
+		):map("<leader>ub")
+		Snacks.toggle.inlay_hints():map("<leader>uh")
+		Snacks.toggle.indent():map("<leader>ug")
+		Snacks.toggle.dim():map("<leader>uD")
+	end,
+	desc = "snacks.nvim init"
 })
 
 vim.keymap.set("n", "<C-b>", function() Snacks.explorer() end, { desc = "Explorer" })
@@ -376,17 +376,17 @@ vim.keymap.set("n", "<leader>dn", function() Snacks.notifier.hide() end, { desc 
 
 -- tiny-code-action.nvim {{{
 vim.api.nvim_create_autocmd({ "LspAttach" }, {
-  callback = function()
-    require("tiny-code-action").setup({
-      picker = { "snacks" },
-    })
-    local tca = require("tiny-code-action")
-    tca.setup({
-      picker = { "snacks" },
-    })
+	callback = function()
+		require("tiny-code-action").setup({
+			picker = { "snacks" },
+		})
+		local tca = require("tiny-code-action")
+		tca.setup({
+			picker = { "snacks" },
+		})
 
-    vim.keymap.set("n", "<leader>ca", tca.code_action, { desc = "LSP: Code Action", remap = true })
-  end,
+		vim.keymap.set("n", "<leader>ca", tca.code_action, { desc = "LSP: Code Action", remap = true })
+	end,
 })
 -- }}}
 
@@ -398,16 +398,16 @@ require("ts-comments").setup()
 local which = require("which-key")
 ---@diagnostic disable-next-line: missing-fields
 which.setup({
-  preset = "helix",
-  spec = {
-    { "<leader>c", group = "[C]ode" },
-    { "<leader>d", group = "[D]ocument" },
-    { "<leader>f", group = "[F]ind" },
-    { "<leader>r", group = "[R]ename" },
-    { "<leader>s", group = "[S]urround" },
-    { "<leader>w", group = "[W]orkspace" },
-    { "<leader>t", group = "[T]oggle" },
-  }
+	preset = "helix",
+	spec = {
+		{ "<leader>c", group = "[C]ode" },
+		{ "<leader>d", group = "[D]ocument" },
+		{ "<leader>f", group = "[F]ind" },
+		{ "<leader>r", group = "[R]ename" },
+		{ "<leader>s", group = "[S]urround" },
+		{ "<leader>w", group = "[W]orkspace" },
+		{ "<leader>t", group = "[T]oggle" },
+	}
 })
 
 vim.keymap.set("n", "<leader>?", function() which.show({ global = false }) end, { desc = "Buffer Keymaps" })
