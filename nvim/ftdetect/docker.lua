@@ -33,10 +33,6 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     vim.fn.resolve(os.getenv('XDG_CONFIG_HOME') .. '/docker/*.json'),
   },
   callback = function()
-    local ts = 2
-    vim.opt_local.tabstop = ts
-    vim.opt_local.softtabstop = ts
-    vim.opt_local.shiftwidth = ts
-    vim.opt_local.expandtab = false
+    vim.opt_local.tabstop = 2
   end
 })

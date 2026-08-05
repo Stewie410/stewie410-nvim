@@ -17,6 +17,7 @@ vim.pack.add({
 	"https://github.com/numToStr/Comment.nvim",
 	"https://github.com/j-hui/fidget.nvim",
 	"https://github.com/folke/which-key.nvim",
+	"https://github.com/NMAC427/guess-indent.nvim",
 
 	"https://github.com/folke/lazydev.nvim",
 	"https://github.com/gonstoll/wezterm-types",
@@ -411,4 +412,16 @@ which.setup({
 })
 
 vim.keymap.set("n", "<leader>?", function() which.show({ global = false }) end, { desc = "Buffer Keymaps" })
+-- }}}
+
+-- guess-indent.nvim {{{
+require("guess-indent").setup({
+	filetype_exclude = {
+		"netrw",
+		"tutor",
+		"nvim-pack",
+		"log",
+		"markdown",
+	},
+})
 -- }}}
