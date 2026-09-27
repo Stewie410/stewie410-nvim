@@ -1,0 +1,6 @@
+vim.pack.add({
+	"https://github.com/Shatur/neovim-ayu",
+})
+
+require("ayu").setup({ mirage = false, terminal = true })
+vim.cmd.colorscheme("ayu")

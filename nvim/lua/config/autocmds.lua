@@ -1,4 +1,3 @@
--- General {{{
 vim.api.nvim_create_autocmd({ "VimResized" }, {
   callback = function()
     local tab = vim.api.nvim_get_current_tabpage()
@@ -76,8 +75,6 @@ vim.api.nvim_create_autocmd({ "BufReadPost" }, {
   desc = "Restore cusor position",
 })
 
--- }}}
--- Terminal {{{
 vim.api.nvim_create_autocmd({ "TermOpen" }, {
   pattern = { "term://" },
   callback = function()
@@ -108,5 +105,3 @@ vim.api.nvim_create_autocmd({ "UIEnter", "ColorScheme" }, {
   end,
   desc = "Corrects terminal background according to colorscheme",
 })
-
--- }}}

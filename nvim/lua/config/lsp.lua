@@ -32,10 +32,9 @@ vim.lsp.enable({
   "ls_lsp",
 })
 
-local ag = vim.api.nvim_create_augroup("my.lsp", {})
 ---@diagnostic disable-next-line: param-type-mismatch
 vim.api.nvim_create_autocmd({ "LspAttach" }, {
-  group = ag,
+  group = vim.api.nvim_create_augroup("my.lsp", {}),
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
     assert(client, ("Cannot determine LSP Client in buf[%d]"):format(args.buf))

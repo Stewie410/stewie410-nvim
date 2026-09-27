@@ -1,4 +1,3 @@
--- General {{{
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -28,8 +27,6 @@ if vim.fn.exists("syntax_on") ~= 1 then
   vim.cmd("syntax enable")
 end
 
--- }}}
--- UI {{{
 vim.o.background = "dark"
 vim.o.showmode = false
 vim.o.termguicolors = true
@@ -78,8 +75,6 @@ vim.o.foldtext = ""
 vim.o.scrolloff = 10
 vim.o.sidescrolloff = 10
 
--- }}}
--- Editing {{{
 vim.o.autoindent = true
 vim.o.smartindent = true
 vim.o.formatoptions = "rqnl1j"
@@ -113,12 +108,8 @@ vim.o.complete = ".,w,b,kspell"
 vim.o.completeopt = "menu,menuone,noselect"
 vim.o.completetimeout = 100
 
--- }}}
--- Misc {{{
 -- dbext workaround
 vim.g.omni_sql_default_compl_type = 'syntax'
 -- }}}
 
--- Clipboard {{{
 require("util.clipboard").setup()
--- }}}
