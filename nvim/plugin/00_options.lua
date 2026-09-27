@@ -25,7 +25,7 @@ vim.o.shada = "'100,<50,s10,:1000,/100,@100,h"
 -- Enable all ft plugisn & syntax for better startuptime
 vim.cmd("filetype plugin indent on")
 if vim.fn.exists("syntax_on") ~= 1 then
-	vim.cmd("syntax enable")
+  vim.cmd("syntax enable")
 end
 
 -- }}}
@@ -117,4 +117,8 @@ vim.o.completetimeout = 100
 -- Misc {{{
 -- dbext workaround
 vim.g.omni_sql_default_compl_type = 'syntax'
+-- }}}
+
+-- Clipboard {{{
+require("util.clipboard").setup()
 -- }}}
