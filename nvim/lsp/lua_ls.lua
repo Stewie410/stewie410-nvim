@@ -6,7 +6,7 @@ end
 ---@type vim.lsp.Config
 return {
   cmd = { cmd },
-  capabilities = require("util.lsp.capabilities").with_blink({
+  capabilities = require("util.lsp.capabilities").native({
     textDocument = {
       semanticTokensProvider = nil,
     },

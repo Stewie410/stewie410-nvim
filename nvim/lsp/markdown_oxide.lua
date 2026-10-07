@@ -7,7 +7,7 @@ end
 return {
   cmd = { "markdown-oxide" },
   filetypes = { "markdown" },
-  capabilities = require("util.lsp.capabilities").with_blink({
+  capabilities = require("util.lsp.capabilities").native({
     workspace = {
       didChangeWatchedFiles = {
         dynamicRegistration = true,
