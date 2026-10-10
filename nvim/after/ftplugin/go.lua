@@ -11,3 +11,5 @@ vim.api.nvim_create_autocmd("PackChanged", {
 vim.pack.add({
 	"https://github.com/olexsmir/gopher.nvim",
 })
+
+require("gopher").setup()
