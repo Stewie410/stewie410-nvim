@@ -67,6 +67,7 @@ return {
 			"buffer",
 			"ripgrep",
 			"cmdline",
+			"lazydev",
 		},
 		providers = {
 			snippets = {
@@ -95,6 +96,13 @@ return {
 			buffer = {
 				score_offset = 0,
 			},
+			lazydev = {
+				enabled = false,
+				name = "LazyDev",
+				module = "lazydev.integrations.blink",
+				score_offset = 100,
+			}
+
 		},
 	},
 	fuzzy = {

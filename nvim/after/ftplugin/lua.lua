@@ -20,13 +20,7 @@ require("lazydev").setup(opts)
 
 if opts.enabled() then
 	local blink_conf = require("config.plugin.blink")
-	table.insert(blink_conf.sources.default, "lazydev")
-	blink_conf.sources.providers.lazydev = {
-		name = "LazyDev",
-		module = "lazydev.integrations.blink",
-		score_offset = 100,
-	}
-
+	blink_conf.sources.providers.lazydev.enabled = true
 	require("blink.cmp").setup(blink_conf)
 end
 
