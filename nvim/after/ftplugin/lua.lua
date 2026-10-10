@@ -1,5 +1,6 @@
 vim.pack.add({
 	"https://github.com/folke/lazydev.nvim",
+	"https://github.com/gonstoll/wezterm-types",
 	{ src = "https://github.com/saghen/blink.cmp",    version = "v1" },
 	{ src = "https://github.com/saghen/blink.compat", version = "main" },
 	-- "https://github.com/saghen/blink.lib",
