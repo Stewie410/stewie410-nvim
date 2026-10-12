@@ -71,7 +71,7 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
     if not supports.wait and supports.fmt then
       ---@diagnostic disable-next-line: param-type-mismatch
       vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-        group = vim.api.nvim_create_aurgoup("lsp.format", {}),
+        group = vim.api.nvim_create_augroup("lsp.format", {}),
         buffer = args.buf,
         callback = function()
           vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 1000 })
