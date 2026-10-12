@@ -34,7 +34,7 @@ vim.lsp.enable({
 
 ---@diagnostic disable-next-line: param-type-mismatch
 vim.api.nvim_create_autocmd({ "LspAttach" }, {
-  group = vim.api.nvim_create_augroup("my.lsp", {}),
+  group = vim.api.nvim_create_augroup("lsp.attach", {}),
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
     assert(client, ("Cannot determine LSP Client in buf[%d]"):format(args.buf))
@@ -71,7 +71,7 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
     if not supports.wait and supports.fmt then
       ---@diagnostic disable-next-line: param-type-mismatch
       vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-        group = ag,
+        group = vim.api.nvim_create_aurgoup("lsp.format", {}),
         buffer = args.buf,
         callback = function()
           vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 1000 })
