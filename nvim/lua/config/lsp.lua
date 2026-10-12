@@ -9,7 +9,8 @@ vim.lsp.config("*", {
 
 vim.lsp.enable({
   "awk_ls",
-  "bashls",
+  -- "bashls",
+  "shuck",
   "jqls",
   "texlab",
   "lemminx",
