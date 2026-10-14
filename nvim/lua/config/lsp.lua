@@ -11,6 +11,7 @@ vim.lsp.enable({
   "awk_ls",
   -- "bashls",
   "shuck",
+  -- "shell-lsp",
   "jqls",
   "texlab",
   "lemminx",
