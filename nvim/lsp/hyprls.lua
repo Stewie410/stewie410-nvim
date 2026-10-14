@@ -7,8 +7,4 @@ end
 return {
   cmd = { cmd, "--stdio" },
   filetypes = { "hyprlang" },
-  root_markers = {
-    ".git",
-    ".svn",
-  },
 }

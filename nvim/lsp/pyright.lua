@@ -48,8 +48,6 @@ return {
     "requirements.txt",
     "Pipfile",
     "pyrightconfig.json",
-    ".git",
-    ".svn",
   },
   settings = {
     python = {

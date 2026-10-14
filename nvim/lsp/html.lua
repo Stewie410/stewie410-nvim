@@ -6,12 +6,25 @@ end
 ---@type vim.lsp.Config
 return {
   cmd = { cmd, "--stdio" },
-  filetypes = { "html", "templ" },
-  root_markers = { "package.json", ".git", ".svn" },
+  filetypes = {
+    "html",
+    "templ",
+    "tmpl",
+  },
+  root_markers = {
+    "package.json",
+  },
   settings = {},
   init_options = {
     provideFormatter = true,
-    embeddedLanguages = { css = true, javascript = true },
-    configurationSection = { "html", "css", "javascript" },
+    embeddedLanguages = {
+      css = true,
+      javascript = true,
+    },
+    configurationSection = {
+      "html",
+      "css",
+      "javascript",
+    },
   },
 }

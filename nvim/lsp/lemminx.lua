@@ -13,8 +13,4 @@ return {
     "xslt",
     "svg",
   },
-  root_markers = {
-    ".git",
-    ".svn",
-  },
 }

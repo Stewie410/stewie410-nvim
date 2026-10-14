@@ -107,8 +107,6 @@ return {
     on_dir(M.find_root(bufnr, {
       "go.work",
       "go.mod",
-      ".git",
-      ".svn",
     }))
   end,
 }

@@ -10,8 +10,6 @@ return {
   root_markers = {
     ".vimrc",
     ".vim",
-    ".git",
-    ".svn",
   },
   init_options = {
     isNeovim = true,
@@ -28,8 +26,6 @@ return {
         "nvim",
         "autoload",
         "plugin",
-        ".git",
-        ".svn",
       },
     },
     suggest = { fromVimruntime = true, fromRuntimepath = true },

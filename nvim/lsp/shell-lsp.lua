@@ -14,8 +14,6 @@ return {
 		"ksh",
 	},
 	root_markers = {
-		".git",
-		".svn",
 		".shellcheckrc",
 	},
 }

@@ -13,8 +13,7 @@ return {
 		"zsh",
 	},
 	root_markers = {
-		".git",
-		".svn",
 		".shuck.toml",
+		".shellcheckrc",
 	},
 }

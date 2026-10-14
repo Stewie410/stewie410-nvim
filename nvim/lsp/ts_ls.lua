@@ -22,10 +22,6 @@ return {
       "pnpm-lock.yaml",
       "bun.lockb",
       "bun.lock",
-      {
-        ".git",
-        ".svn",
-      },
     })
 
     --exclude deno

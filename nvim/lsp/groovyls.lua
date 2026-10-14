@@ -10,8 +10,6 @@ return {
   filetypes = { "groovy" },
   root_markers = {
     ".jenkinsfile",
-    ".git",
-    ".svn",
   },
   settings = {
     groovy = {

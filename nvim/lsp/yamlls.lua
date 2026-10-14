@@ -15,8 +15,6 @@ return {
   },
   root_markers = {
     ".github",
-    ".git",
-    ".svn",
   },
   settings = {
     redhat = { telemetry = { enabled = false } },

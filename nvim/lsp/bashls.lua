@@ -27,8 +27,4 @@ return {
     "sh",
     "zsh",
   },
-  root_markers = {
-    ".git",
-    ".svn",
-  },
 }

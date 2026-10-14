@@ -7,8 +7,4 @@ end
 return {
   cmd = { cmd, "lsp", "stdio" },
   filetypes = { "toml" },
-  root_markers = {
-    ".git",
-    ".svn",
-  },
 }

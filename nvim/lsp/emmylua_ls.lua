@@ -23,8 +23,6 @@ return {
     "selene.toml",
     "selene.yml",
     ".emmyrc.json",
-    ".git",
-    ".svn",
   },
   settings = {
     Lua = {

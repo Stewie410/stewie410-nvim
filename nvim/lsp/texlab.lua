@@ -165,8 +165,6 @@ return {
     ".texlabroot",
     "texlabroot",
     "Tectonic.toml",
-    ".git",
-    ".svn",
   },
   settings = {
     texlab = {

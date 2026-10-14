@@ -17,8 +17,6 @@ return {
   root_markers = {
     ".obsidian",
     ".moxide.toml",
-    ".git",
-    ".svn",
   },
   on_attach = function(client, bufnr)
     local buf_cmd = vim.api.nvim_buf_create_user_command
