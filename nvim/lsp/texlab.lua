@@ -166,33 +166,6 @@ return {
     "texlabroot",
     "Tectonic.toml",
   },
-  settings = {
-    texlab = {
-      rootDirectory = nil,
-      build = {
-        executable = "latexmk",
-        args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
-        onSave = false,
-        forwardSearchAfter = false,
-      },
-      forwardSearch = {
-        executable = nil,
-        args = {},
-      },
-      chktex = {
-        onOpenAndSave = false,
-        onEdit = false,
-      },
-      diagnosticsDelay = 300,
-      latexFormatter = "latexindent",
-      latexindent = {
-        ["local"] = nil,
-        modifyLineBreaks = false,
-      },
-      bibtexFormatter = "texlab",
-      formatterLineLength = 80,
-    },
-  },
   on_attach = function()
     local buf_cmd = vim.api.nvim_buf_create_user_command
 

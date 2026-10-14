@@ -24,13 +24,5 @@ return {
     "selene.yml",
     ".emmyrc.json",
   },
-  settings = {
-    Lua = {
-      completion = {
-        callSnippet = "Disable",
-        keywordSnippet = "Disable",
-      },
-    },
-  },
   workspace_required = false,
 }

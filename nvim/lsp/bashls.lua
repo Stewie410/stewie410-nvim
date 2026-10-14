@@ -7,21 +7,6 @@ end
 ---@type vim.lsp.Config
 return {
   cmd = { cmd, "start" },
-  settings = {
-    bashIde = {
-      shellcheckArguments = {
-        -- "--check-sourced",
-        -- "--color=never",
-        "--norc",
-      },
-      shfmt = {
-        binaryNextLine = true,
-        caseIndent = true,
-        funcNextLine = false,
-        spaceRedirects = true,
-      },
-    },
-  },
   filetypes = {
     "bash",
     "sh",

@@ -21,12 +21,4 @@ return {
     "selene.toml",
     "selene.yml",
   },
-  settings = {
-    Lua = {
-      completion = {
-        callSnippet = "Disable",
-        keywordSnippet = "Disable",
-      },
-    },
-  },
 }

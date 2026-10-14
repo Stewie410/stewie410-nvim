@@ -49,15 +49,6 @@ return {
     "Pipfile",
     "pyrightconfig.json",
   },
-  settings = {
-    python = {
-      analysis = {
-        autoSearchPaths = true,
-        useLibraryCodeForTypes = true,
-        diagnosticMode = "openFilesOnly",
-      },
-    },
-  },
   on_attach = function()
     local buf_cmd = vim.api.nvim_buf_create_user_command
 
