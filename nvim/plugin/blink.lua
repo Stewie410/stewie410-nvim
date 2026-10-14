@@ -2,16 +2,17 @@ vim.api.nvim_create_autocmd({ "PackChanged" }, {
 	callback = function(ev)
 		local name, kind = ev.data.name, ev.data.kind
 		if name == "blink.cmp" and (kind == "install" or kind == "update") then
-			vim.system({ "cargo", "build", "--release" }, { cwd = ev.data.path })
+			---@diagnostic disable-next-line: undefined-field
+			require("blink.cmp").build():pwait()
 		end
 	end,
 	desc = "Build blink.cmp",
 })
 
 vim.pack.add({
-	{ src = "https://github.com/saghen/blink.cmp",    version = "v1" },
+	"https://github.com/saghen/blink.lib",
 	{ src = "https://github.com/saghen/blink.compat", version = "main" },
-	-- "https://github.com/saghen/blink.lib",
+	{ src = "https://github.com/saghen/blink.cmp",    version = "main" },
 	"https://github.com/rafamadriz/friendly-snippets",
 	"https://github.com/mikavilpas/blink-ripgrep.nvim",
 	"https://github.com/nvim-mini/mini.icons",
@@ -19,7 +20,9 @@ vim.pack.add({
 	"https://github.com/folke/lazydev.nvim",
 })
 
-require("blink.cmp").setup({
+---@module "blink.cmp"
+---@type blink.cmp.Config
+local opts = {
 	appearance = {
 		use_nvim_cmp_as_default = true,
 		nerd_font_variant = "mono",
@@ -131,7 +134,7 @@ require("blink.cmp").setup({
 	},
 	fuzzy = {
 		-- TODO: fix fuzzy_rust?
-		implementation = "lua",
+		implementation = "prefer_rust_with_warning",
 	},
 	cmdline = {
 		keymap = {
@@ -140,11 +143,14 @@ require("blink.cmp").setup({
 		},
 		completion = {
 			menu = {
-				---@diagnostic disable-next-line: unused-local
-				auto_show = function(ctx)
+				auto_show = function(_)
 					return vim.fn.getcmdtype() == ":"
 				end,
 			},
 		},
 	},
-})
+}
+
+---@diagnostic disable-next-line: undefined-field
+require("blink.cmp").build():pwait()
+require("blink.cmp").setup(opts)
