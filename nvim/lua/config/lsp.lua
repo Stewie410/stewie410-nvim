@@ -1,5 +1,4 @@
 vim.lsp.config("*", {
-  -- capabilities = require("util.lsp.capabilities").with_blink(),
   capabilities = require("util.lsp.capabilities").native(),
   root_markers = {
     ".git",

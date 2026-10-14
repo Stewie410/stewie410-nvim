@@ -45,15 +45,14 @@ end
 ---@param capabilities lsp.ClientCapabilities?
 ---@return lsp.ClientCapabilities
 function M.with_blink(capabilities)
-  capabilities = capabilities or {}
-  local status_ok, blink = pcall(require, "blink.cmp")
-  if not status_ok then
+  local ok, blink = pcall(require, "blink.cmp")
+  if not ok then
     vim.notify("LSP: Missing blink.cmp: fallback to native capabilities", vim.log.levels.WARN)
-    return M.native(capabilities)
+    return M.native(capabilities or {})
   end
 
   local builtin = blink.get_lsp_capabilities()
-  return vim.tbl_deep_extend("force", builtin, M.default, capabilities or {})
+  return vim.tbl_deep_extend("force", {}, builtin, M.default, capabilities or {})
 end
 
 return M
