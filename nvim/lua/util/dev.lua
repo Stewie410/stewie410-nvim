@@ -9,6 +9,15 @@ function M.prefer_local(local_path, remote_path)
   return vim.uv.fs_stat(path) and path or remote_path
 end
 
+---Check if development path exists
+---@param name string plugin dirname
+---@return boolean
+function M.exists(name)
+  local path = vim.fs.normalize(vim.fn.stdpath("config") .. "/pack/dev/opt/" .. name)
+  local ok, _ = pcall(vim.uv.fs_stat, path)
+  return ok
+end
+
 ---Load a local plugin directory (prepend to RTP)
 ---Sources 'path/plugin/**/*.{vim,lua}' & 'path/after/plugin/**/*.{vim,lua}'
 ---See ':h initialization' Step 11
