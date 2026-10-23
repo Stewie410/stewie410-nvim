@@ -33,6 +33,11 @@ vim.lsp.enable({
   "ls_lsp",
 })
 
+vim.diagnostic.config({
+  virtual_lines = true,
+  severity_sort = true,
+})
+
 ---@diagnostic disable-next-line: param-type-mismatch
 vim.api.nvim_create_autocmd({ "LspAttach" }, {
   group = vim.api.nvim_create_augroup("lsp.attach", {}),
