@@ -34,7 +34,7 @@ vim.lsp.enable({
 })
 
 vim.diagnostic.config({
-  virtual_lines = true,
+  virtual_text = true,
   severity_sort = true,
 })
 
@@ -90,8 +90,11 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
       vim.cmd.split(vim.lsp.log.get_filename())
     end, { desc = "Open lsp.log in a :split" })
 
-    vim.api.nvim_buf_create_user_command(args.buf, "LSPC", function()
-      print(vim.inspect(vim.lsp.get_clients()))
-    end, { desc = "View active LSP client(s)" })
+    vim.api.nvim_buf_create_user_command(args.buf, "LspClient", function()
+      local human = vim.split(vim.inspect(vim.lsp.get_clients()), "\n")
+      vim.cmd.split("new")
+      vim.api.nvim_buf_set_lines(vim.api.nvim_get_current_buf(), 0, -1, false, human)
+      vim.notify("prefer :checkhealth vim.lsp", vim.log.levels.DEBUG)
+    end, { desc = "View attached lsp clients" })
   end,
 })
