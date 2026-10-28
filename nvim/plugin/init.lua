@@ -1,6 +1,3 @@
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-
 vim.o.encoding = "UTF-8"
 vim.o.mouse = "a"
 vim.o.switchbuf = "usetab"
@@ -17,15 +14,6 @@ vim.g.loaded_netrwPlugin = 1
 vim.g.netrw_banner = 0
 
 vim.g.gitblame_enabled = 0
-
--- limit ShaDa for startuptime
-vim.o.shada = "'100,<50,s10,:1000,/100,@100,h"
-
--- Enable all ft plugisn & syntax for better startuptime
-vim.cmd("filetype plugin indent on")
-if vim.fn.exists("syntax_on") ~= 1 then
-  vim.cmd("syntax enable")
-end
 
 vim.o.background = "dark"
 vim.o.showmode = false
@@ -110,6 +98,5 @@ vim.o.completetimeout = 100
 
 -- dbext workaround
 vim.g.omni_sql_default_compl_type = 'syntax'
--- }}}
 
 require("util.clipboard").setup()
