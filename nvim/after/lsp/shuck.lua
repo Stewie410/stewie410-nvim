@@ -1,9 +1,12 @@
+---@module "lsp.settings.shuck"
+
 ---@type vim.lsp.Config
 return {
 	root_markers = {
 		".shuck.toml",
 		".shellcheckrc",
 	},
+	---@type lsp.settings.shuck
 	settings = {
 		shuck = {
 			format = {

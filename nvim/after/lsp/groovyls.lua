@@ -1,5 +1,8 @@
+---@module "lsp.settings.groovyls"
+
 ---@type vim.lsp.Config
 return {
+	---@type lsp.settings.groovyls
 	settings = {
 		groovy = {
 			classpath = {

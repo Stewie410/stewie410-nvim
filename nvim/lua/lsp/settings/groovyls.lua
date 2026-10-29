@@ -1,0 +1,22 @@
+---@meta
+
+---@class _.lsp.settings.groovyls.Groovy
+---@field java? _.lsp.settings.groovyls.groovy.Java
+---Java/JDK configuration.
+---@field classpath? string[]
+---Sets custom classpath to .jar files.
+---
+---```lua
+---default = {}
+---```
+---
+---@class _.lsp.settings.groovyls.groovy.Java
+---@field home? string
+---Sets custom JDK path.
+---
+---```lua
+---default = vim.env.JAVA_HOME
+---```
+
+---@class lsp.settings.groovyls
+---@field groovy? _.lsp.settings.groovyls.Groovy

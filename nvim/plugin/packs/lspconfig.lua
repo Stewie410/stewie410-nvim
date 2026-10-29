@@ -1,7 +1,7 @@
 vim.pack.add({ "https://github.com/neovim/nvim-lspconfig" })
 
 vim.lsp.config("*", {
-	capabilities = require("util.lsp.capabilities").native(),
+	capabilities = require("lsp.capabilities").native(),
 	root_markers = {
 		".git",
 		".svn",

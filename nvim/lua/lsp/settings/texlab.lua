@@ -1,0 +1,339 @@
+---@meta
+
+---@alias _.lsp.settings.texlab.completion.Matcher
+---| "fuzzy" Fuzzy string matching (case sensitive)/
+---| "fuzzy-ignore-case" Fuzzy string matching (case insensitive)
+---| "prefix" Filter out items that do not start with the search text (case sensitive)
+---| "prefix-ignore-case" Filter out items that do not start with the search text (case insensitive)
+
+---@alias _.lsp.settings.texlab.hover.Symbols
+---| "glyph" If available, the command is shown using a unicode character
+---| "image" If available, a markdown image preview is returned. If not, the `glyph` method is tried next.
+---| "none" No hover is shown
+
+---@class _.lsp.settings.TeXLab
+---@field build? _.lsp.settings.texlab.Build
+---@field auxDirectory? string
+---(DEPRECATED) Defines the directory containing the build artifacts. Note that you need to set the output directory to `latex.build.args` too, if you want to change the build directory. In this case, use the `-outdir` flag for `latexmk`.
+---
+---```lua
+---default = "."
+---```
+---@field forward? _.lsp.settings.texlab.ForwardSearch
+---@field chktex? _.lsp.settings.texlab.ChkTex
+---@field diagnosticsDelay? integer
+---Delay in milliseconds before reporting diagnostics.
+---
+---```lua
+---default = 300
+---```
+---@field diagnostics? _.lsp.settings.texlab.Diagnostics
+---@field symbols? _.lsp.settings.texlab.Symbols
+---@field formatterLineLength? integer
+---Defines the maximum amount of characters per line when formatting BibTeX files, or `0` to disable.
+---
+---```lua
+---default = 80
+---```
+---@field bibtexFormatter? "texlab"|"latexindent"|"none"
+---Defines the formatter to use for BibTeX formatting.
+---
+---```lua
+---default = "texlab"
+---```
+---@field latexFormatter? "texlab"|"latexindent"|"tex-fmt"|"none"
+---Defines the formatter to use for LaTeX formatting. Note that `texlab` is not yet implemented.
+---
+---```lua
+---default = "latexindent"
+---```
+---@field latexindent? _.lsp.settings.texlab.LatexIndent
+---@field completion? _.lsp.settings.texlab.Completion
+---@field hover? _.lsp.settings.texlab.Hover
+---@field inlayHints? _.lsp.settings.texlab.InlayHints
+---@field experimental? _.lsp.settings.texlab.Experimental
+---
+---@class _.lsp.settings.texlab.Build
+---Document build settings
+---@field args? string[]
+---Defines additional arguments that are passed to the configured LaTeX build too. Note that flags and their arguments need to be separate elements in this array. To pass the arguments `-foo bar` to a build too, `latex.build.args` needs to be `{ "-foo", "bar" }`. The palceholder `%f` will be replaced by the server.
+---
+---```lua
+---default = {
+---  "-pdf",
+---  "-interaction=nonstopmode",
+---  "-synctex=1",
+---  [[%f]],
+---}
+---```
+---@field forwardSearchAfter? boolean
+---Set this property to `true` if you want to execute a forward search after a build.
+---
+---```lua
+---default = false
+---```
+---@field onSave? boolean
+---Set this property to `true` if you want to compile the project after saving a file.
+---
+---```lua
+---default = false
+---```
+---@field useFileList? boolean
+---When `true`, the server will use the `.fls` files produced by the TeX engine as an additional input for the project detection. Note that enabling this property might have an impact on performance.
+---
+---```lua
+---default = false
+---```
+---@field auxDirectory? string
+---When not using `latexmk`, provides a way to define the directory containing the `.aux` files. Note that you need to set the aux directory in `latex.build.args` too. When using a `latexmkrc` file, `texlab` will automatically infer the correct setting.
+---
+---```lua
+---default = "."
+---```
+---@field logDirectory? string
+---When not using `latexmk`, provides a way to define the directory containing the build log files. Note that you need to change the output directory in your build arguments too. When using a `latexmkrc` file, `texlab` will automatically infer the correct setting.
+---
+---```lua
+---default = "."
+---```
+---@field pdfDirectory? string
+---When not using `latexmk`, provides a way to define the directory containing the output files. Note that you need to set the output directory in `latex.build.args` too. When using a `latexmkrc` file, `texlab` will automatically infer the correct setting.
+---
+---```lua
+---default = "."
+---```
+---@field filename? string
+---Allows overriding the default file name of the build artifact. This setting is used to find the correct PDF file to open during forward search.
+---
+---```lua
+---default = nil
+---```
+---
+---@class _.lsp.settings.texlab.ForwardSearch
+---Forward Search settings
+---@field executable? string
+---Defines the executable for the PDF previewer. The previewer needs to support `SyncTeX`.
+---
+---```lua
+---default = nil
+---```
+---@field args? string[]
+---Defines additional arguments that are passed to the configured previewer to perform the forward search. The placeholders `%f, %p, %l` wil be replaced by the server.
+---
+---Placeholders:
+---  - `%f`: The path of the current TeX file.
+---  - `%p`: The path of the current PDF file.
+---  - `%l`: The current line number.
+---
+---```lua
+---default = nil
+---```
+---
+---@class _.lsp.settings.texlab.ChkTex
+---`chktex` settings
+---@field onOpenAndSave? boolean
+---Lint using `chktex` after opening and saving a file.
+---
+---```lua
+---default = false
+---```
+---@field onEdit? boolean
+---Lint using `chktex` after editing a file.
+---
+---```lua
+---default = false
+---```
+---@field additionalArgs? string[]
+---Additional command line arguments that are passed to `chktex` after editing a file. Don't redefine the `-I` and `-f` flags as they are set by the server.
+---
+---```lua
+---default = {}
+---```
+---
+---@class _.lsp.settings.texlab.Diagnostics
+---Diagnostics settings
+---@field allowedPatterns? string[]
+---A list of regular expressions used to filter the list of reported diagnostics. If specified, only diagnostics that match *at least one* of the specified patterns are sent to the client. See also `texlab.diagnostics.ignoredPatterns`.
+---
+---*Hint*: If both `allowedPatterns` and `ignoredPatterns` are set, then allowed patterns are applied first. Afterwards, the results are filtered with the ignored patterns.
+---
+---```lua
+---default = {}
+---```
+---@field ignoredPatterhs? string[]
+---A list of regular expressions used to filter the list of reported diagnostics. If specified, only diagnostics that match *none* of the specified patterns are sent to the client. See also `texlab.diagnostics.allowedPatterns`.
+---
+---```lua
+---default = {}
+---```
+---
+---@class _.lsp.settings.texlab.Symbols
+---Document Symbols settings
+---@field allowedPatterns? string[]
+---A list of regular expressions used to fitler the list of reported document symbols. If specified, only symbols that match *at least one* of the specified patterns are sent to the client. Symbols are filtered recursively so nested symbols can still be sent to the client even though the parent node is removed from the results. See also `texlab.symbols.ignoredPatterns`.
+---
+---*Hint*: If both `allowedPatterns` and `ignoredPatterns` are set, then allowed patterns are applied first. Afterwards, the results are filtered with the ignored patterns.
+---
+---```lua
+---default = {}
+---```
+---@field ignoredPatterns? string[]
+---A list of regular expressions used to filter the list of reported document symbols. If specified, only symbols that match *none* of the specific patterns are sent to the client. See also `texlab.symbols.allowedPatterns`.
+---
+---```lua
+---default = {}
+---```
+---@field customEnvironments? _.lsp.settings.texlab.symbols.EnvironmentOptions[]
+---A list of tables that allows extending the list of environments that are part of the documnet symbols.
+---
+---```lua
+---default = {}
+---```
+---
+---@class _.lsp.settings.texlab.symbols.EnvironmentOptions
+---@field name string The name of the environment.
+---@field displayName? string The name shown in document symbols. By default, title case is used.
+---@field label? boolean If set, the server will try to match a label to environment and append its number.
+---
+---@class _.lsp.settings.texlab.LatexIndent
+---`latexindent` settings
+---@field local? string
+---Defines the path of a file containing the `latexindent` configuration. This corresponds to the `--local=file.yaml` flag of `latexindent`. By default, the configurationg inside the project root directory is used.
+---
+---```lua
+---default = nil
+---```
+---@field modifyLineBreaks? boolean
+---Modifies linebreaks before, during, and at the end of code blocks when formatting with `latexindent`. This corresponds to the `--modifylinebreaks` flag of `latexindent`.
+---
+---```lua
+---default = false
+---```
+---@field replacement? "-r"|"-rv"|"-rr"
+---Defines an additional replacement flag.
+---
+---```lua
+---default = nil
+---```
+---
+---@class _.lsp.settings.texlab.Completion
+---Completion settings
+---@field matcher? _.lsp.settings.texlab.completion.Matcher
+---Modifies the algorithm used to filter the completion items returned to the client.
+---
+---```lua
+---default = "fuzzy-ignore-case"
+---```
+---
+---@class _.lsp.settings.texlab.Hover
+---Hover settings
+---@field symbols? _.lsp.settings.texlab.hover.Symbols
+---Modifies the way symbol-like commands (e.g. `\epsilon`) are displayed during a hover request.
+---
+---```lua
+---default = "image"
+---```
+---
+---@class _.lsp.settings.texlab.InlayHints
+---Inlay Hints settings
+---@field labelDefinitions? boolean
+---When enabled, the server will return inlay hints for `\label`-like commands.
+---
+---```lua
+---default = true
+---```
+---@field labelReferences? boolean
+---When enabled, the server will return inlay hints for `\ref`-like commands.
+---
+---```lua
+---default = true
+---```
+---@field maxLentgh? integer
+---When set, the server will truncate the text of the inlay hints to the specified length.
+---
+---```lua
+---default = nil
+---```
+---
+---@class _.lsp.settings.texlab.Experimental
+---Experimental settings, use at your own risk
+---@field mathEnvironments? string[]
+---Allows extending the list of environments which the server consideres as math environments. For example, `align*` or `equation`.
+---
+---```lua
+---default = {}
+---```
+---@field enumEnvironments? string[]
+---Allows extending the list of environments which the server considers as enumeration environments. For example, `enumerate` or `itemize`.
+---
+---```lua
+---default = {}
+---```
+---@field verbatimEnvironments? string[]
+---Allows extending the list of environments which the server considers as verbatim environments. For example, `minted` or `listling`. This can be used to suppress diagnostics from environments taht do not contain LaTeX code.
+---
+---```lua
+---default = {}
+---```
+---@field citationCommands? string[]
+---Allows extending the list of commands which the server considers as citation commands, such as `\cite`.
+---
+---*Hint*: Additional commands need to be written **without** a leading `\` (e.g. `foo` instead of `\foo`).
+---
+---```lua
+---default = {}
+---```
+---@field labelDefinitionCommands? string[]
+---Allows extending the list of `\label`-like commands.
+---
+---*Hint*: Additional commands need to be written **without** a leading `\` (e.g. `foo` instead of `\foo`).
+---
+---```lua
+---default = {}
+---```
+---@field labelReferenceCommands? string[]
+---Allows extending the list of `\ref`-like commands.
+---
+---*Hint*: Additional commands need to be written **without** a leading `\` (e.g. `foo` instead of `\foo`).
+---
+---```lua
+---default = {}
+---```
+---@field labelReferenceRangeCommands? string[]
+---Allows extending the list of `\crefrange`-like commands.
+---
+---*Hint*: Additional commands need to be written **without** a leading `\` (e.g. `foo` instead of `\foo`).
+---
+---```lua
+---default = {}
+---```
+---@field labelDefinitionPrefixes? table<string, string>[]
+---Allows associating a label definition command with a custom prefix. Consider:
+---
+---```latex
+---\newcommand{\thm}[1]{\label{thm:#1}}
+---\thm{foo}
+---```
+---
+---Then setting `texlab.experimental.labelDefinitionPrefixes` to `{{ thm: "thm:" }}` and adding "thm" to `texlab.experimental.labelDefinitionCommands` will make the server recognize the `thm:foo` label.
+---
+---```lua
+---default = {}
+---```
+---@field labelReferencePrefixes? table<string, string>[]
+---Allows associating a label reference command with a custom prefix. See `texlab.experimental.labelDefinitionPrefixes` for more details.
+---
+---```lua
+---default = {}
+---```
+---@field glossaryReferenceCommands? string[]
+---Allows extending the list of `\gls`-like commands.
+---
+---*Hint*: Additional commands need to be written **without** a leading `\` (e.g. `foo` instead of `\foo`).
+---
+---```lua
+---default = {}
+---```
+
+---@class lsp.settings.texlab
+---@field texlab? _.lsp.settings.TeXLab

@@ -1,0 +1,926 @@
+---@meta
+
+---@alias _.lsp.settings.shuck.Shell
+---| "sh"
+---| "bash"
+---| "dash"
+---| "ksh" linter-only, because the formatter has no corresponding grammar.
+---| "mksh"
+---| "zsh"
+
+---@alias _.lsp.settings.shuck.Rule
+---| "ALL" all rules
+---| _.lsp.settings.shuck.rule.Correctness
+---| _.lsp.settings.shuck.rule.Performance
+---| _.lsp.settings.shuck.rule.Portability
+---| _.lsp.settings.shuck.rule.Security
+---| _.lsp.settings.shuck.rule.Style
+
+---@alias _.lsp.settings.shuck.rule.Correctness
+---| "C001" unused assignment (SC2034)
+---| "C002" dynamic source path (SC1090)
+---| "C003" untracked source file (SC1091)
+---| "C004" unchecked directory change (SC2164)
+---| "C005" single quoted literal (SC2016)
+---| "C006" unassigned variable reference (SC2154)
+---| "C007" find output to xargs (SC2038)
+---| "C008" trap string expansion (SC2064)
+---| "C009" quoted bash regex (SC2076)
+---| "C010" mixed short circuit chain (SC2015)
+---| "C011" line oriented input (SC2013)
+---| "C012" glob as argument (SC2035)
+---| "C013" find output loop (SC2044)
+---| "C014" local top level (SC2168)
+---| "C015" sudo redirection order (SC2024)
+---| "C016" stray closing keyword (SC1089)
+---| "C017" constant comparison test (SC2050)
+---| "C018" loop control outside loop (SC2105)
+---| "C019" literal unary string test (SC2157)
+---| "C020" truthy literal set (SC2078)
+---| "C021" constant case subject (SC2194)
+---| "C022" empty test (SC2212)
+---| "C023" leading zero arithmetic (SC2080)
+---| "C024" assignment spacing (SC1007)
+---| "C025" positional ten braces (SC1037)
+---| "C027" bare done word (SC1010)
+---| "C030" missing bracket space (SC1019)
+---| "C031" missing space before bracket close (SC1020)
+---| "C032" jammed test bracket (SC1035)
+---| "C033" indented here doc end (SC1039)
+---| "C034" unterminated if (SC1046)
+---| "C035" missing fi (SC1047)
+---| "C036" broken test end (SC1073)
+---| "C037" broken test parse (SC1072)
+---| "C038" else if (SC1075)
+---| "C039" open double quote (SC1078)
+---| "C040" linebreak in test (SC1080)
+---| "C041" c style comment (SC1127)
+---| "C042" c prototype fragment (SC1132)
+---| "C043" bad redirection fd order (SC2210)
+---| "C044" bare glob path (SC2211)
+---| "C045" diff marker line (SC2215)
+---| "C046" pipe to kill (SC2216)
+---| "C047" invalid exit status (SC2242)
+---| "C048" case pattern var (SC2254)
+---| "C049" tautology chain (SC2252)
+---| "C050" arith redirection target (SC2257)
+---| "C051" duplicate redirect (SC2261)
+---| "C052" assign special zero (SC2280)
+---| "C053" spacey assign
+---| "C054" bare slash marker
+---| "C055" pattern with variable (SC2295)
+---| "C056" status capture after branch test (SC2319)
+---| "C057" subst with redirect (SC2328)
+---| "C058" suibst with redirect err (SC2327)
+---| "C059" redirect to command name (SC2238)
+---| "C060" non absolute shebang (SC2239)
+---| "C061" template brace in command (SC2288)
+---| "C062" nested parameter expansion (SC2264)
+---| "C063" overwritten function (SC2329)
+---| "C064" test missing thing (SC1049)
+---| "C065" else without then (SC2271)
+---| "C066" missing semicolon before brace (SC2272)
+---| "C067" empty function body (SC2273)
+---| "C068" bare closing brace (SC2274)
+---| "C069" backslash before closing backtick (SC1101)
+---| "C070" positional param as operator (SC1102)
+---| "C071" double paren grouping (SC1105)
+---| "C072" unicode quote in string (SC1110)
+---| "C073" indented shebang (SC1114)
+---| "C074" space after hash bang (SC1115)
+---| "C075" shebang not on first line (SC1128)
+---| "C076" commented continuation line (SC1143)
+---| "C077" subshell in arithmetic (SC2290)
+---| "C078" unqouted globs in find (SC2014)
+---| "C080" glob in grep pattern (SC2022)
+---| "C081" glob in string comparison (SC2053)
+---| "C082" escaped negation in test (SC2057)
+---| "C083" glob in find solution (SC2061)
+---| "C084" unquoted grep regex (SC2062)
+---| "C085" stderr before stdout redirect (SC2069)
+---| "C086" greater than in test (SC2071)
+---| "C087" string comparison for version (SC2072)
+---| "C088" mixed and or in condition
+---| "C089" quoted command in test
+---| "C090" glob in test comparison (SC2081)
+---| "C091" tilde in string comparison (SC2088)
+---| "C092" if $command (SC2091)
+---| "C093" backtick in command position (SC2092)
+---| "C094" redirect clobbers input (SC2094)
+---| "C095" assignment looks like comparison (SC2100)
+---| "C096" suspicious bracket glob (SC2102)
+---| "C097" function called without args (SC2120)
+---| "C098" set flags without dashes (SC2121)
+---| "C099" quoted array slice (SC2124)
+---| "C100" quoted bash source (SC2128)
+---| "C101" ifs set to literal `\n` (SC2141)
+---| "C102" glob in test directory (SC2144)
+---| "C103" find `-or` without grouping (SC2146)
+---| "C104" non-shell syntax in script (SC2333)
+---| "C105" export with position params (SC2163)
+---| "C106" append to array as string (SC2336)
+---| "C107" $? after command (SC2181)
+---| "C108" unset associative array element (SC2184)
+---| "C109" mapfile process substitution (SC2339)
+---| "C111" $@ in string compare (SC2198)
+---| "C112" array slice in comparison (SC2199)
+---| "C114" glob with expansion in loop (SC2231)
+---| "C116" assignment to numeric variable (SC2270)
+---| "C117" plus prefix in assignment (SC2276)
+---| "C118" malformed arithmetic in condition (SC1076)
+---| "C119" redirect before pipe (SC2260)
+---| "C120" `expr` substring in test (SC2308)
+---| "C121" string compared with `-eq` (SC2309)
+---| "C122" `-a` flag in double bracket (SC2331)
+---| "C123" function references unset param (SC2119)
+---| "C124" unreachable after exit (SC2317)
+---| "C125" cd without error check in func (SC2103)
+---| "C126" continue outside loop in func (SC2104)
+---| "C127" unused heredoc (SC2370)
+---| "C128" case glob reachability (SC2221)
+---| "C129" default case before glob (SC2222)
+---| "C130" append with escaped quotes (SC2089)
+---| "C131" variable as command name (SC2090)
+---| "C132" env prfix expansion only (SC2098)
+---| "C133" array to string conversion (SC2178)
+---| "C134" getopts option not in case (SC2213)
+---| "C135" case arm not in getopts (SC2214)
+---| "C136" local cross reference (SC2318)
+---| "C137" unicode singlq-quote in single-quotes (SC1112)
+---| "C138" heredoc missing end (SC1044)
+---| "C139" spaced assignment (SC2387)
+---| "C140" bad var name (SC2282)
+---| "C141" loop without end (SC2389)
+---| "C142" missing `done` in for-loop (SC2390)
+---| "C143" dangling `else` (SC2391)
+---| "C144" heredoc closzer not alone (SC1041)
+---| "C145" misquoted heredoc close (SC1042)
+---| "C146" `until` missing `do` (SC2396)
+---| "C148" broken assoc key (SC2399)
+---| "C150" subshell local assignment (SC2030)
+---| "C151" comma array elements (SC2054)
+---| "C155" subshell side-effect (SC2031)
+---| "C156" possible variable misspelling (SC2153)
+---| "C157" `if` bracket glued (SC1069)
+---| "C158" implicit global in function
+---| "C159" mutable global
+---| "C160" unanchored source path
+---| "C161" function called before defined (SC2218)
+---| "C162" extra masked returns (SC2312)
+
+---@alias _.lsp.settings.shuck.rule.Performance
+---| "P001" `expr` arithmetic (SC2003)
+---| "P002" grep count pipeline (SC2126)
+---| "P003" single test subshell (SC2233)
+---| "P004" subshell test group (SC2235)
+
+---@alias _.lsp.settings.shuck.rule.Portability
+---| "X001" double bracket in `sh` (SC3010)
+---| "X002" test quality operator (SC3014)
+---| "X003" local variable in `sh` (SC3043)
+---| "X004" function keyword (SC2113)
+---| "X005" bash case fallthrough (SC2127)
+---| "X006" process substitution (SC3001)
+---| "X007" ansi C quoting (SC3003)
+---| "X008" standalone arithmetic (SC3006)
+---| "X009" `select` loop (SC3008)
+---| "X010" brace expansion (SC3009)
+---| "X011" here-string (SC3011)
+---| "X012" ampersand redirection (SC3020)
+---| "X013" array assignment (SC3030)
+---| "X014" coproc (SC3032)
+---| "X015" `let` command (SC3042)
+---| "X016" `declare` command (SC3044)
+---| "X017" trap err (SC3047)
+---| "X018" indirect expansion (SC3053)
+---| "X019" array reference (SC3054)
+---| "X020" brace fd redirection (SC3022)
+---| "X021" pipefail option (SC3040)
+---| "X022" `wait` option (SC3045)
+---| "X023" substring expansion (SC3057)
+---| "X024" uppercase expansion (SC3059)
+---| "X025" replacement expansion (SC3060)
+---| "X026" bash file slurp (SC3034)
+---| "X027" echo flags (SC3037)
+---| "X028" tr lower range (SC2018)
+---| "X029" tr upper range (SC2019)
+---| "X030" echo backslash escapes (SC2028)
+---| "X031" source built-in sh (SC3046)
+---| "X032" printf `%q` formation in `sh` (SC3050)
+---| "X033" `if-elif` bash test
+---| "X035" function params in `sh` (SC1065)
+---| "X036" zsh redir pipe (SC1070)
+---| "X037" extglob case (SC1074)
+---| "X038" zsh brace `if` (SC1140)
+---| "X039" zsh `always` block (SC1141)
+---| "X040" array subscript test (SC2202)
+---| "X041" array subscript condition
+---| "X042" sourced with args (SC2240)
+---| "X043" zsh flag expansion (SC2296)
+---| "X044" nested zsh substitution (SC2298)
+---| "X045" `+=` append (SC2298)
+---| "X046" extglob in test (SC1036)
+---| "X047" mutli var foor-loop (SC1058)
+---| "X048" extglob in case pattern (SC2277)
+---| "X049" zsh prompt bracket
+---| "X050" `csh` syntax in `sh` (SC1088)
+---| "X051" zsh nested expansion (SC2082)
+---| "X052" `function` keyword in `sh` (SC2112)
+---| "X053" `$0` assigned a value
+---| "X054" extglob in `sh` (SC3002)
+---| "X055" `$"string"` in `sh` (SC3005)
+---| "X056" C-style for-loop in `sh` (SC3005)
+---| "X057" `$[...]` in `sh` (SC3007)
+---| "X058" `>` or `<` in double bracket (SC3012)
+---| "X059" `=~` in `sh` (SC3015)
+---| "X060" `-v` in `sh` test (SC3016)
+---| "X061" `-a` in `sh` test (SC3017)
+---| "X062" C-Style arithmetic in `sh` (SC3018)
+---| "X063" `>&` redirect in `sh` (SC3021)
+---| "X065" caret negation in bracket (SC3026)
+---| "X066" `|&` in `sh` (SC3073)
+---| "X067" hyphenated function name (SC3033)
+---| "X068" errexit trap in `sh` (SC3041)
+---| "X069" signal name in trap (SC3048)
+---| "X070" base prefix in arithmetic (SC3052)
+---| "X071" array keys in `sh` (SC3055)
+---| "X072" unset pattern in `sh` (SC3062)
+---| "X073" option test in `sh` (SC3062)
+---| "X074" sticky-bit test in `sh` (SC3067)
+---| "X075" ownership test in `sh` (SC3067)
+---| "X076" zsh parameter flag (SC2300)
+---| "X077" nested default expansion (SC3083)
+---| "X078" zsh array subscript in case (SC2195)
+---| "X079" zsh parameter index flag (SC2301)
+---| "X080" source inside function in `sh` (SC3051)
+---| "X081" `$*` or `$@` in `sh` (SC3058)
+---| "X082" bash feature too new
+---| "X083" bash feature too old
+
+---@alias _.lsp.settings.shuck.rule.Security
+---| "K001" `rm` glob on variable path (SC2115)
+---| "K002" `ssh` local expansion (SC2029)
+---| "K003" `eval` on array (SC2294)
+---| "K004" `find -exec` or `-execdir` with shell (SC2156)
+---| "K006" `rm` rootish target
+---| "K007" `chmod` world-writeable, sensitive path
+---| "K008" fork-bomb pattern
+
+---@alias _.lsp.settings.shuck.rule.Style
+---| "S001" unquoted argument expansion (SC2086)
+---| "S002" raw input backslash preservation (SC2162)
+---| "S003" loop from command output (SC2045)
+---| "S004" unqouted command substitution (SC2046)
+---| "S005" legacy backticks (SC2006)
+---| "S006" legacy arithmetic expansion (SC2007)
+---| "S007" `printf` format variable (SC2059)
+---| "S008" unqouted array expansion (SC2068)
+---| "S009" echoed command substitution (SC2005)
+---| "S010" `export` command subsitution (SC2155)
+---| "S011" compound test operator (SC2155)
+---| "S012" `ps | grep` pipeline (SC2009)
+---| "S013" `ls | grep` pipeline (SC2010)
+---| "S014" unqoted `$*` (SC2048)
+---| "S015" quoted `$*` loop (SC2066)
+---| "S016" `echo` inside command substitution (SC2116)
+---| "S017" unqouted array split (SC2206)
+---| "S018" command output array split (SC2207)
+---| "S019" `grep` output in test (SC2143)
+---| "S020" single iteration loop (SC2043)
+---| "S021" positional args in string (SC2145)
+---| "S022" avoid `let` builtin (SC2219)
+---| "S023" needless `\_` (SC1001)
+---| "S024" `\'` in single-quoted string (SC1003)
+---| "S025" literal backslash (SC1004)
+---| "S028" suspect closing quote (SC1079)
+---| "S029" literal braces (SC1083)
+---| "S030" heredoc end space (SC1118)
+---| "S031" trailing shellcheck directive (SC1118)
+---| "S032" bare command-name assignment (SC2209)
+---| "S033" here-doc attached to `echo` (SC2217)
+---| "S034" array index arithmetic (SC2321)
+---| "S035" arithmetic score line (SC2323)
+---| "S036" bare `read` (SC3061)
+---| "S037" redundant spaces in `echo` (SC2291)
+---| "S038" redundant return status (SC2265)
+---| "S039" literal backslash in single quotes (SC1011)
+---| "S040" literal control escape (SC1012)
+---| "S041" function body without braces (SC1064)
+---| "S042" `IFS==` ambiguity (SC1097)
+---| "S043" missing shebang line (SC2148)
+---| "S044" `echo | sed` substitution (SC2001)
+---| "S045" dollar in arithmetic (SC2004)
+---| "S046" `ls | xargs` pipeline (SC2011)
+---| "S047" `ls` in substitution (SC2012)
+---| "S049" unquoted `tr` range (SC2021)
+---| "S050" unquoted word between quotes (SC2026)
+---| "S051" unquoted `tr` class (SC2060)
+---| "S052" unqoted variable in test (SC2070)
+---| "S053" duplicate shebang flag (SC2096)
+---| "S054" `su` without `-l` or `-c` (SC2117)
+---| "S055" glob assigned to variable (SC2125)
+---| "S056" command substitution in alias (SC2142)
+---| "S057" function in alias (SC2142)
+---| "S058" unquoted path in `mkdir`
+---| "S059" deprecated `tempfile` command (SC2186)
+---| "S060" `egrep` deprecated (SC2196)
+---| "S061" `fgrep` deprecated (SC2197)
+---| "S062" default value in colon-assign (SC2223)
+---| "S064" `xargs -i` deprecated (SC2267)
+---| "S065" `x$var` in test (SC2268)
+---| "S066" `local` and `declare` combined (SC2316)
+---| "S067" leading `*` in `grep` pattern (SC2063)
+---| "S068" trap signal numbers (SC2172)
+---| "S069" `getopts` invalid flag handler (SC2220)
+---| "S070" double-quote nesting (SC2027)
+---| "S071" env prefix command only (SC2097)
+---| "S072" linebreak before and (SC1133)
+---| "S073" spaced tabstrip close (SC1040)
+---| "S074" background command followed by `;` (SC1045)
+---| "S075" combine appends (SC2129)
+---| "S076" mixed quote word (SC2140)
+---| "S077" brace variable before bracket (SC1087)
+---| "S078" shebang not bash
+---| "S079" shebang form mismatch
+---| "S080" script size threshold
+---| "S081" missing file description
+---| "S082" todo format
+---| "S083" missing function doc
+---| "S084" function doc content
+---| "S085" missing main function
+---| "S086" top-level code not minimal
+---| "S087" constants not at top
+---| "S088" functions not grouped
+---| "S089" function name case
+---| "S090" package function namespace
+---| "S091" variable name case
+---| "S092" constant name case
+---| "S093" alias definition
+---| "S094" undocumented globals
+---| "S095" missing cli usage
+---| "S096" error not on stderr
+---| "S097" suppression without reason
+---| "S098" blanket suppression
+---| "S099" `which` vs `command -v` (SC2230)
+---| "S100" quote-safe variables (SC2248)
+---| "S101" require variable braces (SC2250)
+---| "S102" require double brackets (SC2292)
+---| "S103" avoid nullary conditions (SC2243)
+---| "S104" missing default case (SC2249)
+
+---@alias _.lsp.settings.shuck.Selector _.lsp.settings.shuck.Rule|string
+
+---@class _.lsp.settings.Shuck
+---@field check? _.lsp.settings.shuck.Check
+---@field format? _.lsp.settings.shuck.Format
+---@field ["per-file-shell"]? table<string, _.lsp.settings.shuck.Shell>
+---Select the shell dialect used to parse matching files in `shuck check`, `shuck format` and the language server. Patterns are resolved relative to the project root, and overlapping patterns cannot select different dialects for one file. An explicit `shuck format --dialect` override takes precedence
+---
+---```lua
+---default = {}
+---```
+---@field lint? _.lsp.settings.shuck.Lint
+---@field run? _.lsp.settings.shuck.Run
+---
+---@class _.lsp.settings.shuck.Check
+---File-level analysis behavior for `shuck check`.
+---@field embedded? boolean
+---Lint supported embedded shell scritps in non-shell files, including GitHub Actions workflow `run` blocks and composite action steps.
+---
+---```lua
+---default = true
+---```
+---
+---@class _.lsp.settings.shuck.Format
+---Formatter file-selection and style options for `shuck format` and editor formatting.
+---@field ["binary-next-line"]? boolean
+---Place binary list and pipeline operators at the start of continuation lines when a command is split.
+---
+---```lua
+---default = false
+---```
+---@field exclude? string[]
+---Do not format files matching these project-relative glob patterns.
+---
+---```lua
+---default = {}
+---```
+---@field ["function-next-line"]? boolean
+---Place function opening braces on the line after the function name.
+---
+---```lua
+---default = false
+---```
+---@field ["indent-style"]? "tab"|"space"
+---Indent with tabs or spaces.
+---
+---```lua
+---default = "tab"
+---```
+---@field ["indent-width"]? integer
+---Number of spaces to use for each indentation level when indent-style is `space`.
+---
+---```lua
+---default = 8
+---```
+---@field ["keep-padding"]? boolean
+---Preserve existing horizontal padding in source regions where the formatter can do so safely.
+---
+---```lua
+---default = false
+---```
+---@field ["never-split"]? boolean
+---Prefer compact layouts and avoid optional line splitting.
+---
+---```lua
+---default = false
+---```
+---@field ["space-redirects"]? boolean
+---Insert spaces between redirection operators and their targets where the shell grammar allows it.
+---
+---```lua
+---default = false
+---```
+---@field ["switch-case-indent"]? boolean
+---Indent `case` branch bodies one level deeper than the branch pattern.
+---
+---```lua
+---default = false
+---```
+---
+---@class _.lsp.settings.shuck.Lint
+---Rule selection, per-file ignores, fix eligibility, and rule-specific behavior for `shuck check`.
+---@field ["extend-fixable"]? _.lsp.settings.shuck.Rule[]
+---Add rules to the set that can receive automatic fixex when `shuck check --fix` is enabled.
+---
+---```lua
+---default = {}
+---```
+---@field ["extend-per-file-ignores"]? table<string, _.lsp.settings.shuck.Rule[]>
+---Add more per-file ignores without replacing the existing `per-file-ignores` table.
+---
+---```lua
+---default = {}
+---```
+---@field ["extend-select"] _.lsp.settings.shuck.Selector[]
+---Enable additional rules or named selectors on top of the default or explicitly selected rule set.
+---
+---```lua
+---default = {}
+---```
+---@field fixable? _.lsp.settings.shuck.Selector[]
+---Replace the set of rules that can receive automatic fixes when fixes are available.
+---
+---```lua
+---default = { "ALL" }
+---```
+---@field ignore? _.lsp.settings.shuck.Rule[]
+---Remove rules from the active rule set.
+---
+---```lua
+---default = {}
+---```
+---@field ["per-file-ignores"]? table<string, _.lsp.settings.shuck.Selector[]>
+---Ignore selected rules for files that match a glob pattern.
+---
+---```lua
+---default = {}
+---```
+---@field select? _.lsp.settings.shuck.Selector[]
+---Repalce the default rule set with the selectors listed here, including named selectors such as `google`.
+---
+---```lua
+---local list = {}
+---for _, type in ipairs({ "Correctness", "Performance", "Performability", "Security" }) do
+---  list = vim.list_extend(list, lsp.settings.shuck.rule[type])
+---end
+---
+---default = list
+---```
+---@field unfixable? _.lsp.settings.shuck.Selector[]
+---Prevent selected rules from receiving automatic fixes, even when `--fix` is enabled.
+---
+---```lua
+---default = {}
+---```
+---@field contracts? _.lsp.settings.shuck.lint.Contracts
+---@field ["rule-options"]? _.lsp.settings.shuck.lint.RuleOptions
+---@field zsh? _.lsp.settings.shuck.lint.Zsh
+---
+---@class _.lsp.settings.shuck.lint.Contracts
+---Ambient contract settings for runtime behavior that cannot be recovered from the source graph alone.
+---@field ["well-known"]? boolean
+---Enable or disable Shuck's built-in ambient contract registry.
+---
+---```lua
+---default = true
+---```
+---@field disabled? string[]
+---Disable built-in ambient contracts by exact ID, by group selector, or with `*` for every built-in contract.
+---
+---```lua
+---default = {}
+---```
+---@field custom? _.lsp.settings.shuck.lint.contracts.Custom
+---
+---@class _.lsp.settings.shuck.lint.contracts.Custom
+---User-authored ambient contracts layered on top of, or in place of, the built-in registry.
+---@field id string
+---Stable identifier for the custom contract.
+---@field replaces? string[]
+---Built-in contract selectors that this custom contract replaces.
+---
+---```lua
+---default = {}
+---```
+---@field when "always"|_.lsp.settings.shuck.lint.contracts.custom.When
+---Activation for the contract, either "always" or specific activation criteria
+---@field files? string[]
+---Optional file globs that limit where the contract applies.
+---
+---```lua
+---default = {}
+---```
+---@field reads? string[]
+---Ambient names the activated runtime reads from the caller's environemnt
+---
+---```lua
+---default = {}
+---```
+---@field functions? _.lsp.settings.shuck.lint.contracts.custom.Function[]
+---Provided function contracts with caller reads and caller-visible sets.
+---
+---```lua
+---default = {}
+---```
+---@field consumes? _.lsp.settings.shuck.lint.contracts.custom.Consumes
+---@field provides? _.lsp.settings.shuck.lint.contracts.custom.Provides
+---
+---@class _.lsp.settings.shuck.lint.contracts.custom.When
+---Activation criteria for the custom contract
+---@field type string
+---@field framework string
+---@field plugin string
+---
+---@class _.lsp.settings.shuck.lint.contracts.custom.Function
+---@field name string function name
+---@field reads? string ambient names the function reads from the caller environment
+---@field sets? string ambient names the function sets in the caller environment
+---
+---@class _.lsp.settings.shuck.lint.contracts.custom.Consumes
+---Assignments that stay live because external runtime behavior consumes them.
+---@field names? string[]
+---Exact names consumed by external runtime behavior.
+---
+---```lua
+---defalt = {}
+---```
+---@field prefixes? string[]
+---Name prefixes consumed by external runtime behavior.
+---
+---```lua
+---default = {}
+---```
+---@field all? boolean
+---Treat every assignment in the file as externally consumed.
+---
+---```lua
+---default = false
+---```
+---
+---@class _.lsp.settings.shuck.lint.contracts.custom.Provides
+---Bindings made available by the activated runtime at file entry or activation time.
+---@field variables? string[]
+---Variables provided by the contract.
+---
+---```lua
+---default = {}
+---```
+---@field functions? string[]
+---Callable function names provided by the contract.
+---
+---```lua
+---default = {}
+---````
+---
+---@class _.lsp.settings.shuck.lint.RuleOptions
+---Rule-specific behavior overrides for diagnostics that intentionally support more than one analysis mode.
+---@field c001? _.lsp.settings.shuck.lint.RuleOptions.C001
+---@field c063? _.lsp.settings.shuck.lint.RuleOptions.C063
+---@field s078? _.lsp.settings.shuck.lint.RuleOptions.S078
+---@field s080? _.lsp.settings.shuck.lint.RuleOptions.S080
+---@field s081? _.lsp.settings.shuck.lint.RuleOptions.S081
+---@field s082? _.lsp.settings.shuck.lint.RuleOptions.S082
+---@field s083? _.lsp.settings.shuck.lint.RuleOptions.S083
+---@field s084? _.lsp.settings.shuck.lint.RuleOptions.S084
+---@field s085? _.lsp.settings.shuck.lint.RuleOptions.S085
+---@field c158? _.lsp.settings.shuck.lint.RuleOptions.C158
+---@field c159? _.lsp.settings.shuck.lint.RuleOptions.C159
+---@field c160? _.lsp.settings.shuck.lint.RuleOptions.C160
+---@field c161? _.lsp.settings.shuck.lint.RuleOptions.C161
+---
+---@class _.lsp.settings.shuck.lint.RuleOptions.C001
+---Behavior overrides for `C001`, unused assignment analysis
+---@field ["treat-indirect-expansion-targets-as-used"]? boolean
+---Treat scalar indirect-expansion targets, such as `${!name}`, as a use of the referenced target.
+---
+---```lua
+---default = false
+---```
+---
+---@class _.lsp.settings.shuck.lint.RuleOptions.C063
+---Behavior overrides for `C063`, overwritten and unreached function analysis.
+---@field ["report-unreached-nested-definitions"]? boolean
+---Report nested function definitions when no reachable direct call reaches the enclosing function scope before it exits.
+---
+---```lua
+---default = false
+---```
+---
+---@class _.lsp.settings.shuck.lint.RuleOptions.S078
+---Behavior overrides for `S078`, shebang shell policy.
+---@field ["allowed-shells"]? _.lsp.settings.shuck.Shell[]
+---Interpreter names accepted in shebangs for this project.
+---
+---```lua
+---default = { "bash" }
+---```
+---
+---@class _.lsp.settings.shuck.lint.RuleOptions.S079
+---Behavior overrides for `S079`, shebang invocation form policy.
+---@field ["allowed-forms"]? ("absolute-path"|"env-lookup")[]
+---Shebang invocation forms accepted for this project.
+---
+---```lua
+---default = { "env-lookup" }
+---```
+---@field ["allowed-paths"]? string[]
+---Exact shebang invocation strings accepted regarless of invocation form.
+---
+---```lua
+---default = { "/usr/bin/env bash" }
+---```
+---
+---@class _.lsp.settings.shuck.lint.RuleOptions.S080
+---Behavior overrides for `S080`, script size policy.
+---@field ["max-lines"]? integer
+---Maximum accepted line count for one script.
+---
+---```lua
+---default = 100
+---```
+---@field count? "physical"|"non-comment-non-blank"
+---Line-ocunting mode.
+---
+---```lua
+---default = "physical"
+---```
+---
+---@class _.lsp.settings.shuck.lint.RuleOptions.S081
+---Behavior overrides for `S081`, file description comments.
+---@field ["ignore-shebang-only-files"]? boolean
+---Do not report scripts whose only content is a shebang line.
+---
+---```lua
+---default = false
+---```
+---
+---@class _.lsp.settings.shuck.lint.RuleOptions.S082
+---Behavior overrides for `S082`, action comment formatting.
+---@field kinds? string[]
+---Comment markers checked at the start of a comment.
+---
+---```lua
+---default = { "TODO", "FIXME", "XXX" }
+---```
+---@field ["require-owner"]? boolean
+---Require a checked marker to be followed immediately by a parenthesized owner.
+---
+---```lua
+---default = true
+---```
+---@field ["require-message"]? boolean
+---Require a checked marker to include non-empty eplanatory text.
+---
+---```lua
+---default = true
+---```
+---
+---@class _.lsp.settings.shuck.lint.RuleOptions.S083
+---Behavior overrides for `S083`, missing function documentation.
+---@field ["require-for"]? "all"|"exported"|"long"|"parameterized"
+---Choose which functions require a leading documentation comment.
+---
+---```lua
+---default = "long"
+---```
+---@field ["long-function-line-threshold"]? integer
+---Minimum body line count for lsp.settings.shuc.lint["rule-options"].s083["require-for"]->"long".
+---
+---```lua
+---default = 10
+---```
+---
+---@class _.lsp.settings.shuck.lint.RuleOptions.S084
+---Behavior overrides for `S084`, function documentation content
+---@field ["require-globals"]? boolean
+---Require a Globals section when a documented function reads or writes non-local variables.
+---
+---```lua
+---default = true
+---```
+---@field ["require-arguments"]? boolean
+---Require an Arguments section when a documented function uses position parameters.
+---
+---```lua
+---default = true
+---```
+---@field ["require-outputs"]? boolean
+---Require an Outputs section when a documented function writes with `echo` or `printf`.
+---
+---```lua
+---default = true
+---```
+---@field ["require-returns"]? boolean
+---Require a Returns section when a documented function has an explicit return code.
+---
+---```lua
+---default = true
+---```
+---
+---@class _.lsp.settings.shuck.lint.RuleOptions.S085
+---Behavior overrides for `S085`, missing main entrypoint analysis.
+---@field ["non-trivial-line-threshold"]? integer
+---Minimum source line count before the script is checked.
+---
+---```lua
+---default = 30
+---```
+---@field ["non-trivial-function-count"]? integer
+---Minimum function definition count before the script is checked.
+---
+---```lua
+---default = 2
+---```
+---@field ["main-name"]? string
+---Function name expected as the final top-level call in non-trivial scripts.
+---
+---```lua
+---default = "main"
+---```
+---
+---@class _.lsp.settings.shuck.lint.RuleOptions.C158
+---Behavior overrides for `C158`, implicit global assignment analysis.
+---@field ["treat-readonly-as-documented"]? boolean
+---Treat top-level readonly declarations as documented intentional globals.
+---
+---```lua
+---default = true
+---```
+---@field ["treat-export-as-intentional"]? boolean
+---Treat top-level exported bindings as intentional globals.
+---
+---```lua
+---default = true
+---```
+---
+---@class _.lsp.settings.shuck.lint.RuleOptions.C159
+---Behavior overrides for `C159`, mutable global analysis.
+---@field ["allow-conditional-init"]? boolean
+---Allow self-referential default initializers, such as `name="${name:-value}"` without treating them as global mutations.
+---
+---```lua
+---default = true
+---```
+---
+---@class _.lsp.settings.shuck.lint.RuleOptions.C160
+---Behavior overrides for `C160`, unanchored source path analysis.
+---@field ["allowed-anchors"]? string[]
+---Path prefix expressions accepted as script-directory anchors for source or dot commands.
+---
+---```lua
+---default = {
+---  [[${BASH_SOURCE[0]%/*}]],
+---  [[$(dirname "$0")]],
+---  [[$(dirname "${BASH_SOURCE[0]}")]],
+---}
+---```
+---
+---@class _.lsp.settings.shuck.lint.RuleOptions.C161
+---Behavior overrides for `C161`, function call orderin analysis.
+---@field ["ignore-after-source"]? boolean
+---Ignore later calls after a source command because the sourced file may define functions.
+---
+---```lua
+---default = true
+---```
+---
+---@class _.lsp.settings.shuck.lint.Zsh
+---ZSH-specific lint behavior for `shuck check`.
+---@field plugins? _.lsp.settings.shuck.lint.zsh.Plugins
+---
+---@class _.lsp.settings.shuck.lint.zsh.Plugins
+---ZSH plugin-resolution settings used to import real plugin entrypoints into semantic analysis.
+---@field resolution? boolean
+---Enable or disable zsh plugin resolution while leaving ordinary source closure enabled.
+---
+---```lua
+---default = true
+---```
+---@field roots? table<string, string>
+---Fallback framework roots keyed by logical framework name.
+---
+---```lua
+---default = {}
+---```
+---@field ["plugin-loads"]? _.lsp.settings.shuck.lint.zsh.plugins.Loader[]
+---Additional logical plugin loads to attach to matching files
+---
+---```lua
+---default = {}
+---```
+---@field ["theme-loads"]? _.lsp.settings.shuck.lint.zsh.plugins.Loader[]
+---Additional logical theme loads to attach to matching files.
+---
+---```lua
+---default = {}
+---```
+---@field entrypoints? _.lsp.settings.shuck.lint.zsh.plugins.Entrypoint[]
+---Raw plugin entrypoint paths to import for matching files
+---
+---```lua
+---default = {}
+---```
+---
+---@class _.lsp.settings.shuck.lint.zsh.plugins.Loader
+---@field pattern string glob pattern
+---@field framework string framework name
+---@field name string
+---
+---@class _.lsp.settings.shuck.lint.zsh.plugins.Entrypoint
+---@field pattern string glob pattern
+---@field paths string[]
+---
+---@class _.lsp.settings.shuck.Run
+---Interpreter defaults and managed shell version pins for `shuck run` and related commands.
+---@field shell? _.lsp.settings.shuck.Shell
+---Default managed shell to use when a script does not declare its own shell.
+---
+---```lua
+---default = nil
+---```
+---@field ["shell-version"]? string
+---Default version constraint to use when no script metadata or per-shell pin is more specific.
+---
+---```lua
+---default = "latest"
+---```
+---@field shells? _.lsp.settings.shuck.run.Shell
+---
+---@class _.lsp.settings.shuck.run.Shell
+---Per-shell version pins applied after the shell has been resolved for the current script.
+---@field bash? string
+---Version constract for Bash scripts.
+---
+---```lua
+---default = nil
+---```
+---@field gbash? string
+---Version constract for gbash scripts.
+---
+---```lua
+---default = nil
+---```
+---@field bashkit? string
+---Version constraint for Bashkit scripts.
+---
+---```lua
+---default = nil
+---```
+---@field zsh? string
+---Version constract for Zsh scripts.
+---
+---```lua
+---default = nil
+---```
+---@field dash? string
+---Version constraint for Dash scripts.
+---
+---```lua
+---default = nil
+---```
+---@field mksh? string
+---Version constract for mksh scripts.
+---
+---```lua
+---default = nil
+---```
+---@field busybox? string
+---Version constract for BusyBox scripts on Linux hosts.
+---
+---```lua
+---default = nil
+---```
+
+---@class lsp.settings.shuck
+---@field shuck? _.lsp.settings.Shuck
