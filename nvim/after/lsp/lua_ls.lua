@@ -9,6 +9,9 @@ return {
 				callSnippet = "Disable",
 				keywordSnippet = "Disable",
 			},
+			hint = {
+				enable = true,
+			},
 		},
 	},
 }
