@@ -12,15 +12,6 @@ require("lazydev").setup({
 				"wezterm",
 			},
 		},
-		{
-			path = "pandoc-types-annotations",
-			mods = {
-				"pandoc-types-annotations",
-			},
-			words = {
-				"pandoc",
-			},
-		},
 	},
 })
 
