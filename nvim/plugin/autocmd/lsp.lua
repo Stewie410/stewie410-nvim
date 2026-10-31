@@ -1,33 +1,53 @@
 local ag = {
 	def = vim.api.nvim_create_augroup("lsp.attach", { clear = true }),
 	cmd = vim.api.nvim_create_augroup("lsp.attach.cmd", { clear = true }),
+	fmt = vim.api.nvim_create_augroup("lsp.format", { clear = true }),
 }
+
+local function get_client(ev)
+	local client = vim.lsp.get_client_by_id(ev.data.client_id)
+	if client == nil then
+		error(("lsp: failed to get client by id (buf[%d]): %s"):format(ev.buf, ev.data.client_id))
+	end
+	return client
+end
 
 -- setup
 vim.api.nvim_create_autocmd({ "LspAttach" }, {
+	desc = "LSP setup",
 	group = ag.def,
-	callback = function(ev)
-		local client = vim.lsp.get_client_by_id(ev.data.client_id)
-		assert(client, ("Cannot determine LSP Client in buf[%d]"):format(ev.buf))
-
+	callback = function()
 		vim.o.omnifunc = "v:lua.vim.lsp.omnifunc"
 		vim.lsp.codelens.enable(true)
+	end,
+})
 
-		local supports = {
-			cmp = client:supports_method("textDocument/completion"),
-			wait = client:supports_method("textDocument/willSaveWaitUntil"),
-			fmt = client:supports_method("textDocument/formatting"),
-		}
+vim.api.nvim_create_autocmd({ "LspAttach" }, {
+	desc = "LSP format",
+	group = ag.def,
+	callback = function(ev)
+		local client = get_client(ev)
 
-		if not supports.wait and supports.fmt then
-			vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-				group = vim.api.nvim_create_augroup("lsp.format", {}),
-				buffer = ev.buf,
-				callback = function()
-					vim.lsp.buf.format({ bufnr = ev.buf, id = client.id, timeout_ms = 1000 })
-				end,
-			})
+		if client:supports_method("textDocument/willSaveWaitUntil") then
+			return
 		end
+
+		if not client:supports_method("textDocument/formatting") then
+			return
+		end
+
+		vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+			desc = "buf-local lsp formatting",
+			group = ag.fmt,
+			buffer = ev.buf,
+			callback = function()
+				vim.lsp.buf.format({
+					bufnr = ev.buf,
+					id = client.id,
+					timeout_ms = 1000,
+				})
+			end,
+		})
 	end,
 })
 
