@@ -12,6 +12,18 @@ require("lazydev").setup({
 				"wezterm",
 			},
 		},
+		{
+			path = "pandoc-luals-annotations",
+			words = {
+				"pandoc",
+			},
+		},
+		{
+			path = vim.fn.stdpath("config") .. "/lua/types/pandoc",
+			words = {
+				"pandoc",
+			},
+		},
 	},
 })
 
