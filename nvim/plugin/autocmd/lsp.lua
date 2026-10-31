@@ -2,6 +2,7 @@ local ag = {
 	def = vim.api.nvim_create_augroup("lsp.attach", { clear = true }),
 	cmd = vim.api.nvim_create_augroup("lsp.attach.cmd", { clear = true }),
 	fmt = vim.api.nvim_create_augroup("lsp.format", { clear = true }),
+	hl = vim.api.nvim_create_augroup("lsp.hilight", { clear = true }),
 }
 
 local function get_client(ev)
@@ -46,6 +47,36 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
 					id = client.id,
 					timeout_ms = 1000,
 				})
+			end,
+		})
+	end,
+})
+
+vim.api.nvim_create_autocmd({ "LspAttach" }, {
+	desc = "LSP Highlighting",
+	group = ag.hl,
+	callback = function(ev)
+		local client = get_client(ev)
+
+		if not client:supports_method("textDocument/documentHighlight") then
+			return
+		end
+
+		vim.api.nvim_create_autocmd({ "CursorHold", "CursorMovedI" }, {
+			desc = "buf-local lsp highlights",
+			group = ag.hl,
+			buffer = ev.buf,
+			callback = function()
+				vim.lsp.buf.document_highlight()
+			end,
+		})
+
+		vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+			desc = "buf-local lsp clear refs",
+			group = ag.hl,
+			buffer = ev.buf,
+			callback = function()
+				vim.lsp.buf.clear_references()
 			end,
 		})
 	end,
