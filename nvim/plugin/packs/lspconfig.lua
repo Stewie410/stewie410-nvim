@@ -1,7 +1,10 @@
-vim.pack.add({ "https://github.com/neovim/nvim-lspconfig" })
+vim.pack.add({
+	"https://github.com/neovim/nvim-lspconfig",
+	"https://github.com/saghen/blink.cmp",
+})
 
 vim.lsp.config("*", {
-	capabilities = require("lsp.capabilities").native(),
+	capabilities = require("lsp.capabilities").with_blink(),
 	root_markers = {
 		".git",
 		".svn",
