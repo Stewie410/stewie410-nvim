@@ -22,6 +22,11 @@ require("lazydev").setup({
 			path = vim.fn.stdpath("config") .. "/lua/types/pandoc",
 			words = {
 				"pandoc",
+				"PANDOC_READER_OPTIONS",
+				"PANDOC_WRITER_OPTIONS",
+				"PANDOC_VERSION",
+				"PANDOC_API_VERSION",
+				"PANDOC_STATE",
 			},
 		},
 	},
