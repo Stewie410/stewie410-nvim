@@ -9,10 +9,6 @@ vim.o.modeline = true
 
 vim.o.timeoutlen = 300
 
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-vim.g.netrw_banner = 0
-
 vim.g.gitblame_enabled = 0
 
 vim.o.background = "dark"
