@@ -46,14 +46,6 @@ vim.o.fillchars = "eob: ,fold:╌"
 vim.o.listchars = "tab:  ,extends:»,nbsp:░,precedes:«,trail:·"
 vim.o.showbreak = "↪"
 
-vim.o.foldenable = false
-vim.o.foldlevel = 0
-vim.o.foldlevelstart = 0
-vim.o.foldmethod = "marker"
-vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.o.foldnestmax = 10
-vim.o.foldtext = ""
-
 vim.o.scrolloff = 10
 vim.o.sidescrolloff = 10
 
