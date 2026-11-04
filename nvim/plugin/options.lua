@@ -71,10 +71,6 @@ vim.o.iskeyword = "@,48-57,_,192-255,-"
 -- possibly followed by punctuation (. or `)`) followed by at least one space".
 vim.o.formatlistpat = [[^\s*[0-9\-\+\*]\+[\.\)]*\s\+]]
 
-vim.o.complete = ".,w,b,kspell"
-vim.o.completeopt = "menu,menuone,noselect"
-vim.o.completetimeout = 100
-
 -- dbext workaround
 vim.g.omni_sql_default_compl_type = 'syntax'
 
