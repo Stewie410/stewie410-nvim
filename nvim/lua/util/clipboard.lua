@@ -80,6 +80,7 @@ local tools = {
 			},
 		},
 	},
+	-- requires Windows to enable UTF-8 support for unicode to not get totally mangled
 	wsl = {
 		{
 			name = "wsl-clip",
