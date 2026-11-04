@@ -53,13 +53,6 @@ vim.o.autoindent = true
 vim.o.smartindent = true
 vim.o.formatoptions = "rqnl1j"
 
-vim.o.hlsearch = true
-vim.o.inccommand = "split"
-vim.o.smartcase = true
-vim.o.ignorecase = true
-vim.o.incsearch = true
-vim.o.infercase = true
-
 vim.o.tabstop = 4
 vim.o.softtabstop = 0
 vim.o.shiftwidth = 0
