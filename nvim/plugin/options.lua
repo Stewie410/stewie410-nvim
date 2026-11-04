@@ -9,8 +9,6 @@ vim.o.modeline = true
 
 vim.o.timeoutlen = 300
 
-vim.g.gitblame_enabled = 0
-
 vim.o.background = "dark"
 vim.o.showmode = false
 vim.o.termguicolors = true
