@@ -26,6 +26,6 @@ vim.o.cmdheight = 1
 vim.o.cmdwinheight = 1
 
 vim.o.list = false
-vim.o.fillchars = "eob: ,fold:Γòî"
-vim.o.listchars = "tab:  ,extends:┬╗,nbsp:Γûæ,precedes:┬½,trail:┬╖"
-vim.o.showbreak = "Γå¬"
+vim.o.fillchars = "eob: ,fold:╌"
+vim.o.listchars = "tab:  ,extends:»,nbsp:░,precedes:«,trail:·"
+vim.o.showbreak = "↪"
