@@ -41,5 +41,3 @@ vim.o.formatlistpat = [[^\s*[0-9\-\+\*]\+[\.\)]*\s\+]]
 
 -- dbext workaround
 vim.g.omni_sql_default_compl_type = 'syntax'
-
-require("util.clipboard").setup()
