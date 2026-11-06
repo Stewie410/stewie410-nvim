@@ -1,3 +1,5 @@
+assert(vim.fn.executable("tree-sitter") == 1, "nvim-treesitter: missing 'tree-sitter' cli in PATH")
+
 vim.api.nvim_create_autocmd({ "PackChanged" }, {
 	callback = function(ev)
 		local name, kind = ev.data.name, ev.data.kind
