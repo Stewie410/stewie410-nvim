@@ -16,3 +16,90 @@ vim.api.nvim_create_autocmd({ "PackChanged" }, {
 vim.pack.add({
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
 })
+
+-- ensure installed
+require("nvim-treesitter").install({
+	"awk",
+	"bash",
+	"bibtex",
+	"c",
+	"c_sharp",
+	"cmake",
+	"comment",
+	"css",
+	"diff",
+	"dockerfile",
+	"editorconfig",
+	"git_config",
+	"git_rebase",
+	"gitattributes",
+	"gitcommit",
+	"gitignore",
+	"go",
+	"gomod",
+	"gosum",
+	"gotmpl",
+	"gowork",
+	"groovy",
+	"html",
+	"html_tags",
+	"ini",
+	"java",
+	"javadoc",
+	"javascript",
+	"jq",
+	"jsdoc",
+	"json",
+	"latex",
+	"lua",
+	"luadoc",
+	"luap",
+	"luau",
+	"make",
+	"markdown",
+	"markdown_inline",
+	"mermaid",
+	"passwd",
+	"powershell",
+	"printf",
+	"promql",
+	"properties",
+	"psv",
+	"python",
+	"query",
+	"readline",
+	"regex",
+	"requirements",
+	"robots_txt",
+	"sql",
+	"ssh_config",
+	"templ",
+	"todotxt",
+	"toml",
+	"udev",
+	"vim",
+	"vimdoc",
+	"xcompose",
+	"xml",
+	"xresources",
+	"yaml",
+	"zsh",
+})
+
+-- enable highlighting
+vim.api.nvim_create_autocmd({ "FileType" }, {
+	desc = "enable treesitter",
+	callback = function()
+		local ok, _ = pcall(vim.treesitter.start)
+		if ok then
+			-- folding
+			vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+			vim.wo[0][0].foldmethod = "expr"
+
+			-- indents
+			vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+			vim.bo.autoindent = false
+			vim.bo.smartindent = false
+		end
+	end,
+})
