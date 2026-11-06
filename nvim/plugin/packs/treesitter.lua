@@ -14,7 +14,8 @@ vim.api.nvim_create_autocmd({ "PackChanged" }, {
 })
 
 vim.pack.add({
-	{ src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
+	"https://github.com/nvim-treesitter/nvim-treesitter",
+	"https://github.com/nvim-treesitter/nvim-treesitter-context",
 })
 
 -- ensure installed
@@ -91,17 +92,18 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 	desc = "enable treesitter",
 	callback = function()
 		local ok, _ = pcall(vim.treesitter.start)
-		if ok then
-			-- folding
-			vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
-			vim.wo[0][0].foldmethod = "expr"
-			vim.o.foldenable = false
-			vim.o.foldlevel = 20
-
-			-- indents
-			vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-			vim.bo.autoindent = false
-			vim.bo.smartindent = false
+		if not ok then
+			return
 		end
+		-- folding
+		vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+		vim.wo[0][0].foldmethod = "expr"
+		vim.o.foldenable = false
+		vim.o.foldlevel = 20
+
+		-- indents
+		vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+		vim.bo.autoindent = false
+		vim.bo.smartindent = false
 	end,
 })
