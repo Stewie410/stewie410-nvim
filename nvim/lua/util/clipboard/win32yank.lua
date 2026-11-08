@@ -1,5 +1,5 @@
 local function copy(lines)
-	vim.system({ "win32yank", "-i", "--crlf" }, { stdin = lines }):wait()
+	vim.system({ "win32yank", "-i", "--crlf" }, { stdin = lines })
 end
 
 local function paste()

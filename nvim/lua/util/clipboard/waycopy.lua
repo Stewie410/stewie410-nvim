@@ -1,5 +1,5 @@
 local function copy(lines)
-	vim.system({ "waycopy" }, { stdin = lines }):wait()
+	vim.system({ "waycopy" }, { stdin = lines })
 end
 
 local function paste()

@@ -1,6 +1,6 @@
 ---@param lines string[]
 local function copy(lines)
-	vim.system({ "clip" }, { stdin = lines }):wait()
+	vim.system({ "clip" }, { stdin = lines })
 end
 
 ---@param split? boolean

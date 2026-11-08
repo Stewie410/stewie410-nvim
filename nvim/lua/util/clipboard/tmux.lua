@@ -1,5 +1,5 @@
 local function copy(lines)
-	vim.system({ "tmux", "load-buffer", "-" }, { stdin = lines }):wait()
+	vim.system({ "tmux", "load-buffer", "-" }, { stdin = lines })
 end
 
 local function paste()

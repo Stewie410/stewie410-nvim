@@ -7,7 +7,7 @@ local function copy(primary)
 	end
 
 	return function(lines)
-		vim.system(cmd, { stdin = lines }):wait()
+		vim.system(cmd, { stdin = lines })
 	end
 end
 

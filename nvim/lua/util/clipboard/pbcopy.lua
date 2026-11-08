@@ -1,5 +1,5 @@
 local copy = function(lines)
-	vim.system({ "pbcopy" }, { stdin = lines }):wait()
+	vim.system({ "pbcopy" }, { stdin = lines })
 end
 
 local paste = function()
