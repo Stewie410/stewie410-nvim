@@ -5,9 +5,9 @@ local function in_path(name)
 end
 
 local function get_platform()
-	local name = string.lower(vim.uv.os_uname().sysname)
+	local name = vim.uv.os_uname().sysname:lower()
 
-	if string.find(string.lower(vim.uv.os_uname().release), "wsl2") then
+	if vim.uv.os_uname().release:lower():find("wsl2") then
 		name = "wsl"
 	elseif os.getenv("TMUX") ~= nil then
 		name = "tmux"
