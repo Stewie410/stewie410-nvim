@@ -1,0 +1,785 @@
+---@meta
+
+---@alias _.lsp.settings.ShellLsp.Dialect
+---| "bash"
+---| "zsh"
+---| "sh"
+---| "dash"
+---| "ksh"
+---| "busybox"
+
+---@alias _.lsp.settings.ShellLsp.Rule
+---| "ALL" all rules
+---| _.lsp.settings.ShellLsp.Rule.ShellCheck
+---| _.lsp.settings.ShellLsp.Rule.LSP
+---| _.lsp.settings.ShellLsp.Rule.Hadolint
+
+---@alias _.lsp.settings.ShellLsp.Rule.ShellCheck
+---| "SC1001" A backslash before an ordinary character outside quotes does nothing.
+---| "SC1003" A backslash cannot escape a single quote inside single quotes, so the quote ends the string.
+---| "SC1007" A space after = ends the assignment, so the variable is set to empty for the next command only.
+---| "SC1008" The shebang names an interpreter that is not a shell this linter recognises.
+---| "SC1010" A keyword is read as a plain word because no ; or line break comes before it.
+---| "SC1011" An apostrophe inside single quotes closes the string, leaving the rest outside the quotes.
+---| "SC1012" An escape like \\n or \\t outside quotes is just the letter, not a control character.
+---| "SC1014" Brackets around a command test the command's name as a string instead of running it.
+---| "SC1017" The file contains a literal carriage return, usually from Windows line endings.
+---| "SC1018" A Unicode space is not a plain space, so the shell does not split words on it.
+---| "SC1019" A unary test operator has no operand.
+---| "SC1020" A \] glued to the previous word is part of that word and does not end the test.
+---| "SC1021" An escaped \\) glued to the previous word does not close the group.
+---| "SC1026" A nested \[ does not group conditions inside \[ \].
+---| "SC1027" A comparison operator has no right-hand operand.
+---| "SC1034" A test opens with a single \[ but closes with \]\].
+---| "SC1035" A test bracket needs a space between it and the next word.
+---| "SC1037" $ followed by several digits expands only the first digit as a positional parameter.
+---| "SC1039" An indented terminator does not end the here-document.
+---| "SC1040" A terminator indented with spaces does not end a \<\<- here-document, which strips only tabs.
+---| "SC1064" A function body is not a compound command.
+---| "SC1071" A file run by an interpreter that is not a shell is not linted.
+---| "SC1075" else if starts a nested if that needs its own fi; elif was probably meant.
+---| "SC1076" \[ \] does not evaluate arithmetic, so an operator there is part of a word.
+---| "SC1077" An acute accent is used where a backtick was meant.
+---| "SC1078" A quote that spans several lines closes right before more text, which suggests it is unbalanced.
+---| "SC1079" A quote that looks like it opens a new string closes an earlier multi-line one.
+---| "SC1080" A \[ test continues on the next line without a backslash before the line break.
+---| "SC1081" Keywords are case sensitive, so a capitalised keyword runs as a command.
+---| "SC1082" A UTF-8 byte order mark at the start of the file makes the shell misread the first line.
+---| "SC1083" A brace here is a literal character, not part of an expansion or a block.
+---| "SC1084" The shebang is written !# instead of #!.
+---| "SC1087" $name\[ expands the variable and appends a literal bracket instead of indexing the array.
+---| "SC1090" A sourced file is only known at run time, so it cannot be followed.
+---| "SC1091" A sourced file was not found, so it is not followed.
+---| "SC1094" A sourced file has syntax errors, so what it defines may be missing.
+---| "SC1097" == in an assignment assigns a value starting with = instead of comparing.
+---| "SC1099" A # glued to a keyword makes one word, so the keyword is not recognised.
+---| "SC1100" A Unicode dash is used where a hyphen-minus test operator was meant.
+---| "SC1101" A backslash escapes trailing whitespace instead of the line break, so the command ends there.
+---| "SC1103" A shell directive names a shell this linter does not know.
+---| "SC1104" A first line that looks like a shebang is missing its #.
+---| "SC1107" A directive uses a key that does not exist.
+---| "SC1108" A test operator glued to its operand is part of the word, not a comparison.
+---| "SC1109" An HTML entity copied from a web page is used instead of the character itself.
+---| "SC1110" A curly quote is a literal character, not shell quoting.
+---| "SC1111" A curly double quote is a literal character inside double quotes or a here-document.
+---| "SC1112" A curly single quote is a literal character inside single quotes.
+---| "SC1113" A first line that looks like a shebang is missing its !.
+---| "SC1114" Whitespace before #! keeps the shebang from working.
+---| "SC1115" Whitespace between # and ! keeps the shebang from working.
+---| "SC1118" A here-document terminator followed by whitespace does not end the here-document.
+---| "SC1119" A here-document terminator followed by ) does not end the here-document.
+---| "SC1120" A here-document terminator followed by a comment does not end the here-document.
+---| "SC1121" A here-document terminator followed by an operator does not end the here-document.
+---| "SC1122" A here-document terminator followed by more text does not end the here-document.
+---| "SC1123" A directive stands in front of a keyword where it has no command to apply to.
+---| "SC1124" A directive in front of a case branch pattern has no effect.
+---| "SC1125" A disable list contains something that is not a check code or range.
+---| "SC1126" A directive placed after a command's words or inside a continued list is rejected by ShellCheck.
+---| "SC1127" A comment starts with // or a similar marker instead of #, so the line runs as a command.
+---| "SC1128" A shebang that is not on the first line has no effect.
+---| "SC1129" A ! glued to a keyword makes one word, so the keyword is not recognised.
+---| "SC1130" A : glued to a keyword makes one word, so the keyword is not recognised.
+---| "SC1131" elsif, elseif or a similar spelling is not a keyword; the shell only has elif.
+---| "SC1132" An unquoted & inside a word, such as in a URL, sends the command to the background.
+---| "SC1135" Closing quotes right after $ only to keep it literal is confusing.
+---| "SC1139" -a or -o joins test commands outside \[ \], where it is just another word.
+---| "SC1140" Words after the closing \] become arguments of the test.
+---| "SC1143" A commented-out line ends a continued command, so the lines below run separately.
+---| "SC1144" external-sources=true only takes effect in a .shellcheckrc file.
+---| "SC1145" external-sources is set to something other than true or false.
+---| "SC1146" extended-analysis is set to something other than true or false.
+---| "SC2000" echo piped to wc counts a string's length that ${#var} gives directly.
+---| "SC2001" sed runs on a single value that a ${var//pattern/replacement} expansion could handle.
+---| "SC2002" cat only feeds a file to the next command, which could read it directly.
+---| "SC2003" expr is an antiquated way to do arithmetic.
+---| "SC2004" The $ on a variable inside arithmetic is unnecessary.
+---| "SC2005" echo only repeats the output of a command substitution.
+---| "SC2006" Backtick command substitution is legacy syntax that nests and escapes poorly.
+---| "SC2007" $\[ \] is an obsolete arithmetic form.
+---| "SC2009" Grepping ps output also matches the grep itself.
+---| "SC2010" Filtering ls output with grep breaks on unusual file names.
+---| "SC2011" Piping ls output to xargs breaks on file names with spaces.
+---| "SC2012" Parsing ls output breaks on unusual file names.
+---| "SC2013" A for loop over command output splits it into words, not lines.
+---| "SC2014" An expansion in a find -exec command runs once before find starts, not once per file.
+---| "SC2015" A && B \|\| C is not if-then-else: C also runs when A succeeds and B fails.
+---| "SC2016" Single quotes keep $ and backticks literal, so nothing in them is expanded.
+---| "SC2017" Integer division truncates before a later multiplication, losing precision.
+---| "SC2018" The range a-z misses accented and other non-ASCII lowercase letters.
+---| "SC2019" The range A-Z misses accented and other non-ASCII uppercase letters.
+---| "SC2020" tr maps single characters, not words, so a repeated letter only uses its last mapping.
+---| "SC2021" Brackets around a tr range are matched as literal characters.
+---| "SC2022" In a regex, x\* repeats the character before it rather than matching anything after it.
+---| "SC2023" The time keyword only accepts -p, so other options need /usr/bin/time.
+---| "SC2024" sudo or doas does not apply to a redirection, which the shell opens with the caller's permissions.
+---| "SC2025" Terminal escape sequences in PS1 are not wrapped in \\\[ \\\], so bash miscounts the prompt's width.
+---| "SC2026" A word between single-quoted strings is not quoted.
+---| "SC2027" Quotes inside a string close and reopen it, leaving the inner part unquoted.
+---| "SC2028" echo does not reliably interpret backslash escapes.
+---| "SC2029" An expansion in an ssh command runs on the client, not on the server.
+---| "SC2030" A variable changed in a subshell loses the change when the subshell exits.
+---| "SC2031" A variable read here still has its value from before a change made in a subshell.
+---| "SC2032" A command that runs external programs is given a function this script defines.
+---| "SC2033" A command that runs external programs cannot see a shell function or alias.
+---| "SC2034" A variable is assigned but never read.
+---| "SC2035" A file matched by a glob may start with a dash and be read as an option.
+---| "SC2036" A pipeline stage that only assigns a variable pipes nothing.
+---| "SC2037" A command's output is meant to be assigned, but the value is a prefix assignment for the next word.
+---| "SC2038" Piping find output to xargs breaks on file names with spaces or newlines.
+---| "SC2041" A single-quoted loop item is one literal word, not a command whose output is iterated.
+---| "SC2042" Loop items are separated by spaces, not commas.
+---| "SC2043" A loop over a single constant item runs exactly once.
+---| "SC2044" Iterating over find output breaks on file names with spaces or newlines.
+---| "SC2045" Iterating over ls output breaks on file names with spaces or newlines.
+---| "SC2046" An unquoted command substitution is split into words and expanded as a glob.
+---| "SC2048" An unquoted $@ or ${array\[@\]} joins the elements and splits them again.
+---| "SC2049" =~ is given a glob, but it takes a regex.
+---| "SC2050" Both sides of a comparison are constant, so the test always has the same result.
+---| "SC2051" Braces are expanded before variables, so a range built from variables is not a range.
+---| "SC2053" An unquoted right-hand side of == or != in \[\[ \]\] is matched as a glob pattern.
+---| "SC2054" Array elements are separated by whitespace, so commas become part of the values.
+---| "SC2055" A value always differs from at least one of two others, so a != ... -o != ... test is always true.
+---| "SC2056" A value always differs from at least one of two others, so a != ... \|\| != ... list is always true.
+---| "SC2057" A comparison uses an operator that test does not understand.
+---| "SC2058" A test uses an operator that does not exist.
+---| "SC2059" A printf format contains an expansion, so data can be read as format directives.
+---| "SC2060" An unquoted tr set may be expanded as a glob before tr sees it.
+---| "SC2061" An unquoted find pattern may be expanded by the shell before find sees it.
+---| "SC2062" An unquoted grep pattern may be expanded as a glob before grep sees it.
+---| "SC2063" grep is given a glob, but it takes a regular expression.
+---| "SC2064" An expansion in a trap handler is expanded when the trap is set, not when it fires.
+---| "SC2065" \> or \< inside test is a file redirection, not a comparison.
+---| "SC2066" Double quotes make a loop list a single item, so the loop runs once.
+---| "SC2067" A find -exec action has no separate ; or + argument to end it.
+---| "SC2068" An unquoted array expansion splits its elements again.
+---| "SC2069" 2\>&1 placed before a file redirection still points stderr at the old target.
+---| "SC2070" -n with an unquoted operand inside \[ \] is true even when the value is empty.
+---| "SC2071" A string comparison operator is used to compare numbers.
+---| "SC2072" Shell tests compare integers only, not decimals.
+---| "SC2073" An unescaped \< or \> inside \[ \] is a redirection, not a comparison.
+---| "SC2074" =~ is used inside \[ \], which has no regex matching.
+---| "SC2075" \< or \> is escaped or quoted inside \[\[ \]\], where it must not be.
+---| "SC2076" A quoted right-hand side of =~ is matched literally instead of as a regex.
+---| "SC2077" A comparison without spaces around its operator only tests that the word is non-empty.
+---| "SC2078" A test of a constant string is always true.
+---| "SC2079" Shell arithmetic is integer only, so a decimal is not a valid number.
+---| "SC2080" A leading 0 makes a number octal, where 8 and 9 are not valid digits.
+---| "SC2081" \[ \] compares a glob pattern as literal text and never matches it.
+---| "SC2082" An expansion nested inside a parameter name does not compute the variable to expand.
+---| "SC2083" A space after ./ runs the current directory instead of the intended file.
+---| "SC2084" The result of an arithmetic expansion is run as a command.
+---| "SC2086" An unquoted expansion is split on whitespace and expanded as a glob.
+---| "SC2087" A here-document sent to ssh is expanded locally before it is sent.
+---| "SC2088" A quoted ~ is not expanded to the home directory.
+---| "SC2089" Quotes or backslashes stored in a value do not group words when it is expanded.
+---| "SC2090" Quotes or backslashes stored in a variable are passed on literally when it is expanded.
+---| "SC2091" The output of a $( ) command substitution is run as a command.
+---| "SC2092" The output of a backtick command substitution is run as a command.
+---| "SC2093" exec replaces the shell, so the commands after it only run if exec fails.
+---| "SC2094" A pipeline reads and writes the same file, which the output redirection truncates first.
+---| "SC2095" A command inside a while read loop reads stdin and may consume the loop's input.
+---| "SC2096" The kernel passes everything after the shebang interpreter as a single argument.
+---| "SC2097" A prefix assignment only affects the command's environment, not expansions on the same line.
+---| "SC2098" An expansion runs before a prefix assignment on the same line takes effect.
+---| "SC2099" Arithmetic written as separate words in an assignment is not evaluated.
+---| "SC2100" An arithmetic-looking value is assigned as a literal string.
+---| "SC2101" A character class like \[:digit:\] is not inside a second pair of brackets.
+---| "SC2102" A bracket expression lists the same character twice, which suggests it was meant to match numbers.
+---| "SC2103" Changing back with cd after commands can leave the script in the wrong directory if a cd fails.
+---| "SC2104" break or continue in a function does not leave the function.
+---| "SC2105" break or continue is used outside a loop.
+---| "SC2106" break or continue in a subshell only exits the subshell, not the surrounding loop.
+---| "SC2107" && is used inside \[ \], where it cannot combine tests.
+---| "SC2108" -a does not combine tests inside \[\[ \]\].
+---| "SC2109" \|\| is used inside \[ \], where it cannot combine tests.
+---| "SC2110" -o does not combine tests inside \[\[ \]\].
+---| "SC2111" ksh does not accept both the function keyword and () in one definition.
+---| "SC2112" The function keyword is not POSIX.
+---| "SC2113" The function keyword is not POSIX.
+---| "SC2114" A command removes a path recursively.
+---| "SC2115" A removal path built from expansions removes a top-level path if they are empty.
+---| "SC2116" echo only passes its arguments through to a command substitution.
+---| "SC2117" su starts an interactive shell, so the rest of the script waits until it exits.
+---| "SC2118" ksh reads \|& as starting a coprocess, not as a pipe of stdout and stderr.
+---| "SC2119" A function reads positional parameters, but this call passes none.
+---| "SC2120" A function reads positional parameters, but no call passes any arguments.
+---| "SC2121" set does not assign variables.
+---| "SC2122" \<= and \>= are not test operators.
+---| "SC2123" PATH is replaced with something that is not a list of directories.
+---| "SC2124" Assigning an array to a string joins its elements.
+---| "SC2125" Globs and brace expansions are not expanded in assignments.
+---| "SC2126" grep piped to wc -l counts matching lines that grep -c counts directly.
+---| "SC2127" A construct is used that only bash or ksh supports.
+---| "SC2128" Expanding an array without an index gives only its first element.
+---| "SC2129" Several commands in a row append to the same file, opening it each time.
+---| "SC2139" An expansion in an alias body is expanded when the alias is defined, not when it is used.
+---| "SC2140" Quotes inside a double-quoted word end one string and start another.
+---| "SC2141" An escape like \\n inside a quoted IFS value is a literal backslash and letter, not a control character.
+---| "SC2142" Aliases cannot take positional parameters.
+---| "SC2143" A test checks whether grep's output is empty instead of using its exit status.
+---| "SC2144" A file test operator is given a glob, which it does not expand into a list.
+---| "SC2145" Joining text with an array attaches the text only to its first and last elements.
+---| "SC2146" A find action only applies to the last -o branch.
+---| "SC2147" A quoted ~ in PATH is not expanded.
+---| "SC2148" Nothing names the shell the script targets.
+---| "SC2150" find -exec runs a program directly, not a shell command line.
+---| "SC2151" return or exit is given more than one status.
+---| "SC2152" return or exit is given a status that is not an integer from 0 to 255.
+---| "SC2153" A variable is never assigned, but one with a similar name is.
+---| "SC2154" A variable is read but never assigned in this script.
+---| "SC2155" Declaring and assigning in one command masks the status of the command substitution.
+---| "SC2156" find's {} is injected into the text of an inline script.
+---| "SC2157" A test operand always contains literal text, so the test always has the same result.
+---| "SC2158" \[ false \] only tests that the string false is non-empty, so it is always true.
+---| "SC2159" \[ 0 \] only tests that the string 0 is non-empty, so it is always true.
+---| "SC2160" \[ true \] does the same as running true.
+---| "SC2161" \[ 1 \] is always true.
+---| "SC2162" read without -r treats backslashes as escapes and drops them.
+---| "SC2163" export of $name exports the variable named by its value, not the variable itself.
+---| "SC2164" The commands after a failed cd run in the wrong directory.
+---| "SC2165" A nested loop reuses the outer loop's variable.
+---| "SC2166" -a or -o inside \[ \] is ambiguous and obsolescent.
+---| "SC2167" A nested loop overwrites the outer loop's variable.
+---| "SC2168" local is used outside a function.
+---| "SC2170" A numeric comparison operator is given an operand that is not a number.
+---| "SC2171" A closing bracket ends a test that was never opened.
+---| "SC2172" Signal numbers differ between systems.
+---| "SC2173" SIGKILL and SIGSTOP cannot be trapped.
+---| "SC2174" mkdir -p with -m only sets the mode of the deepest directory.
+---| "SC2175" A brace range given to eval unquoted is expanded before the variable is substituted.
+---| "SC2176" time on a pipeline is undefined in POSIX sh.
+---| "SC2177" time on a compound command is undefined in POSIX sh.
+---| "SC2178" Assigning a plain string to an array only replaces its first element.
+---| "SC2179" Appending a string to an array changes its first element instead of adding one.
+---| "SC2180" Bash arrays have one dimension, so a second subscript does not index into an element.
+---| "SC2181" $? is inspected after a command instead of testing the command directly.
+---| "SC2182" A printf format has no conversion specifiers, so its arguments are ignored.
+---| "SC2183" A printf format expects a different number of arguments than it is given.
+---| "SC2184" An unquoted argument to unset may have its index brackets expanded as a glob.
+---| "SC2185" find has no explicit starting path, which some versions require.
+---| "SC2186" tempfile is deprecated and missing from many systems.
+---| "SC2187" ash has no specification of its own, so the script is checked as dash.
+---| "SC2188" A redirection stands alone without a command.
+---| "SC2189" A pipeline element is only a redirection, with no command to feed.
+---| "SC2190" An element of an associative array has no key.
+---| "SC2191" An = in an array element is literal text rather than part of \[index\]=value.
+---| "SC2192" An array element has an index but no value.
+---| "SC2193" No string can match both sides of a comparison, so it never succeeds.
+---| "SC2194" The case word is a constant, so the same branch is taken every time.
+---| "SC2195" A case pattern can never match the case word.
+---| "SC2196" egrep is deprecated and missing from some systems.
+---| "SC2197" fgrep is deprecated and missing from some systems.
+---| "SC2198" \[ \] receives each element of an array as a separate word, which breaks the test.
+---| "SC2199" \[\[ \]\] joins an array expansion into one string.
+---| "SC2200" Brace expansion turns a \[ \] operand into several words.
+---| "SC2201" Brace expansion does not happen inside \[\[ \]\].
+---| "SC2202" A glob in a \[ \] operand can expand to several words.
+---| "SC2203" \[\[ \]\] does not expand a glob outside the right side of = and !=.
+---| "SC2204" ( ) runs a subshell, not a test.
+---| "SC2205" ( ) runs a subshell, not a comparison.
+---| "SC2206" An unquoted expansion is split into words and globbed when building an array.
+---| "SC2207" Command output is split on whitespace and globbed when building an array.
+---| "SC2208" The variable name given to -v is expanded as a glob.
+---| "SC2209" A command name is assigned as a string instead of its output.
+---| "SC2210" A redirection to a number writes to or reads from a file with that name.
+---| "SC2211" A glob is used as a command name.
+---| "SC2212" An empty test is always false.
+---| "SC2213" getopts accepts an option that the case statement has no branch for.
+---| "SC2214" A case branch handles an option that is not in the getopts string.
+---| "SC2215" A word that looks like an option is used as a command name.
+---| "SC2216" A command that does not read standard input is piped data.
+---| "SC2217" A command that does not read standard input is given redirected input.
+---| "SC2218" A function is called before the line that defines it runs.
+---| "SC2219" let is used where an arithmetic command needs no quoting.
+---| "SC2220" A case statement handling getopts options has no \*) branch for invalid options.
+---| "SC2221" A case pattern also matches everything a later pattern matches, so that one is never reached.
+---| "SC2222" A case pattern never matches because an earlier pattern catches everything it would.
+---| "SC2223" An unquoted ${var:=default} is globbed on every run.
+---| "SC2224" mv is given only one path and no destination.
+---| "SC2225" cp is given only one path and no destination.
+---| "SC2226" ln is given only one path and no link name.
+---| "SC2227" A redirection on find applies to find itself, not to the command run by -exec.
+---| "SC2229" read $name reads into the variable named by the value, not the variable itself.
+---| "SC2230" which is not standard and behaves differently between systems.
+---| "SC2231" An unquoted expansion next to a glob is split and globbed along with it.
+---| "SC2232" sudo or doas is given a shell builtin, which has no program to run.
+---| "SC2233" Parentheses around a condition start a needless subshell.
+---| "SC2234" Parentheses around a test start a needless subshell.
+---| "SC2235" Tests are grouped with ( ), which starts a needless subshell.
+---| "SC2236" A negated test operator is written as ! op instead of its opposite.
+---| "SC2237" A negated \[ \] or \[\[ \]\] test is written as ! instead of using the opposite operator.
+---| "SC2238" A redirection names a file that is also a command, which suggests a pipe was meant.
+---| "SC2239" The shebang interpreter is not an absolute path.
+---| "SC2240" Arguments after the file given to . are not passed to it in sh.
+---| "SC2241" exit is given more than one status.
+---| "SC2242" exit is given a status that is not an integer from 0 to 255.
+---| "SC2243" A test of a command substitution relies on the implicit non-empty check.
+---| "SC2244" A test of a string relies on the implicit non-empty check instead of -n.
+---| "SC2245" ksh applies a file test operator only to the first match of a glob.
+---| "SC2246" The shebang interpreter ends in a slash, so it names a directory.
+---| "SC2247" $" starts a translated string where a quoted substitution was meant.
+---| "SC2248" A variable that holds no spaces or globs today is expanded unquoted.
+---| "SC2249" A case statement has no \*) branch for unexpected values.
+---| "SC2250" A variable is expanded without braces.
+---| "SC2251" A negated command never triggers set -e.
+---| "SC2252" A value always differs from at least one of several constants, so a \|\| chain of != tests is always true.
+---| "SC2253" chmod -r removes read permission instead of changing modes recursively.
+---| "SC2254" An unquoted expansion in a case pattern is matched as a glob.
+---| "SC2255" A numeric operand in \[ \] is an unquoted glob, not a number.
+---| "SC2256" $"name" is a translated string, not an expansion of the variable.
+---| "SC2257" Arithmetic that modifies a variable in a redirection may run in a subshell or not at all.
+---| "SC2258" A trailing comma becomes part of a loop item.
+---| "SC2259" An input redirection replaces the piped input, discarding the previous command's output.
+---| "SC2260" An output redirection takes the output away from the pipe, so the next command reads nothing.
+---| "SC2261" Several redirections compete for the same file descriptor, and only the last takes effect.
+---| "SC2262" An alias is used in the same parsing unit that defines it, where it does not take effect yet.
+---| "SC2263" A command runs as a program instead of the alias defined in the same parsing unit.
+---| "SC2264" A function that wraps a command calls itself unconditionally and recurses forever.
+---| "SC2265" A single & between tests runs the first in the background instead of combining them.
+---| "SC2266" A single \| between tests pipes between them instead of combining them.
+---| "SC2267" xargs -i is deprecated.
+---| "SC2268" The x prefix in comparisons is an obsolete workaround.
+---| "SC2269" A variable is assigned its own value, which does nothing.
+---| "SC2270" Positional parameters cannot be assigned with =.
+---| "SC2271" A variable name computed from an expansion cannot be assigned with =.
+---| "SC2272" A command name contains ==, which suggests a comparison or assignment was meant.
+---| "SC2273" A line of equals signs looks like a leftover merge conflict marker or text border.
+---| "SC2274" A command cannot start with ===.
+---| "SC2275" A command cannot start with =.
+---| "SC2276" A word with = is run as a command because the part before = is not a valid variable name.
+---| "SC2277" $0 cannot be assigned like a variable in bash.
+---| "SC2278" $0 cannot be assigned in ksh.
+---| "SC2279" $0 cannot be assigned in this shell.
+---| "SC2280" $0 cannot be assigned in sh.
+---| "SC2281" The left side of an assignment has a $.
+---| "SC2282" Variable names cannot start with a digit, so the assignment runs as a command.
+---| "SC2283" Spaces around = turn an assignment into a command.
+---| "SC2284" == on its own is neither an assignment nor a command.
+---| "SC2285" Spaces around += turn an append into a command.
+---| "SC2286" The command name is an empty string.
+---| "SC2287" A command name ends in a slash, so it names a directory.
+---| "SC2288" A command name ends in a character that suggests a stray character or a missing space.
+---| "SC2289" A command name contains a tab or a line break.
+---| "SC2290" A space before = or += in a declaration turns the assignment into a separate word.
+---| "SC2291" Unquoted runs of spaces between echo arguments collapse to a single space.
+---| "SC2292" \[ \] is used for a test where \[\[ \]\] is available.
+---| "SC2293" eval is given ${array\[@\]@Q}, although it joins its arguments with spaces anyway.
+---| "SC2294" eval joins array elements into one string and re-splits it, losing their boundaries.
+---| "SC2295" An unquoted expansion inside a pattern is matched as a glob.
+---| "SC2296" A parameter expansion starts with a character no parameter name can start with.
+---| "SC2297" Double quotes are used inside ${ }.
+---| "SC2298" An expansion is used as the name in ${ }.
+---| "SC2299" Parameter expansions cannot be nested.
+---| "SC2300" Parameter expansion cannot operate on a command substitution.
+---| "SC2301" A parameter expansion starts with quotes or other unexpected syntax.
+---| "SC2302" A loop iterates over an associative array's values but uses the loop variable as a key.
+---| "SC2303" A value taken from an associative array is used as a key.
+---| "SC2304" An unescaped \* given to expr is expanded as a glob.
+---| "SC2305" An unquoted expr regex may be expanded as a glob.
+---| "SC2306" Unescaped glob characters in expr arguments may be expanded by the shell.
+---| "SC2307" expr is given too few arguments to form an expression.
+---| "SC2308" An expr keyword is not specified by POSIX.
+---| "SC2309" A numeric operator inside \[\[ \]\] evaluates its operand as arithmetic.
+---| "SC2310" set -e has no effect inside a function invoked as a condition.
+---| "SC2311" set -e has no effect inside a command substitution that does not inherit it.
+---| "SC2312" A command's exit status is masked by its context.
+---| "SC2313" An unquoted array index in a read target may be expanded as a glob.
+---| "SC2314" Bats ignores the status of a negated command, so the line cannot fail the test.
+---| "SC2315" Bats ignores the status of a negated test, so the line cannot fail the test.
+---| "SC2316" A word given to a declaration command is parsed as a variable name, not as a modifier.
+---| "SC2317" A command can never run, because every path to it exits, returns or loops forever first.
+---| "SC2318" A variable assigned in a declaration is read again in the same declaration before it takes effect.
+---| "SC2319" $? after a test is the status of that test, not of the command it checked.
+---| "SC2320" $? after echo is the status of echo, not of the command before it.
+---| "SC2321" $(( )) around an array index is redundant, since indices are already arithmetic.
+---| "SC2322" Doubled parentheses in arithmetic are redundant.
+---| "SC2323" Parentheses around a whole arithmetic expression are redundant.
+---| "SC2324" += on a plain variable appends text instead of adding a number.
+---| "SC2325" sh allows only one ! before a pipeline.
+---| "SC2326" ! cannot negate a single stage after a \|.
+---| "SC2327" A command substitution is always empty because the command's output is redirected elsewhere.
+---| "SC2328" A redirection takes the output away from the command substitution it is in.
+---| "SC2329" A function is never invoked, and the script always exits before it could be sourced and called.
+---| "SC2330" busybox sh expands a glob on the right of == or != in \[\[ \]\] against file names before comparing.
+---| "SC2331" -a as a file test is a legacy synonym of -e that is easily confused with the -a conjunction.
+---| "SC2332" \[ ! -o name \] or \[ ! -a file \] reads -o or -a as a binary operator and is always true.
+---| "SC2333" A value cannot equal two different constants at once, so the condition is always false.
+---| "SC2334" A value cannot equal two different numbers at once, so the && is always false.
+---| "SC2335" A negated comparison is written as ! a op b instead of using the inverted operator.
+---| "SC2336" cp -r is implementation-defined for special files.
+---| "SC2337" A command that may exit before reading all its input can make the writer upstream fail with SIGPIPE under pipefail.
+---| "SC2338" = is used for string comparison in a bash test where == is preferred.
+---| "SC3001" Process substitution is undefined in POSIX sh.
+---| "SC3002" Extended globs are undefined in POSIX sh.
+---| "SC3003" ANSI-C quoted $'...' strings are undefined in POSIX sh and dash.
+---| "SC3004" Locale-translated $"..." strings are undefined in POSIX sh.
+---| "SC3005" C-style for ((...)) loops are undefined in POSIX sh.
+---| "SC3006" The arithmetic command ((...)) is undefined in POSIX sh.
+---| "SC3007" $\[...\] arithmetic is undefined in POSIX sh.
+---| "SC3008" select loops are undefined in POSIX sh.
+---| "SC3009" Brace expansion is undefined in POSIX sh.
+---| "SC3010" \[\[ \]\] tests are undefined in POSIX sh and dash.
+---| "SC3011" Here-strings with \<\<\< are undefined in POSIX sh.
+---| "SC3012" Lexicographic comparison with \< or \> in \[ \] is undefined in POSIX sh.
+---| "SC3014" == in \[ \] is undefined in POSIX sh and dash.
+---| "SC3015" Regex matching with =~ is undefined in POSIX sh.
+---| "SC3016" test -v is undefined in POSIX sh.
+---| "SC3017" The unary test -a is undefined in POSIX sh.
+---| "SC3018" The ++ and -- operators are undefined in POSIX sh.
+---| "SC3019" Exponentiation with \*\* is undefined in POSIX sh.
+---| "SC3020" Redirecting both streams with &\> is undefined in POSIX sh and dash.
+---| "SC3021" Redirecting both streams to a file with \>& is undefined in POSIX sh.
+---| "SC3022" Named file descriptors like {fd}\> are undefined in POSIX sh.
+---| "SC3023" File descriptor numbers above 9 are undefined in POSIX sh.
+---| "SC3024" Appending with += is undefined in POSIX sh.
+---| "SC3025" Network pseudo-devices such as /dev/tcp are undefined in POSIX sh.
+---| "SC3026" Negating a bracket expression with ^ is undefined in POSIX sh.
+---| "SC3028" A bash-specific variable is undefined in POSIX sh.
+---| "SC3029" The \|& operator is undefined in POSIX sh.
+---| "SC3030" Arrays are undefined in POSIX sh.
+---| "SC3031" Redirecting to or from a glob is undefined in POSIX sh.
+---| "SC3032" coproc is undefined in POSIX sh.
+---| "SC3033" A function name that is not a valid identifier is undefined in POSIX sh.
+---| "SC3034" Reading a file with $(\< file) is undefined in POSIX sh.
+---| "SC3035" Reading a file with \`\< file\` is undefined in POSIX sh.
+---| "SC3036" echo in dash and busybox sh does not support this flag.
+---| "SC3037" echo flags are undefined in POSIX sh.
+---| "SC3038" exec options are undefined in POSIX sh.
+---| "SC3039" let is undefined in POSIX sh.
+---| "SC3040" This set -o option is undefined in POSIX sh.
+---| "SC3041" This set flag is undefined in POSIX sh.
+---| "SC3042" This set option is undefined in POSIX sh.
+---| "SC3043" local is undefined in POSIX sh.
+---| "SC3044" A bash builtin is used that is undefined in POSIX sh.
+---| "SC3045" A builtin option is used that is undefined in POSIX sh.
+---| "SC3046" source is undefined in POSIX sh and dash.
+---| "SC3047" Trapping this signal or condition is undefined in POSIX sh.
+---| "SC3048" The SIG prefix on a signal name is undefined in POSIX sh and dash.
+---| "SC3049" Lowercase signal names are undefined in POSIX sh.
+---| "SC3050" printf %q is undefined in POSIX sh.
+---| "SC3051" source is undefined in POSIX sh and dash, also when the file it loads is followed.
+---| "SC3052" Arithmetic base prefixes like 16# are undefined in POSIX sh.
+---| "SC3053" Indirect expansion with ${!name} is undefined in POSIX sh.
+---| "SC3054" Array subscripts are undefined in POSIX sh.
+---| "SC3055" Listing array keys with ${!array\[@\]} is undefined in POSIX sh.
+---| "SC3056" Listing variable names by prefix with ${!prefix\*} is undefined in POSIX sh.
+---| "SC3057" Substring expansion ${var:offset} is undefined in POSIX sh and dash.
+---| "SC3058" Applying a length or trim operator to $@ or $\* is undefined in POSIX sh and dash.
+---| "SC3059" Case modification in parameter expansion is undefined in POSIX sh.
+---| "SC3060" Pattern substitution ${var/pattern/replacement} is undefined in POSIX sh and dash.
+---| "SC3061" read without a variable name is undefined in POSIX sh.
+---| "SC3062" Checking a shell option with test -o is undefined in POSIX sh.
+---| "SC3063" test -R is undefined in POSIX sh.
+---| "SC3064" test -N is undefined in POSIX sh.
+---| "SC3065" test -k is undefined in POSIX sh.
+---| "SC3066" test -G is undefined in POSIX sh.
+---| "SC3067" test -O is undefined in POSIX sh.
+
+---@alias _.lsp.settings.ShellLsp.Rule.LSP
+---| "SL1001" eval runs untrusted data as code.
+---| "SL1002" A shell -c script is built from untrusted data.
+---| "SL1003" Untrusted data is evaluated as arithmetic.
+---| "SL1004" A sourced path is built from untrusted data.
+---| "SL1005" Downloaded code runs unchecked.
+---| "SL1006" A sensitive path is made writable by every user.
+---| "SL2001" A function in a script is never called.
+---| "SL2002" An \`@\` transformation the shell does not know.
+---| "SL2003" A declaration assigns a name that is not a variable name.
+---| "SL2004" A trap is set inside a subshell.
+---| "SL2005" exit only leaves a subshell and nobody checks its status.
+---| "SL2006" A temporary file or directory is never removed.
+---| "SL2007" A function runs pushd but never popd.
+---| "SL2008" A \`${…}\` the shell rejects when it runs it.
+---| "SL2009" A disabled check that nothing here reports.
+---| "SL2010" A NUL byte cuts a \`$'...'\` string short.
+---| "SL2011" Two bounds on the same value leave no number in between.
+---| "SL2012" \`&&\` and \`\|\|\` are mixed in \`\[\[ \]\]\` without parentheses.
+---| "SL2013" A sourced file is found relative to where the script is run from.
+---| "SL2014" A function assigns a variable it did not declare local.
+---| "SL2015" A global variable is given a new value.
+---| "SL2016" A pattern uses a glob operator whose shell option is never turned on.
+---| "SL2017" A capture variable is read, but nothing in the file sets it.
+---| "SL2018" An unquoted & in a bash replacement inserts the matched text.
+---| "SL2019" zsh rejects a pattern as bad.
+---| "SL2020" An external command does what a parameter expansion or \[\[ \]\] does without a new process.
+---| "SL2021" $(cat file) runs cat to read a file the shell can read itself.
+---| "SL2022" A regular expression escape does not work where =~ uses it.
+---| "SL3001" An awk program does not parse.
+---| "SL3002" A sed script does not parse.
+---| "SL3003" A jq filter does not parse.
+---| "SL4001" An executable does not start with \`#!/bin/bash\`.
+---| "SL4002" A file does not open with a comment about its contents.
+---| "SL4003" A TODO comment does not name an owner.
+---| "SL4004" A function that is not short has no header comment.
+---| "SL4005" A function header comment leaves out a section the function needs.
+---| "SL4006" A script is longer than 100 lines.
+---| "SL4007" A script with functions does not end with \`main "$@"\`.
+---| "SL5001" The justfile does not parse.
+---| "SL5002" A dependency or alias names a recipe that does not exist.
+---| "SL5003" An expression uses a variable or parameter that is not defined.
+---| "SL5004" A function that does not exist is called.
+---| "SL5005" A function is called with the wrong number of arguments.
+---| "SL5006" A dependency passes the wrong number of arguments.
+---| "SL5007" A setting that just does not know is set.
+---| "SL5008" An attribute that just does not know is used.
+---| "SL5009" Two recipes have the same name.
+---| "SL5010" A variable is assigned twice.
+---| "SL5011" An alias clashes with another alias or a recipe of the same name.
+---| "SL5012" Recipes or variables depend on themselves.
+---| "SL5013" A recipe parameter is never used.
+---| "SL5014" A variable is never used.
+---| "SL5015" A setting is set twice.
+---| "SL5016" A setting has a value of the wrong kind.
+---| "SL5017" A path names a module that does not exist.
+---| "SL5018" An imported file or module source file is not found.
+---| "SL5019" A recipe's parameters are in an order just refuses.
+---| "SL5020" An attribute is given the wrong number of arguments.
+---| "SL5021" A recipe line is indented differently from the recipe's first line.
+---| "SL5022" A deprecated function or setting is used.
+---| "SL5023" A feature is used without the setting it needs.
+---| "SL5024" A recipe depends on an absent module.
+---| "SL6001" The Makefile does not parse.
+---| "SL6002" A conditional is not balanced.
+---| "SL6003" A \`define\` has no \`endef\`, or an \`endef\` has no \`define\`.
+---| "SL6004" A recipe line starts with spaces instead of a tab.
+---| "SL6005" A recipe line comes before any rule.
+---| "SL6006" A variable is used but never set.
+---| "SL6007" A recursively expanded variable refers to itself.
+---| "SL6008" A \`.PHONY\` target has no rule.
+---| "SL6009" A target gets a second recipe.
+---| "SL6010" A function make does not know is called.
+---| "SL6011" A built-in function gets the wrong number of arguments.
+---| "SL6012" A variable reference is not closed.
+---| "SL6013" An included Makefile is not found.
+---| "SL6014" A variable is set but never used.
+---| "SL6015" A deferred variable reference is not closed.
+---| "SL6016" A target does not match its static pattern.
+---| "SL6017" A standard target is missing from \`.PHONY\`.
+---| "SL7001" The Dockerfile does not parse.
+---| "SL7002" An instruction is not one BuildKit knows.
+---| "SL7003" A flag is not one the instruction takes.
+---| "SL7004" \`CMD\` or \`ENTRYPOINT\` uses the shell form.
+---| "SL7005" \`COPY --from\` names a stage that does not exist.
+---| "SL7006" A variable is used but never declared.
+---| "SL7007" Two stages have the same name.
+---| "SL7008" A build argument is declared but never used.
+---| "SL7009" A stage name is not lowercase.
+---| "SL7010" \`AS\` does not match the casing of \`FROM\`.
+---| "SL7011" An empty line continues an instruction.
+---| "SL7012" An instruction is not cased like the others.
+---| "SL7013" A stage uses a reserved name.
+---| "SL7014" \`MAINTAINER\` is deprecated.
+---| "SL7015" \`WORKDIR\` is relative before the stage sets one.
+---| "SL7016" A stage has more than one \`CMD\`, \`ENTRYPOINT\` or \`HEALTHCHECK\`.
+---| "SL7017" \`ENV\` or \`LABEL\` uses the legacy \`key value\` form.
+---| "SL7018" A secret is passed in \`ARG\` or \`ENV\`.
+---| "SL7019" \`EXPOSE\` gives the protocol in uppercase.
+---| "SL7020" \`EXPOSE\` maps a host port.
+---| "SL7021" The default of a build argument leaves a \`FROM\` image empty.
+---| "SL7022" \`FROM --platform\` is a constant.
+---| "SL7023" \`FROM --platform=$TARGETPLATFORM\` is redundant.
+---| "SL7024" \`COPY --from\` names a stage that is not built before it.
+---| "SL8001" The Nix file does not parse.
+---| "SL8002" A variable has no binding.
+---| "SL8003" An attribute is defined twice.
+---| "SL8004" A function pattern names an argument twice.
+---| "SL8005" A \`let\` binding is never read.
+---| "SL8006" A function never reads its argument or its \`@\` name.
+---| "SL8007" A function pattern names an argument it never reads.
+---| "SL8008" Parentheses change nothing.
+---| "SL8009" An \`if\` picks between \`true\` and \`false\`.
+---| "SL8010" \`rec\` has nothing to do.
+---| "SL8011" \`x = x;\` in a set that is not recursive is \`inherit x;\`.
+---| "SL8012" \`or\` is used as a variable.
+---| "SL8013" A \`let\` binds nothing.
+---| "SL8014" An antiquotation reaches a command's arguments unescaped.
+---| "SL8015" Two Boolean literals are compared.
+---| "SL8016" \`a = b.a;\` is \`inherit (b) a;\`.
+---| "SL8017" \`let { ... }\` is an undocumented form.
+---| "SL8018" A \`let\` is the whole body of another.
+---| "SL8019" A function only passes its argument on.
+---| "SL8020" A pattern names nothing.
+---| "SL8021" \`x@{ ... }\` captures nothing that \`x\` does not.
+---| "SL8022" A URI is not quoted.
+---| "SL8023" \`builtins.toPath\` is deprecated.
+---| "SL8024" \`!(a == b)\` is \`a != b\`.
+---| "SL8025" \`if x ? a then x.a else y\` is \`x.a or y\`.
+---| "SL8026" Three or more bindings in a set start with the same key.
+---| "SL8027" A list is joined with an empty list.
+---| "SL8028" An \`inherit\` names no attribute.
+---| "SL8029" A \`let\` binding or a pattern name starting with \`\_\` is never read.
+---| "SL8030" A name starting with \`\_\` is read.
+---| "SL8031" A flake reads something a pure evaluation does not have.
+---| "SL8032" A fetcher has nothing that pins what it fetches.
+---| "SL8033" \`//\` overrides an attribute that a \`rec\` set reads itself.
+---| "SL8034" A NixOS module chooses its own shape from \`config\`.
+---| "SL8035" A \`with\` wraps a whole file.
+---| "SL8036" A path is interpolated.
+---| "SL8037" \`pkgs.lib\` is written where \`lib\` is in scope.
+---| "SL8038" A flake declares an input nothing reads.
+---| "SL8039" A flake overrides an input that its input does not have.
+---| "SL8040" A flake input locks its own nixpkgs.
+
+---@alias _.lsp.settings.ShellLsp.Rule.Hadolint
+---| "DL1001" A \`# hadolint ignore=\` comment hides findings; the project asks for none.
+---| "DL3001" RUN starts a tool meant for a running system, such as an editor or process viewer, which is no use while building.
+---| "DL3002" The last USER of a stage is root, so the container runs with full privileges.
+---| "DL3003" RUN changes directory with cd; WORKDIR sets the directory for every later instruction and is easier to follow.
+---| "DL3004" RUN calls sudo, which builds already run as root do not need and which images rarely have configured.
+---| "DL3006" FROM names an image without a tag or digest, so each build may start from a different image.
+---| "DL3007" FROM uses the latest tag, which moves, so each build may start from a different image.
+---| "DL3008" apt-get install lists a package without a version, so a rebuild may install a different one.
+---| "DL3009" The package lists apt-get update downloads are left in the image.
+---| "DL3010" An archive is copied in and then unpacked; ADD unpacks a local archive itself, in one layer.
+---| "DL3011" EXPOSE names a port above 65535, which no protocol can use.
+---| "DL3013" pip install lists a package without a version, so a rebuild may install a different one.
+---| "DL3014" apt-get would stop to ask for confirmation, which fails a build; it needs -y.
+---| "DL3015" apt-get install also installs recommended packages unless --no-install-recommends is given.
+---| "DL3016" npm install lists a package without a version, so a rebuild may install a different one.
+---| "DL3018" apk add lists a package without a version, so a rebuild may install a different one.
+---| "DL3019" apk add keeps its package index in the image unless --no-cache is given.
+---| "DL3020" ADD copies plain files or folders; COPY does that without ADD's URL and archive handling.
+---| "DL3021" COPY with several sources needs a destination that ends in /.
+---| "DL3026" FROM pulls an image from a registry that is not on the configured list of trusted registries.
+---| "DL3027" RUN uses apt, whose interface is meant for people and may change; apt-get and apt-cache are stable.
+---| "DL3028" gem install lists a gem without a version, so a rebuild may install a different one.
+---| "DL3030" yum would stop to ask for confirmation, which fails a build; it needs -y.
+---| "DL3032" The packages and metadata yum downloads are left in the image without yum clean all.
+---| "DL3033" yum install lists a package without a version, so a rebuild may install a different one.
+---| "DL3034" zypper would stop to ask for confirmation, which fails a build; it needs --non-interactive.
+---| "DL3035" zypper dist-upgrade upgrades the whole base image; a newer base image does that reproducibly.
+---| "DL3036" The packages and metadata zypper downloads are left in the image without zypper clean.
+---| "DL3037" zypper install lists a package without a version, so a rebuild may install a different one.
+---| "DL3038" dnf would stop to ask for confirmation, which fails a build; it needs -y.
+---| "DL3040" The packages and metadata dnf downloads are left in the image without dnf clean all.
+---| "DL3041" dnf install lists a package without a version, so a rebuild may install a different one.
+---| "DL3042" pip install keeps the packages it downloads in a cache inside the image unless --no-cache-dir is given.
+---| "DL3044" ENV reads a variable that the same ENV sets, which Docker expands to its earlier value.
+---| "DL3045" COPY copies to a relative path while no WORKDIR is set, so the base image decides where it lands.
+---| "DL3046" useradd with a large UID and without -l writes a huge sparse lastlog file into the image.
+---| "DL3047" wget prints a progress bar line by line into the build log unless told to be quieter.
+---| "DL3048" A label key breaks Docker's naming guidelines for label keys.
+---| "DL3049" The image lacks a label the configured label schema requires.
+---| "DL3050" A label is not in the configured label schema, which is strict.
+---| "DL3051" A label the label schema names is empty.
+---| "DL3052" A label the label schema types as url is not an absolute URL.
+---| "DL3053" A label the label schema types as rfc3339 is not an RFC 3339 date and time.
+---| "DL3054" A label the label schema types as spdx is not an SPDX license expression.
+---| "DL3055" A label the label schema types as hash is not a git commit hash.
+---| "DL3056" A label the label schema types as semver is not a semantic version.
+---| "DL3057" A stage has no HEALTHCHECK, so Docker cannot tell whether its container works.
+---| "DL3058" A label the label schema types as email is not an email address.
+---| "DL3059" Consecutive RUN instructions each add a layer; joining them with && makes one.
+---| "DL3060" The yarn cache is left in the image without yarn cache clean.
+---| "DL3062" go install names a module without a version, so a rebuild may build a different one.
+---| "DL4001" A stage downloads with both wget and curl; one tool is enough.
+---| "DL4005" RUN replaces /bin/sh with a link; SHELL changes the shell of later instructions without touching the image.
+---| "DL4006" A pipeline in RUN succeeds when its last command does, hiding a failure earlier in the pipe, unless pipefail is set.
+
+---@alias _.lsp.settings.ShellLsp.Lint.Profile
+---| "recommended" The default, runs every check that is on by default.
+---| "minimal" Keeps errors, warnings & information checks that point at a real bug.
+---| "strict" Enables every optional check except `check-unassigned-uppercase`, `avoid-global-reassignment` & `google-*`.
+
+---Don't think this is fully documented...
+---@alias _.lsp.settings.ShellLsp.Lint.Option
+---| "require-variable-braces"
+---| "all"
+
+---@class _.lsp.settings.ShellLsp.Lint
+---@field enable? boolean
+---Report lint findings alongside syntax errors.
+---
+---```lua
+---default = true
+---```
+---@field profile? _.lsp.settings.ShellLsp.Lint.Profile
+---How much to report.
+---
+---```lua
+---default = "recommended"
+---```
+---@field exclude? _.lsp.settings.ShellLsp.Rule[]
+---Codes to suppress.
+---
+---```lua
+---default = {}
+---```
+---@field optional? _.lsp.settings.ShellLsp.Lint.Option[]
+---Opt-in checks to enable.
+---
+---```lua
+---default = {}
+---```
+
+---@class _.lsp.settings.ShellLsp.Format
+---@field enable? boolean
+---Answer formatting requests.
+---
+---```lua
+---default = true
+---```
+---@field indent? integer
+---Number of spaces to insert for <Tab>, or 0 to insert tabs. If nil, use editor setting.
+---
+---```lua
+---default = nil
+---```
+---@field binaryNextLine? boolean
+---Put `&&`, `||` and `|` at the start of continuation lines.
+---
+---```lua
+---default = false
+---```
+---@field switchCaseIndent? boolean
+---Indent `case` arms inside `case ... esac`.
+---
+---```lua
+---default = false
+---```
+---@field spaceRedirects? boolean
+---Write `> file` instea of `>file`.
+---
+---```lua
+---default = false
+---```
+---@field functionNextLine? boolean
+---Put the opening brace of a function on its own line.
+---
+---```lua
+---default = false
+---```
+---@field simplify? boolean
+---Apply `shfmt`'s simplifications, like `shfmt -s`
+---
+---```lua
+---default = false
+---```
+---@field minify? boolean
+---Minify the script, like `shfmt -mn`
+---
+---```lua
+---default = false
+---```
+
+---@class _.lsp.settings.ShellLsp.Nix
+---@field evaluate? boolean
+---Evaluate flakes with `nix` to complete and describe NixOS, home-manager and flake-parts options & nixpkgs attributes.
+---
+---```lua
+---default = false
+---```
+
+---@class _.lsp.settings.ShellLsp
+---@field dialect? _.lsp.settings.ShellLsp.Dialect
+---Force shell dialect for every document, or nil to autodetect
+---
+---```lua
+---default = nil
+---```
+---@field lint? _.lsp.settings.ShellLsp.Lint
+---@field format? _.lsp.settings.ShellLsp.Format
+---@field bix? _.lsp.settings.ShellLsp.Nix
+
+---@class lsp.settings.shell_lsp
+---@field shellLsp? _.lsp.settings.ShellLsp
