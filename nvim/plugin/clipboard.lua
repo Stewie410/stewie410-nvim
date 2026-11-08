@@ -2,7 +2,7 @@
 ---@param tool string module name
 ---@return boolean
 local function try_set(tool)
-	local name = table.concat({ "util", "clipboard", tool })
+	local name = table.concat({ "util", "clipboard", tool }, ".")
 
 	local ok, module = pcall(require, name)
 	if not ok then
