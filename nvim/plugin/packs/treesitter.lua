@@ -102,8 +102,8 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 		vim.o.foldlevel = 20
 
 		-- indents
-		vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-		vim.bo.autoindent = false
-		vim.bo.smartindent = false
+		-- vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+		-- vim.bo.autoindent = false
+		-- vim.bo.smartindent = false
 	end,
 })
