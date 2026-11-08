@@ -6,7 +6,7 @@ local function try_set(tool)
 
 	local ok, module = pcall(require, name)
 	if not ok then
-		vim.notify(("%s: failed to require clipboard module"):format(name), vim.log.levels.DEBUG)
+		vim.notify(("%s: failed to require clipboard module"):format(name), vim.log.levels.WARN)
 		return false
 	end
 
