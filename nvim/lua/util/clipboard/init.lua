@@ -1,139 +1,75 @@
-local M = {}
-
-local function in_path(name)
-	return vim.fn.executable(name) == 1
-end
-
+---@return string
 local function get_platform()
-	local name = vim.uv.os_uname().sysname:lower()
+	local name = vim.uv.os_uname().sysname
 
-	if vim.uv.os_uname().release:lower():find("wsl2") then
+	if vim.fn.has("wsl") then
 		name = "wsl"
-	elseif os.getenv("TMUX") ~= nil then
+	elseif vim.env.TMUX ~= nil then
 		name = "tmux"
 	end
 
-	return name
+	return name:lower()
 end
 
-local tools = {
-	darwin = {
-		{
-			name = "pbcopy",
-			detect = function()
-				return in_path("pbcopy") and in_path("pbpaste")
-			end,
-			cmd = {
-				copy = "pbcopy",
-				paste = "pbpaste",
-			},
+---@param name string
+---@return boolean
+local function try_set(name)
+	local path = table.concat({ "util", "clipboard", name })
+	local ok, tool = pcall(require, path)
+	if not ok then
+		vim.notify(("%s: failed to require"):format(path), vim.log.levels.WARN)
+		return false
+	end
+
+	if not tool.detect() then
+		return false
+	end
+
+	vim.g.clipboard = {
+		name = path,
+		cache_enabled = 0,
+		copy = {
+			["*"] = tool.copy.primary,
+			["+"] = tool.copy.system,
 		},
+		paste = {
+			["*"] = tool.paste.primary,
+			["+"] = tool.paste.system,
+		},
+	}
+
+	return true
+end
+
+local preference = {
+	darwin = {
+		"pbcopy",
 	},
 	linux = {
-		{
-			name = "wl-clipboard",
-			detect = function()
-				local display = os.getenv("WAYLAND_DISPLAY")
-				local rtp = os.getenv("XDG_RUNTIME_DIR")
-				local socket = (display or "") .. "/" .. (rtp or "")
-
-				return in_path("wl-copy")
-						and in_path("wl-paste")
-						and display ~= nil
-						and vim.fn.filereadable(socket) == 1
-			end,
-			cmd = {
-				copy = "wl-copy",
-				paste = "wl-paste --no-newline",
-			},
-		},
-		{
-			name = "waycopy",
-			detect = function()
-				return in_path("waycopy")
-						and in_path("waypaste")
-						and os.getenv("WAYLAND_DISPLAY") ~= nil
-			end,
-			cmd = {
-				copy = "waycopy",
-				paste = "waypaste --no-newline",
-			},
-		},
-		{
-			name = "xclip",
-			detect = function()
-				return in_path("xclip")
-			end,
-			cmd = {
-				copy = "xclip -selection clipboard",
-				paste = "xclip -selection clipboard -o",
-			},
-		},
-		{
-			name = "xsel",
-			detect = function()
-				return in_path("xsel")
-			end,
-			cmd = {
-				copy = "xsel --clipboard --input",
-				paste = "xsel --clipboard --ouput",
-			},
-		},
+		"wl_clipboard",
+		"waycopy",
+		"xclip",
+		"xsel",
 	},
-	-- requires Windows to enable UTF-8 support for unicode to not get totally mangled
 	wsl = {
-		{
-			name = "wsl-clip",
-			detect = function()
-				return in_path("clip") and in_path("powershell")
-			end,
-			cmd = {
-				copy = "clip",
-				paste =
-				'powershell -NoLogo -NoProfile -c [Console]::Out.Write((Get-Clipboard -Raw).ToString().Replace("`r", ""))',
-			},
-		},
+		"wl_clipboard",
+		"wsl",
 	},
 	tmux = {
-		{
-			name = "tmux",
-			detect = function()
-				return in_path("tmux")
-			end,
-			cmd = {
-				copy = "tmux load-buffer -",
-				paste = "tmux save-buffer -",
-			},
-		},
+		"tmux",
 	},
-	["windows_nt"] = nil,
+	windows = {
+		"win32yank",
+	},
 }
 
-function M.setup()
-	local platform = get_platform()
-	if tools[platform] == nil then
-		return
-	end
-
-	for _, tool in ipairs(tools[platform]) do
-		if tool.detect() then
-			vim.g.clipboard = {
-				name = "util.clipboard." .. tool.name,
-				cache_enabled = 0,
-				copy = {
-					["*"] = tool.cmd.copy,
-					["+"] = tool.cmd.copy,
-				},
-				paste = {
-					["*"] = tool.cmd.paste,
-					["+"] = tool.cmd.paste,
-				},
-			}
-			return
-		end
-	end
-
-	error("util.clipboard: failed to setup!")
+local platform = get_platform()
+if preference[platform] == nil then
+	return
 end
 
-return M
+for _, name in ipairs(preference[platform]) do
+	if try_set(name) then
+		return
+	end
+end
